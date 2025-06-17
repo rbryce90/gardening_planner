@@ -1,7 +1,21 @@
-import Logger from "https://deno.land/x/logger@v1.1.6/logger.ts";
+// logger.ts
+const getTimestamp = () => new Date().toISOString();
 
-const logger = new Logger()
+const logger = {
+    info: (...args: unknown[]) => {
+        console.log(`[INFO] ${getTimestamp()} -`, ...args);
+    },
+    warn: (...args: unknown[]) => {
+        console.warn(`[WARN] ${getTimestamp()} -`, ...args);
+    },
+    error: (...args: unknown[]) => {
+        console.error(`[ERROR] ${getTimestamp()} -`, ...args);
+    },
+    debug: (...args: unknown[]) => {
+        if (process.env.DEBUG === "true") {
+            console.debug(`[DEBUG] ${getTimestamp()} -`, ...args);
+        }
+    },
+};
 
-await logger.initFileLogger("./log");
-
-export default logger 
+export default logger;

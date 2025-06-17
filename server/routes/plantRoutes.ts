@@ -1,94 +1,103 @@
-// create a plantRoutes.ts file
-import { Router } from "https://deno.land/x/oak/mod.ts";
-import { getPlants, getPlantById, createPlant, updatePlant, deletePlant } from "../controllers/plantController.ts";
-import { Plant } from "../models/models.ts";
+import { Router } from "express";
+import { getPlants, getPlantById, createPlant, deletePlant } from "../controllers/plantController";
+import { Plant } from "../types/plant";
 
-const plantRouter = new Router({ prefix: "/api/plants" });
-plantRouter
-    .get("/", async (context) => {
+const plantRouter = Router();
+
+// Get all plants
+plantRouter.get("/", async (req, res) => {
+    try {
         const plants = await getPlants();
-        context.response.body = plants;
+        res.status(200).json(plants);
+    } catch (err) {
+        console.error("Error fetching plants:", err);
+        res.status(500).json({ error: err });
     }
-    )
-    .get("/:id", async (context) => {
-        const id = context.params.id;
-        if (!id) {
-            context.response.status = 400;
-            context.response.body = { message: "Invalid plant ID" };
-            return;
-        }
+});
+
+// Get plant by ID
+plantRouter.get("/:id", async (req, res) => {
+    const id = req.params.id;
+    if (!id) {
+        res.status(400).json({ error: "Invalid plant ID" });
+        return;
+    }
+    try {
         const plant = await getPlantById(id);
         if (plant) {
-            context.response.body = plant;
+            res.status(200).json(plant);
         } else {
-            context.response.status = 404;
-            context.response.body = { message: "Plant not found" };
+            res.status(404).json({ error: "Plant not found" });
         }
+    } catch (err) {
+        console.error("Error fetching plant:", err);
+        res.status(500).json({ error: err });
     }
-    )
-    .post("/", async (context) => {
-        const plant: Plant = await context.request.body().value;
-        if (!plant.name || !plant.category || !plant.growth_form) {
-            context.response.status = 400;
-            context.response.body = { message: "Invalid plant data" };
+});
+
+// Create a new plant
+plantRouter.post("/", async (req, res) => {
+    try {
+        const plant: Plant = req.body;
+
+        // Validate the required fields
+        if (!plant.name || !plant.category || !plant.growthForm) {
+            res.status(400).json({ error: "Invalid plant data" });
             return;
         }
-        try {
-            const newPlant = await createPlant(plant);
-            context.response.status = 201;
-            context.response.body = newPlant;
-        } catch (err) {
-            context.response.status = 500;
-            context.response.body = { message: err.message };
-        }
+
+        const id = await createPlant(plant);
+        res.status(201).json({ id: plant });
+    } catch (err) {
+        console.error("Error creating plant:", err);
+        res.status(500).json({ error: err });
     }
-    )
-    .put("/:id", async (context) => {
-        const id = context.params.id;
-        if (!id) {
-            context.response.status = 400;
-            context.response.body = { message: "Invalid plant ID" };
-            return;
-        }
-        const plant: Plant = await context.request.body().value;
-        if (!plant.name || !plant.category || !plant.growth_form) {
-            context.response.status = 400;
-            context.response.body = { message: "Invalid plant data" };
-            return;
-        }
-        try {
-            const updatedPlant = await updatePlant(id, plant);
-            if (updatedPlant) {
-                context.response.body = updatedPlant;
-            } else {
-                context.response.status = 404;
-                context.response.body = { message: "Plant not found" };
-            }
-        } catch (err) {
-            context.response.status = 500;
-            context.response.body = { message: err.message };
-        }
+});
+
+// Update a plant by ID
+// plantRouter.put("/:id", async (req, res) => {
+//     const id = req.params.id;
+//     if (!id) {
+//         res.status(400).json({ error: "Invalid plant ID" });
+//         return;
+//     }
+//     const plant = req.body;
+//     if (!plant.name || !plant.category || !plant.growthForm) {
+//         res.status(400).json({ error: "Invalid plant data" });
+//         return;
+//     }
+//     try {
+//         const updatedPlant = await updatePlant(id, plant);
+//         if (updatedPlant) {
+//             res.status(200).json(updatedPlant);
+//         } else {
+//             res.status(404).json({ error: "Plant not found" });
+//         }
+//     } catch (err) {
+//         console.error("Error updating plant:", err);
+//         res.status(500).json({ error: err });
+//     }
+// });
+
+// Delete a plant by ID
+plantRouter.delete("/:id", async (req, res) => {
+    console.log('here ==========================')
+    const id = req.params.id;
+    if (!id) {
+        res.status(400).json({ error: "Invalid plant ID" });
+        return;
     }
-    )
-    .delete("/:id", async (context) => {
-        const id = context.params.id;
-        if (!id) {
-            context.response.status = 400;
-            context.response.body = { message: "Invalid plant ID" };
-            return;
+    try {
+        const deleted = await deletePlant(id);
+        if (deleted) {
+            res.status(204).send(); // No Content
+        } else {
+            res.status(404).json({ error: "Plant not found" });
         }
-        try {
-            const deleted = await deletePlant(id);
-            if (deleted) {
-                context.response.status = 204; // No Content
-            } else {
-                context.response.status = 404;
-                context.response.body = { message: "Plant not found" };
-            }
-        } catch (err) {
-            context.response.status = 500;
-            context.response.body = { message: err.message };
-        }
+    } catch (err) {
+        console.error("Error deleting plant:", err);
+        res.status(500).json({ error: err });
     }
-    );
+});
+
 export default plantRouter;

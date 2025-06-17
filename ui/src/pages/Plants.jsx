@@ -17,6 +17,11 @@ export default function Plants() {
     const [addingPlant, setAddingPlant] = useState(false);
 
     useEffect(() => {
+        getPlants();
+    }, []);
+
+    const getPlants = () => {
+        setLoading(true);
         axios
             .get('/api/plants')
             .then((res) => {
@@ -27,7 +32,7 @@ export default function Plants() {
                 setError('Failed to fetch plants');
                 setLoading(false);
             });
-    }, []);
+    }
 
     if (loading) {
         return (
@@ -59,7 +64,7 @@ export default function Plants() {
                 Add Plant
             </Button>
             {addingPlant && <AddPlantCard onClose={() => setAddingPlant(false)} />}
-            <PlantGrid plants={plants} />
+            <PlantGrid plants={plants} getPlants={getPlants} />
         </Box>
     );
 }

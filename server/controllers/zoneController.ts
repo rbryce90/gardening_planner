@@ -4,7 +4,6 @@ import { ZoneRepository } from "../repositories/zoneRepository.ts";
 const zoneRepository = new ZoneRepository();
 
 export const getZones = async (): Promise<Zone[]> => {
-    console.log('in controller ')
     return await zoneRepository.getZones();
 }
 export const getZoneById = async (id

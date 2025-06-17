@@ -1,9 +1,9 @@
-import { Context } from "https://deno.land/x/oak/mod.ts";
-import { generate } from "https://deno.land/std@0.62.0/uuid/v4.ts";
+import uuid from "uuid";
+import { Request, Response, NextFunction } from "express";
 
-const requestIdMiddleware = async (ctx: Context, next: () => Promise<unknown>) => {
-    const requestId = generate();
-    ctx.state.requestId = requestId;
+const requestIdMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+    const requestId = uuid.v4();
+    req.requestId = requestId;
     await next();
 };
 

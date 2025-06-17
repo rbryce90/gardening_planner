@@ -1,24 +1,23 @@
-import { Context } from "https://deno.land/x/oak@v17.0.0/mod.ts";
-import logger from "../utils/logger.ts";
+import logger from "../utils/logger";
+import { Request, Response, NextFunction } from "express";
+import './types/express'; // Import the custom type declaration
 
-const requestLogger = async (ctx: Context, next: () => Promise<unknown>) => {
-    const { method, url, headers } = ctx.request;
+const requestLogger = async (req: Request, res: Response, next: NextFunction) => {
     const start = Date.now();
-
-    logger.info(`Request: ${method} ${url} - Headers: ${JSON.stringify([...headers])} [RequestId]: ${ctx.state.requestId}`);
-    if (ctx.request.hasBody) {
-        try {
-            const body = await ctx.request?.body.json();
-            logger.info(`Request Body: ${JSON.stringify(body)} [RequestId]: ${ctx.state.requestId}`);
-        } catch (err) {
-            logger.info(err)
-        }
-    }
+    logger.info(
+        `${start} Request: ${req.method} ${req.url} - Headers: ${JSON.stringify(req.headers)} [RequestId]: ${req?.requestId || 'N/A'}`,
+    );
 
     await next();
 
     const ms = Date.now() - start;
-    logger.info(`Response: ${ctx.response.status} - ${method} ${url} - ${ms}ms [RequestId]: ${ctx.state.requestId}`);
+    logger.info(
+        `${Date.now()} Response: ${req.method} ${req.url} - Status: ${res.statusCode} - Time: ${ms}ms [RequestId]: ${req?.requestId || 'N/A'}`,
+    );
+
+    // logger.info(
+    //     `Response: ${ctx.request.method} ${ctx.request.url} - Headers: ${JSON.stringify([...ctx.request.headers])} [RequestId]: ${ctx.state.requestId}`,
+    // );
 };
 
-export default requestLogger
+export default requestLogger;

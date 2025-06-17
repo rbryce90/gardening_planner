@@ -1,115 +1,129 @@
-// make repository for plant entity
-import db from "../databases/plantDb.ts";
-import { Plant } from "../models/plantModels.ts";
-import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import { getDatabase } from "../databases/plantDb";
+import { Plant } from "../types/plant";
+import { v4 } from "uuid";
 
-// make the needed queries for the plant entity
 export class PlantRepository {
     async getPlants(): Promise<Plant[]> {
+        const db = await getDatabase();
         const plants: Plant[] = [];
-        for (const [id, name, category, growth_form] of db.query("SELECT id, name, category, growth_form FROM plants")) {
-            plants.push({ id, name, category, growthForm: growth_form });
+        const rows = await db.all("SELECT id, name, category, growth_form FROM plants");
+        for (const row of rows) {
+            plants.push({ id: row.id, name: row.name, category: row.category, growthForm: row.growth_form });
         }
         return plants;
     }
 
     async getPlantById(id: string): Promise<Plant | null> {
-        const result = db.query("SELECT id, name, category, growth_form FROM plants WHERE id = ?", [id]);
-        const plant = result[0]
-        return plant ? { id: plant[0], name: plant[1], category: plant[2], growthForm: plant[3] } : null;
+        const db = await getDatabase();
+        const row = await db.get("SELECT id, name, category, growth_form FROM plants WHERE id = ?", [id]);
+        return row ? { id: row.id, name: row.name, category: row.category, growthForm: row.growth_form } : null;
     }
 
-    async createPlant(plant: Plant): Promise<Plant> {
-        const id = v4.generate();
-        db.query("INSERT INTO plants (id, name, category, growth_form) VALUES (?, ?, ?, ?)", [id, plant.name, plant.category, plant.growth_form]);
-        return { ...plant, id };
+    async createPlant(plant: Plant): Promise<number | undefined> {
+        const db = await getDatabase();
+        const result = await db.run("INSERT INTO plants (name, category, growth_form, edible_part) VALUES (?, ?, ?, ?)", [plant.name, plant.category, plant.growthForm, plant.ediblePart || null]);
+        return result.lastID
     }
 
-    async updatePlant(id: string, plant: Plant): Promise<Plant | null> {
-        const result = db.query("UPDATE plants SET name = ?, category = ?, growth_form = ? WHERE id = ?", [plant.name, plant.category, plant.growth_form, id]);
-        return result.rowsAffected > 0 ? { ...plant, id } : null;
-    }
+    // async updatePlant(id: string, plant: Plant): Promise<Plant | null> {
+    //     const db = await getDatabase();
+    //     const result = await db.run("UPDATE plants SET name = ?, category = ?, growth_form = ? WHERE id = ?", [plant.name, plant.category, plant.growthForm, id]);
+    //     return result.changes > 0 ? { ...plant, id } : null;
+    // }
 
     async deletePlant(id: string): Promise<boolean> {
-        const result = db.query("DELETE FROM plants WHERE id = ?", [id]);
-        return result.rowsAffected > 0;
+        const db = await getDatabase();
+        await db.run("DELETE FROM plants WHERE id = ?", [id]);
+        return true;
     }
 
     async getPlantTypesByPlantId(plantId: string): Promise<any[]> {
-        const plantTypes: any[] = [];
-        for (const [id, name, description, planting_notes] of db.query("SELECT id, name, description, planting_notes FROM plant_types WHERE plant_id = ?", [plantId])) {
-            plantTypes.push({ id, name, description, planting_notes });
-        }
-        return plantTypes;
-    }
-    async createPlantType(plantId: string, plantType: any): Promise<any> {
-        const id = v4.generate();
-        db.query("INSERT INTO plant_types (id, plant_id, name, description, planting_notes) VALUES (?, ?, ?, ?, ?)", [id, plantId, plantType.name, plantType.description, plantType.planting_notes]);
-        return { ...plantType, id };
-    }
-    async updatePlantType(id: string, plantType: any): Promise<any | null> {
-        const result = db.query("UPDATE plant_types SET name = ?, description = ?, planting_notes = ? WHERE id = ?", [plantType.name, plantType.description, plantType.planting_notes, id]);
-        return result.rowsAffected > 0 ? { ...plantType, id } : null;
-    }
-    async deletePlantType(id: string): Promise<boolean> {
-        const result = db.query("DELETE FROM plant_types WHERE id = ?", [id]);
-        return result.rowsAffected > 0;
+        const db = await getDatabase();
+        const rows = await db.all("SELECT id, name, description, planting_notes FROM plant_types WHERE plant_id = ?", [plantId]);
+        return rows.map(row => ({ id: row.id, name: row.name, description: row.description, planting_notes: row.planting_notes }));
     }
 
-    async getCompanionsByPlantTypeId(plantTypeId: string): Promise<any[]> {
-        const companions: any[] = [];
-        for (const [id, companionId] of db.query("SELECT id, companion_id FROM companions WHERE plant_type_id = ?", [plantTypeId])) {
-            companions.push({ id, companionId });
-        }
-        return companions;
+    async createPlantType(plantId: string, plantType: any): Promise<any> {
+        const db = await getDatabase();
+        const id = v4();
+        await db.run("INSERT INTO plant_types (id, plant_id, name, description, planting_notes) VALUES (?, ?, ?, ?, ?)", [id, plantId, plantType.name, plantType.description, plantType.planting_notes]);
+        return { ...plantType, id };
     }
+
+    // async updatePlantType(id: string, plantType: any): Promise<any | null> {
+    //     const db = await getDatabase();
+    //     const result = await db.run("UPDATE plant_types SET name = ?, description = ?, planting_notes = ? WHERE id = ?", [plantType.name, plantType.description, plantType.planting_notes, id]);
+    //     return result.changes > 0 ? { ...plantType, id } : null;
+    // }
+
+    // async deletePlantType(id: string): Promise<boolean> {
+    //     const db = await getDatabase();
+    //     const result = await db.run("DELETE FROM plant_types WHERE id = ?", [id]);
+    //     return result.changes > 0;
+    // }
+
+    async getCompanionsByPlantTypeId(plantTypeId: string): Promise<any[]> {
+        const db = await getDatabase();
+        const rows = await db.all("SELECT id, companion_id FROM companions WHERE plant_type_id = ?", [plantTypeId]);
+        return rows.map(row => ({ id: row.id, companionId: row.companion_id }));
+    }
+
     async createCompanion(plantTypeId: string, companionId: string): Promise<any> {
-        const id = v4.generate();
-        db.query("INSERT INTO companions (id, plant_type_id, companion_id) VALUES (?, ?, ?)", [id, plantTypeId, companionId]);
+        const db = await getDatabase();
+        const id = v4();
+        await db.run("INSERT INTO companions (id, plant_type_id, companion_id) VALUES (?, ?, ?)", [id, plantTypeId, companionId]);
         return { id, plant_type_id: plantTypeId, companion_id: companionId };
     }
-    async deleteCompanion(id: string): Promise<boolean> {
-        const result = db.query("DELETE FROM companions WHERE id = ?", [id]);
-        return result.rowsAffected > 0;
-    }
+
+    // async deleteCompanion(id: string): Promise<boolean> {
+    //     const db = await getDatabase();
+    //     const result = await db.run("DELETE FROM companions WHERE id = ?", [id]);
+    //     return result.changes > 0;
+    // }
+
     async getAntagonistsByPlantTypeId(plantTypeId: string): Promise<any[]> {
-        const antagonists: any[] = [];
-        for (const [id, antagonist_id] of db.query("SELECT id, antagonist_id FROM antagonists WHERE plant_type_id = ?", [plantTypeId])) {
-            antagonists.push({ id, antagonist_id });
-        }
-        return antagonists;
+        const db = await getDatabase();
+        const rows = await db.all("SELECT id, antagonist_id FROM antagonists WHERE plant_type_id = ?", [plantTypeId]);
+        return rows.map(row => ({ id: row.id, antagonist_id: row.antagonist_id }));
     }
+
     async createAntagonist(plantTypeId: string, antagonistId: string): Promise<any> {
-        const id = v4.generate();
-        db.query("INSERT INTO antagonists (id, plant_type_id, antagonist_id) VALUES (?, ?, ?)", [id, plantTypeId, antagonistId]);
+        const db = await getDatabase();
+        const id = v4();
+        await db.run("INSERT INTO antagonists (id, plant_type_id, antagonist_id) VALUES (?, ?, ?)", [id, plantTypeId, antagonistId]);
         return { id, plant_type_id: plantTypeId, antagonist_id: antagonistId };
     }
-    async deleteAntagonist(id: string): Promise<boolean> {
-        const result = db.query("DELETE FROM antagonists WHERE id = ?", [id]);
-        return result.rowsAffected > 0;
-    }
+
+    // async deleteAntagonist(id: string): Promise<boolean> {
+    //     const db = await getDatabase();
+    //     const result = await db.run("DELETE FROM antagonists WHERE id = ?", [id]);
+    //     return result.changes > 0;
+    // }
+
     async getPlantingSeasonsByPlantTypeId(plantTypeId: string): Promise<any[]> {
-        const plantingSeasons: any[] = [];
-        for (const [id, zone_id, start_month, end_month, method, notes] of db.query("SELECT id, zone_id, start_month, end_month, method, notes FROM planting_seasons WHERE plant_type_id = ?", [plantTypeId])) {
-            plantingSeasons.push({ id, zone_id, start_month, end_month, method, notes });
-        }
-        return plantingSeasons;
+        const db = await getDatabase();
+        const rows = await db.all("SELECT id, zone_id, start_month, end_month, method, notes FROM planting_seasons WHERE plant_type_id = ?", [plantTypeId]);
+        return rows.map(row => ({ id: row.id, zone_id: row.zone_id, start_month: row.start_month, end_month: row.end_month, method: row.method, notes: row.notes }));
     }
+
     async createPlantingSeason(plantTypeId: string, plantingSeason: any): Promise<any> {
-        const id = v4.generate();
-        db.query("INSERT INTO planting_seasons (id, plant_type_id, zone_id, start_month, end_month, method, notes) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [id, plantTypeId, plantingSeason.zone_id, plantingSeason.start_month, plantingSeason.end_month, plantingSeason.method, plantingSeason.notes]);
+        const db = await getDatabase();
+        const id = v4();
+        await db.run("INSERT INTO planting_seasons (id, plant_type_id, zone_id, start_month, end_month, method, notes) VALUES (?, ?, ?, ?, ?, ?, ?)", [id, plantTypeId, plantingSeason.zone_id, plantingSeason.start_month, plantingSeason.end_month, plantingSeason.method, plantingSeason.notes]);
         return { ...plantingSeason, id };
     }
-    async updatePlantingSeason(id: string, plantingSeason: any): Promise<any | null> {
-        const result = db.query("UPDATE planting_seasons SET zone_id = ?, start_month = ?, end_month = ?, method = ?, notes = ? WHERE id = ?",
-            [plantingSeason.zone_id, plantingSeason.start_month, plantingSeason.end_month, plantingSeason.method, plantingSeason.notes, id]);
-        return result.rowsAffected > 0 ? { ...plantingSeason, id } : null;
-    }
-    async deletePlantingSeason(id: string): Promise<boolean> {
-        const result = db.query("DELETE FROM planting_seasons WHERE id = ?", [id]);
-        return result.rowsAffected > 0;
-    }
+
+    // async updatePlantingSeason(id: string, plantingSeason: any): Promise<any | null> {
+    //     const db = await getDatabase();
+    //     const result = await db.run("UPDATE planting_seasons SET zone_id = ?, start_month = ?, end_month = ?, method = ?, notes = ? WHERE id = ?", [plantingSeason.zone_id, plantingSeason.start_month, plantingSeason.end_month, plantingSeason.method, plantingSeason.notes, id]);
+    //     return result.changes > 0 ? { ...plantingSeason, id } : null;
+    // }
+
+    // async deletePlantingSeason(id: string): Promise<boolean> {
+    //     const db = await getDatabase();
+    //     const result = await db.run("DELETE FROM planting_seasons WHERE id = ?", [id]);
+    //     return result.changes > 0;
+    // }
 }
 
 export const plantRepository = new PlantRepository();

@@ -17,7 +17,45 @@ export type GrowthType =
     | 'bush'
     | 'shrub'
     | 'herbaceous'
-    | 'groundcover';
+    | 'groundcover'
+    | 'root'
+    | 'underground';
+
+export type CategoryType = 'vegetable' | 'fruit' | 'herb' | 'nut' | 'grain';
+
+// Convert union types to arrays
+export const ediblePartsArray: EdiblePart[] = [
+    'leaves',
+    'stems',
+    'roots',
+    'tubers',
+    'bulbs',
+    'flowers',
+    'fruits',
+    'seeds',
+    'pods',
+    'sap',
+    'peel',
+];
+
+export const growthTypesArray: GrowthType[] = [
+    'tree',
+    'vine',
+    'bush',
+    'shrub',
+    'herbaceous',
+    'groundcover',
+    'root',
+    'underground',
+];
+
+export const categoryTypesArray: CategoryType[] = [
+    'vegetable',
+    'fruit',
+    'herb',
+    'nut',
+    'grain',
+];
 
 export const ediblePartsLookup: Record<EdiblePart, string> = {
     leaves: 'Edible leaf parts such as lettuce, spinach, basil, and mint.',
@@ -40,4 +78,6 @@ export const growthTypeLookup: Record<GrowthType, string> = {
     shrub: 'A small to medium-sized perennial woody plant, usually decorative or fruiting.',
     herbaceous: 'A non-woody plant that dies back at the end of the growing season.',
     groundcover: 'Low-growing plants that spread over the ground, like creeping thyme or strawberries.',
+    root: 'Plants primarily grown for their underground root systems, like carrots or beets.',
+    underground: 'Plants that grow primarily below the soil surface, such as potatoes or sweet potatoes.',
 };
