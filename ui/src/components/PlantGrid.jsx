@@ -1,65 +1,58 @@
-import React from 'react';
-import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
-import { capitalize } from '../utils/utils';
+import React, { useState } from 'react';
+import { Grid } from '@mui/material';
 import axios from 'axios';
+import PlantCard from './PlantCard';
+import EditPlantDialog from './EditPlantDialog';
 
-export default function PlantGrid({ plants, getPlants }) {
-    const handleDelete = async (plantId) => {
+export default function PlantGrid({ plants, getPlants, onDeletePlant }) {
+    const [editingPlantId, setEditingPlantId] = useState(null);
+    const [editedPlant, setEditedPlant] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleEditClick = (plant) => {
+        setEditingPlantId(plant.id);
+        setEditedPlant({ ...plant });
+        setIsModalOpen(true); // Open the modal
+    };
+
+    const handleSave = async (updatedPlant) => {
         try {
-            await axios.delete(`/api/plants/${plantId}`); // Replace with your endpoint
-            console.log(`Plant with ID ${plantId} deleted successfully`);
-            getPlants()
+            await axios.put(`/api/plants/${editingPlantId}`, updatedPlant); // Replace with your endpoint
+            console.log(`Plant with ID ${editingPlantId} updated successfully`);
+            setEditingPlantId(null); // Exit edit mode
+            setIsModalOpen(false); // Close the modal
+            getPlants(); // Refresh the plant list
         } catch (error) {
-            console.error(`Error deleting plant with ID ${plantId}:`, error);
+            console.error(`Error updating plant with ID ${editingPlantId}:`, error);
         }
     };
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false); // Close the modal
+        setEditingPlantId(null); // Reset edit state
+    };
+
     return (
-        <Grid container spacing={3}>
-            {plants.map((plant) => (
-                <Grid item xs={12} sm={6} md={6} key={plant.id}> {/* Adjusted md to make cards wider */}
-                    <Card
-                        sx={{
-                            backgroundColor: '#1e1e1e',
-                            color: '#fff',
-                            position: 'relative',
-                            width: '100%', // Ensures the card takes full width of the grid item
-                        }}
-                    >
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                {plant.name}
-                            </Typography>
-                            <Typography variant="body2" gutterBottom>
-                                <b>Category: </b> {capitalize(plant.category)}
-                            </Typography>
-                            <Typography variant="body2">
-                                <b>Growth Form:</b> {capitalize(plant.growthForm)}
-                            </Typography>
-                            <Typography variant="body2">
-                                <b>Edible Part: </b> {capitalize(plant.ediblePart) || 'Not added yet'}
-                            </Typography>
-                        </CardContent>
-                        <CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => console.log('edit ')}
-                                sx={{ marginRight: 1 }}
-                            >
-                                Edit
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => handleDelete(plant.id)}
-                            >
-                                Delete
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            ))}
-        </Grid>
+        <>
+            <Grid container spacing={3}>
+                {plants.map((plant) => (
+                    <Grid item xs={12} sm={6} md={6} key={plant.id}>
+                        <PlantCard
+                            plant={plant}
+                            onEdit={() => handleEditClick(plant)}
+                            onDelete={() => onDeletePlant(plant.id)}
+                        />
+                    </Grid>
+                ))}
+            </Grid>
+
+            {/* Edit Plant Dialog */}
+            <EditPlantDialog
+                open={isModalOpen}
+                plant={editedPlant}
+                onClose={handleCloseModal}
+                onSave={handleSave}
+            />
+        </>
     );
 }

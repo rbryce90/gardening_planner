@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import axios from 'axios';
 import { ediblePartsArray, growthTypesArray, categoryTypesArray } from '../models/models';
 
-export default function AddPlantCard({ onClose }) {
+export default function AddPlantCard({ onClose, getPlants }) {
     const [userInput, setUserInput] = useState({
         name: '',
         category: '',
@@ -13,18 +13,15 @@ export default function AddPlantCard({ onClose }) {
 
     const handleChange = (field: string, value: string) => {
         setUserInput((prev) => {
-            const updatedInput = { ...prev, [field]: value };
-            console.log('Updated userInput:', updatedInput); // Log the updated state
-            return updatedInput;
+            return { ...prev, [field]: value };
         });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); // Prevent form from refreshing the page
         try {
-            console.log('userInput:', userInput);
-            const response = await axios.post('/api/plants', userInput); // Replace '/api/plants' with your endpoint
-            console.log('Plant added successfully:', response.data);
+            await axios.post('/api/plants', userInput); // Replace '/api/plants' with your endpoint
+            getPlants()
             onClose(); // Close the form after successful submission
         } catch (error) {
             console.error('Error adding plant:', error);

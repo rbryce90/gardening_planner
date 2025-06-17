@@ -32,7 +32,19 @@ export default function Plants() {
                 setError('Failed to fetch plants');
                 setLoading(false);
             });
-    }
+    };
+
+    const handleDeletePlant = (plantId) => {
+        axios
+            .delete(`/api/plants/${plantId}`) // Replace with your endpoint
+            .then(() => {
+                setPlants((prevPlants) => prevPlants.filter((plant) => plant.id !== plantId));
+                console.log(`Plant with ID ${plantId} deleted successfully`);
+            })
+            .catch((err) => {
+                console.error(`Error deleting plant with ID ${plantId}:`, err);
+            });
+    };
 
     if (loading) {
         return (
@@ -63,8 +75,8 @@ export default function Plants() {
             >
                 Add Plant
             </Button>
-            {addingPlant && <AddPlantCard onClose={() => setAddingPlant(false)} />}
-            <PlantGrid plants={plants} getPlants={getPlants} />
+            {addingPlant && <AddPlantCard onClose={() => setAddingPlant(false)} getPlants={getPlants} />}
+            <PlantGrid plants={plants} getPlants={getPlants} onDeletePlant={handleDeletePlant} />
         </Box>
     );
 }
