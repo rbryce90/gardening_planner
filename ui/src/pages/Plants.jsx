@@ -76,7 +76,7 @@ export default function Plants() {
                 Add Plant
             </Button>
             {addingPlant && <AddPlantCard onClose={() => setAddingPlant(false)} getPlants={getPlants} />}
-            <PlantGrid plants={plants} getPlants={getPlants} onDeletePlant={handleDeletePlant} />
+            <PlantGrid plants={plants} getPlants={getPlants} onDeletePlant={handleDeletePlant} setPlants={setPlants} />
         </Box>
     );
 }

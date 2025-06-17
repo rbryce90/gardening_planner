@@ -16,14 +16,14 @@ export default function PlantGrid({ plants, getPlants, onDeletePlant }) {
     };
 
     const handleSave = async (updatedPlant) => {
+        setIsModalOpen(false); // Close the modal
         try {
-            await axios.put(`/api/plants/${editingPlantId}`, updatedPlant); // Replace with your endpoint
-            console.log(`Plant with ID ${editingPlantId} updated successfully`);
+            await axios.put(`/api/plants/${editingPlantId}`, updatedPlant);
+
+            getPlants()
             setEditingPlantId(null); // Exit edit mode
-            setIsModalOpen(false); // Close the modal
-            getPlants(); // Refresh the plant list
         } catch (error) {
-            console.error(`Error updating plant with ID ${editingPlantId}:`, error);
+            console.error(`Error updating plant with ID ${editingPlantId}:`, error.message);
         }
     };
 
