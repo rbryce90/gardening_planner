@@ -10,19 +10,51 @@ export const getPlants = async (): Promise<Plant[]> => {
 export const getPlantById = async (id: string): Promise<Plant | null> => {
     return await plantRepository.getPlantById(id);
 }
+export const getPlantByName = async (name: string): Promise<Plant | null> => {
+    return await plantRepository.getPlantByName(name);
+}
 
 export const createPlant = async (plant: Plant): Promise<number | undefined> => {
     return await plantRepository.createPlant(plant);
 }
-// export const updatePlant = async (id: string, plant: Plant): Promise<Plant | null> => {
-//     return await plantRepository.updatePlant(id, plant);
-// }
+export const updatePlant = async (id: string, plant: Plant): Promise<Plant | undefined> => {
+    return await plantRepository.updatePlant(id, plant);
+}
 export const deletePlant = async (id: string): Promise<boolean> => {
     return await plantRepository.deletePlant(id);
 }
-export const getPlantTypesByPlantId = async (plantId: string): Promise<any[]> => {
-    return await plantRepository.getPlantTypesByPlantId(plantId);
+export const getPlantTypesByPlantIdWithCompanionsAndAtagonists = async (plantId: string): Promise<any> => {
+    const types = await plantRepository.getPlantTypesByPlantId(plantId);
+
+    // Fetch companions
+    const companions = await plantRepository.getCompanionsById(plantId);
+    const companionsEnhanced = [];
+    for (let companion of companions) {
+        const plant = await getPlantById(companion.companionId);
+        delete companion.companionId;
+        delete companion.plantId;
+        companionsEnhanced.push({
+            ...companion,
+            ...plant,
+        });
+    }
+
+    // Fetch antagonists
+    const antagonists = await plantRepository.getAntagonistsById(plantId);
+    const antagonistsEnhanced = [];
+    for (let antagonist of antagonists) {
+        const plant = await getPlantById(antagonist.antagonistId);
+        delete antagonist.antagonistId;
+        delete antagonist.plantId;
+        antagonistsEnhanced.push({
+            ...antagonist,
+            ...plant,
+        });
+    }
+
+    return { types, companions: companionsEnhanced, antagonists: antagonistsEnhanced };
 }
+
 export const createPlantType = async (plantId: string, plantType: any): Promise<any> => {
     return await plantRepository.createPlantType(plantId, plantType);
 }
@@ -42,12 +74,16 @@ export const createCompanion = async (plantTypeId: string, companion: any): Prom
 //     return await plantRepository.deleteCompanion(id);
 // }
 
+export const addCompanion = async (plant_id: string, companion_id: string): Promise<void> => {
+    await plantRepository.addCompanion(plant_id, companion_id);
+};
+
 export const getAntagonistsByPlantTypeId = async (plantTypeId: string): Promise<any[]> => {
     return await plantRepository.getAntagonistsByPlantTypeId(plantTypeId);
 }
-export const createAntagonist = async (plantTypeId: string, antagonist: any): Promise<any> => {
-    return await plantRepository.createAntagonist(plantTypeId, antagonist);
-}
+export const createAntagonist = async (plant_id: string, antagonist_id: string): Promise<void> => {
+    await plantRepository.createAntagonist(plant_id, antagonist_id);
+};
 // export const deleteAntagonist = async (id: string): Promise<boolean> => {
 //     return await plantRepository.deleteAntagonist(id);
 // }

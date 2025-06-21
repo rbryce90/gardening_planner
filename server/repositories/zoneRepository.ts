@@ -6,7 +6,6 @@ export class ZoneRepository {
     async getZones(): Promise<any[]> {
         const zones: any[] = [];
         for (const [id, name, min_temperature, max_temperature] of db.query("SELECT id, name, min_temperature, max_temperature FROM zones")) {
-            console.log(zones)
             zones.push({ id, name, min_temperature, max_temperature });
         }
         return zones;

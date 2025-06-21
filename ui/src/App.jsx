@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header'
 import Plants from './pages/Plants';
+import PlantType from './pages/PlantType';
 
 const darkTheme = createTheme({
   palette: {
@@ -22,8 +23,8 @@ function App() {
         <Header />
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/plants/:plantName/types" element={<PlantType />} />
           <Route path="/plants" element={<Plants />} />
-          {/* <Route path="/contact" element={<Contact />} /> */}
         </Routes>
       </ThemeProvider>
     </>

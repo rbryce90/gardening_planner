@@ -1,8 +1,15 @@
 import React from 'react';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import { capitalize } from '../utils/utils';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from React Router
 
 export default function PlantCard({ plant, onEdit, onDelete }) {
+    const navigate = useNavigate(); // Initialize the navigate function
+
+    const handleCardClick = () => {
+        navigate(`/plants/${plant.name}/types`); // Redirect to the desired route
+    };
+
     return (
         <Card
             sx={{
@@ -10,7 +17,9 @@ export default function PlantCard({ plant, onEdit, onDelete }) {
                 color: '#fff',
                 position: 'relative',
                 width: '100%',
+                cursor: 'pointer', // Add cursor styling to indicate clickability
             }}
+            onClick={handleCardClick} // Add onClick handler for the card
         >
             <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -30,7 +39,10 @@ export default function PlantCard({ plant, onEdit, onDelete }) {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={onEdit}
+                    onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click from triggering navigation
+                        onEdit();
+                    }}
                     sx={{ marginRight: 1 }}
                 >
                     Edit
@@ -38,7 +50,10 @@ export default function PlantCard({ plant, onEdit, onDelete }) {
                 <Button
                     variant="contained"
                     color="secondary"
-                    onClick={onDelete}
+                    onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click from triggering navigation
+                        onDelete();
+                    }}
                 >
                     Delete
                 </Button>

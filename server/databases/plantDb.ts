@@ -24,7 +24,8 @@ const initializeDatabase = async (): Promise<Database> => {
         name TEXT NOT NULL UNIQUE,
         category TEXT,
         growth_form TEXT,
-        edible_part TEXT
+        edible_part TEXT,
+        family TEXT
       );
     `);
 
@@ -41,25 +42,25 @@ const initializeDatabase = async (): Promise<Database> => {
       );
     `);
 
-  // Create companions table (many-to-many between plant_types)
+  // Create companions table (many-to-many between plants)
   await db.exec(`
       CREATE TABLE IF NOT EXISTS companions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        plant_type_id INTEGER NOT NULL,
+        plant_id INTEGER NOT NULL,
         companion_id INTEGER NOT NULL,
-        FOREIGN KEY (plant_type_id) REFERENCES plant_types(id),
-        FOREIGN KEY (companion_id) REFERENCES plant_types(id)
+        FOREIGN KEY (plant_id) REFERENCES plants(id),
+        FOREIGN KEY (companion_id) REFERENCES plants(id)
       );
     `);
 
-  // Create antagonists table (many-to-many between plant_types)
+  // Create antagonists table (many-to-many between plants)
   await db.exec(`
       CREATE TABLE IF NOT EXISTS antagonists (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        plant_type_id INTEGER NOT NULL,
+        plant_id INTEGER NOT NULL,
         antagonist_id INTEGER NOT NULL,
-        FOREIGN KEY (plant_type_id) REFERENCES plant_types(id),
-        FOREIGN KEY (antagonist_id) REFERENCES plant_types(id)
+        FOREIGN KEY (plant_id) REFERENCES plants(id),
+        FOREIGN KEY (antagonist_id) REFERENCES plants(id)
       );
     `);
 

@@ -1,6 +1,6 @@
 // zone controller like the others 
-import { Zone } from "../models/zoneModels.ts";
-import { ZoneRepository } from "../repositories/zoneRepository.ts";
+import { Zone } from "../models/zoneModels";
+import { ZoneRepository } from "../repositories/zoneRepository";
 const zoneRepository = new ZoneRepository();
 
 export const getZones = async (): Promise<Zone[]> => {
