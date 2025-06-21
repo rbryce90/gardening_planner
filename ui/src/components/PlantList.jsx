@@ -1,38 +1,55 @@
 import React from 'react';
-import { Grid, Card, CardContent, Typography } from '@mui/material';
+import { Grid, Card, CardContent, Typography, IconButton } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-export default function PlantList({ title, plants, fallbackMessage }) {
+export default function PlantList({ title, plants, fallbackMessage, onAddPlant, renderFields }) {
     return (
         <>
             <Typography variant="h5" gutterBottom sx={{ marginTop: 4 }}>
                 {title}
             </Typography>
-            {plants.length > 0 ? (
-                <Grid container spacing={3}>
-                    {plants.map((plant) => (
-                        <Grid item xs={12} sm={6} md={4} key={plant.name || plant.antagonist_id}>
-                            <Card sx={{ height: '100%' }}>
-                                <CardContent>
-                                    <Typography variant="h6" gutterBottom>
-                                        {plant.name}
-                                    </Typography>
-                                    {plant.category && (
-                                        <Typography variant="body2" gutterBottom>
-                                            <b>Category:</b> {plant.category}
-                                        </Typography>
-                                    )}
-                                    {plant.growthForm && (
-                                        <Typography variant="body2">
-                                            <b>Growth Form:</b> {plant.growthForm}
-                                        </Typography>
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            ) : (
-                <Typography variant="body1">{fallbackMessage}</Typography>
+            <Grid container spacing={3}>
+                {plants.map((plant) => (
+                    <Grid item xs={12} sm={6} md={4} key={plant.name || plant.id}>
+                        <Card sx={{ height: '100%' }}>
+                            <CardContent>
+                                <Typography variant="h6" gutterBottom>
+                                    {plant.name}
+                                </Typography>
+                                {renderFields(plant)}
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+
+                {/* Add Plant Card */}
+                {onAddPlant && (
+                    <Grid item xs={12} sm={6} md={4}>
+                        <Card
+                            sx={{
+                                height: '100%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: '#f5f5f5',
+                                cursor: 'pointer',
+                            }}
+                            onClick={onAddPlant}
+                        >
+                            <CardContent sx={{ textAlign: 'center' }}>
+                                <IconButton color="primary" size="large">
+                                    <AddCircleOutlineIcon fontSize="large" />
+                                </IconButton>
+                                <Typography variant="body2">Add New Plant</Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                )}
+            </Grid>
+            {plants.length === 0 && (
+                <Typography variant="body1" sx={{ marginTop: 2 }}>
+                    {fallbackMessage}
+                </Typography>
             )}
         </>
     );
