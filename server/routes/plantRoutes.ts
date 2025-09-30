@@ -36,7 +36,7 @@ plantRouter.get("/:id", async (req, res) => {
 });
 
 // Get plant by ID with its associated plant types
-plantRouter.get("/:name/types", async (req, res) => {
+plantRouter.get("/:name/details", async (req, res) => {
     const name = req.params.name;
 
     if (!name) {

@@ -7,17 +7,37 @@ import PlantList from '../components/PlantList'; // Import the shared component
 export default function PlantType() {
     const { plantName } = useParams(); // Get plantName from the URL
     const [plantData, setPlantData] = useState(null);
+    const [availablePlants, setAvailablePlants] = useState([]); // List of all available plants
+    const [availableTypes, setAvailableTypes] = useState([]); // List of all available types
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedCompanion, setSelectedCompanion] = useState(''); // Track selected companion
+    const [selectedAntagonist, setSelectedAntagonist] = useState(''); // Track selected antagonist
+    const [selectedType, setSelectedType] = useState(''); // Track selected type
+
+    console.log('=====> ', selectedAntagonist)
+    console.log('=====> ', selectedCompanion)
 
     useEffect(() => {
         fetchPlantData();
+        fetchPlants();
     }, [plantName]);
+
+    const fetchPlants = () => {
+        axios
+            .get('/api/plants/') // Replace with your endpoint to fetch all plants
+            .then((res) => {
+                setAvailablePlants(res.data);
+            })
+            .catch((err) => {
+                console.error('Failed to fetch plants:', err);
+            });
+    }
 
     const fetchPlantData = () => {
         setLoading(true);
         axios
-            .get(`/api/plants/${plantName}/types`) // Replace with your endpoint
+            .get(`/api/plants/${plantName}/details`) // Replace with your endpoint
             .then((res) => {
                 setPlantData(res.data);
                 setLoading(false);
@@ -28,14 +48,39 @@ export default function PlantType() {
             });
     };
 
-    const handleAddCompanion = () => {
-        console.log('Add Companion Plant clicked');
-        // Logic to open a modal or navigate to a page for selecting a new companion plant
+    const handleAddCompanion = (plantId) => {
+        console.log('Add Companion Plant clicked:', plantId);
+        // Logic to add the selected plant as a companion
+        console.log('selectedCompanion: ', selectedCompanion)
+        axios.post(`/api/plants/${plantData.id}/companion/${selectedCompanion}`).then(res => {
+            console.log('res.data ===> ', res.data)
+            fetchPlantData();
+        }).catch(err => {
+            console.error('Error adding companion plant:', err);
+        })
+
+    };
+    console.log('selectedAntagonist: ', selectedAntagonist)
+
+    const handleAddAntagonist = (plantId) => {
+        console.log('Add Antagonist Plant clicked:', plantId);
+        // Logic to add the selected plant as an antagonist
+        axios.post(`/api/plants/${plantData.id}/antagonist/${selectedAntagonist}`).then(res => {
+            console.log('res.data ===> ', res.data)
+            fetchPlantData();
+        }
+        ).catch(err => {
+            console.error('Error adding antagonist plant:', err);
+        }
+        )
+        fetchPlantData(); // Refresh plant data after adding
     };
 
-    const handleAddAntagonist = () => {
-        console.log('Add Antagonist Plant clicked');
-        // Logic to open a modal or navigate to a page for selecting a new antagonist plant
+    const handleAddType = (typeId) => {
+        console.log('Add Plant Type clicked:', typeId);
+        // Logic to add the selected type to the plant
+
+        fetchPlantData()
     };
 
     if (loading) {
@@ -64,12 +109,16 @@ export default function PlantType() {
                 <b>Growth Form:</b> {plantData.growthForm}
             </Typography>
 
+
             {/* Companion Plants */}
             <PlantList
                 title="Companion Plants"
                 plants={plantData.companions}
                 fallbackMessage="No companion plants available."
-                onAddPlant={handleAddCompanion} // Pass the callback for adding a companion
+                onAddPlant={handleAddCompanion}
+                availablePlants={availablePlants}
+                selectedPlant={selectedCompanion}
+                setSelectedPlant={setSelectedCompanion} // Pass state for companions
                 renderFields={(companion) => (
                     <>
                         <Typography variant="body2" gutterBottom>
@@ -87,7 +136,10 @@ export default function PlantType() {
                 title="Antagonist Plants"
                 plants={plantData.antagonists}
                 fallbackMessage="No antagonist plants available."
-                onAddPlant={handleAddAntagonist} // Pass the callback for adding an antagonist
+                onAddPlant={handleAddAntagonist}
+                availablePlants={availablePlants}
+                selectedPlant={selectedAntagonist}
+                setSelectedPlant={setSelectedAntagonist} // Pass state for antagonists
                 renderFields={(antagonist) => (
                     <>
                         <Typography variant="body2" gutterBottom>
@@ -104,7 +156,10 @@ export default function PlantType() {
                 title="Plant Types"
                 plants={plantData.types}
                 fallbackMessage="No plant types available."
-                onAddPlant={() => console.log('Add Plant Type clicked')} // Placeholder for adding plant types
+                onAddPlant={handleAddType}
+                availablePlants={availableTypes}
+                selectedPlant={selectedType}
+                setSelectedPlant={setSelectedType} // Pass state for plant types
                 renderFields={(type) => (
                     <>
                         <Typography variant="body2" gutterBottom>
