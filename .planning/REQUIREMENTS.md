@@ -7,7 +7,7 @@
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Dead Deno code removed, server compiles cleanly under Node/Express
+- [ ] **INFRA-01**: Server migrated to latest Deno, all existing endpoints working
 - [ ] **INFRA-02**: Centralized error handler middleware catches all route errors
 - [ ] **INFRA-03**: Winston logger replaces console.log/error throughout server
 
@@ -69,27 +69,27 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Pending | Pending |
-| INFRA-02 | Pending | Pending |
-| INFRA-03 | Pending | Pending |
-| AUTH-01 | Pending | Pending |
-| AUTH-02 | Pending | Pending |
-| GRID-01 | Pending | Pending |
-| GRID-02 | Pending | Pending |
-| GRID-03 | Pending | Pending |
-| GRID-04 | Pending | Pending |
-| GRID-05 | Pending | Pending |
-| GRID-06 | Pending | Pending |
-| SEAS-01 | Pending | Pending |
-| SEAS-02 | Pending | Pending |
-| SEED-01 | Pending | Pending |
-| SEED-02 | Pending | Pending |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| SEED-01 | Phase 1 | Pending |
+| SEED-02 | Phase 1 | Pending |
+| AUTH-01 | Phase 2 | Pending |
+| AUTH-02 | Phase 2 | Pending |
+| GRID-01 | Phase 3 | Pending |
+| GRID-02 | Phase 3 | Pending |
+| GRID-03 | Phase 3 | Pending |
+| GRID-04 | Phase 3 | Pending |
+| GRID-05 | Phase 3 | Pending |
+| GRID-06 | Phase 3 | Pending |
+| SEAS-01 | Phase 4 | Pending |
+| SEAS-02 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 15 total
-- Mapped to phases: 0
-- Unmapped: 15 ⚠️
+- Mapped to phases: 15
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-22*
-*Last updated: 2026-03-22 after initial definition*
+*Last updated: 2026-03-22 after roadmap creation*
