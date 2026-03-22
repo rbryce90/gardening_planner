@@ -7,9 +7,9 @@
 
 ### Infrastructure
 
-- [ ] **INFRA-01**: Server migrated to latest Deno, all existing endpoints working
-- [ ] **INFRA-02**: Centralized error handler middleware catches all route errors
-- [ ] **INFRA-03**: Winston logger replaces console.log/error throughout server
+- [x] **INFRA-01**: Server migrated to latest Deno, all existing endpoints working
+- [x] **INFRA-02**: Centralized error handler middleware catches all route errors
+- [x] **INFRA-03**: Winston logger replaces console.log/error throughout server
 
 ### Authentication
 
@@ -69,9 +69,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
-| INFRA-02 | Phase 1 | Pending |
-| INFRA-03 | Phase 1 | Pending |
+| INFRA-01 | Phase 1 | Complete |
+| INFRA-02 | Phase 1 | Complete |
+| INFRA-03 | Phase 1 | Complete |
 | SEED-01 | Phase 1 | Pending |
 | SEED-02 | Phase 1 | Pending |
 | AUTH-01 | Phase 2 | Pending |

@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Deno migration, node:sqlite, Winston logger, centralized error handler
+- [x] 01-01-PLAN.md — Deno migration, node:sqlite, Winston logger, centralized error handler
 - [ ] 01-02-PLAN.md — Seed data JSON file and re-runnable import script
 
 ### Phase 2: User Authentication
