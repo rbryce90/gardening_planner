@@ -28,7 +28,7 @@ Users can visually design their garden on a grid and immediately see which plant
 - [ ] Seasonal planting view — show what to plant by month based on user's hardiness zone
 - [ ] User selects their USDA hardiness zone (dropdown)
 - [ ] Save and load multiple garden designs per user
-- [ ] Seed data file for plants, types, companions, antagonists — importable and re-runnable
+- ✓ Seed data file for plants, types, companions, antagonists — importable and re-runnable — Validated in Phase 1: Deno Migration and Infrastructure
 
 ### Out of Scope
 
@@ -46,7 +46,9 @@ Users can visually design their garden on a grid and immediately see which plant
 - Frontend uses local React state, axios for API calls, React Router v7
 - Mix of JSX and TSX files in the UI
 - No test framework set up yet
-- No centralized error handling — per-route try/catch currently
+- Centralized error handler returns structured JSON `{"message": "..."}` — Phase 1 complete
+- Server runs on Deno 2 with native TypeScript execution — Phase 1 complete
+- Winston logger replaces hand-rolled console wrapper — Phase 1 complete
 
 ## Constraints
 
@@ -58,10 +60,10 @@ Users can visually design their garden on a grid and immediately see which plant
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Migrate to latest Deno | User preference; existing scaffolded code was Deno-era | — Pending |
+| Migrate to latest Deno | User preference; existing scaffolded code was Deno-era | ✓ Phase 1 |
 | Grid is flexible size | Users may model a single bed or a whole yard — don't constrain | — Pending |
 | User-selected hardiness zone | Simpler than geo-detection; user knows their zone | — Pending |
-| JSON for seed data | Structured, easy to parse, can represent nested relationships | — Pending |
+| JSON for seed data | Structured, easy to parse, can represent nested relationships | ✓ Phase 1 |
 
 ## Evolution
 
@@ -81,4 +83,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-22 after initialization*
+*Last updated: 2026-03-22 after Phase 1 completion*
