@@ -58,6 +58,7 @@ Users can visually design their garden on a grid and immediately see which plant
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
+| Migrate to latest Deno | User preference; existing scaffolded code was Deno-era | — Pending |
 | Grid is flexible size | Users may model a single bed or a whole yard — don't constrain | — Pending |
 | User-selected hardiness zone | Simpler than geo-detection; user knows their zone | — Pending |
 | JSON for seed data | Structured, easy to parse, can represent nested relationships | — Pending |
