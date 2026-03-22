@@ -1,28 +1,38 @@
-import { DB } from "https://deno.land/x/sqlite/mod.ts";
+import { DatabaseSync } from "node:sqlite";
+import logger from "../utils/logger.ts";
 
-const db = new DB("user.db");
+let dbInstance: DatabaseSync | null = null;
 
-// enable foreign keys
-db.query(`PRAGMA foreign_keys = ON;`);
+const initializeDatabase = (): DatabaseSync => {
+    if (dbInstance) {
+        return dbInstance;
+    }
 
-db.query(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    stripe_customer_id TEXT UNIQUE,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    middle_name TEXT,
-    email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL, 
-    phone_number TEXT NOT NULL
-);`);
+    const db = new DatabaseSync("plants.db");
 
-db.query(`CREATE TABLE IF NOT EXISTS sessions (
-    id TEXT PRIMARY KEY,           
-    user_id INTEGER,               
-    data TEXT,                     
-    expiry DATETIME,               
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);`);
+    db.exec("PRAGMA foreign_keys = ON;");
 
-export default db;
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          email TEXT NOT NULL UNIQUE,
+          password TEXT NOT NULL,
+          first_name TEXT NOT NULL,
+          last_name TEXT NOT NULL,
+          created_at TEXT DEFAULT (datetime('now'))
+        );
+      `);
+
+    logger.info("User database initialized.");
+    dbInstance = db;
+    return db;
+};
+
+export function getDatabase(): DatabaseSync {
+    if (!dbInstance) {
+        initializeDatabase();
+    }
+    return dbInstance!;
+}
+
+export default initializeDatabase;

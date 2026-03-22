@@ -1,5 +1,9 @@
-// import { hash, compare } from "https://deno.land/x/bcrypt/mod.ts";
+import bcrypt from "bcryptjs";
 
-// export const hashPassword = async (password: string): Promise<string> => await hash(password);
-// export const isPasswordCorrect = async (password: string, storedPassword: string): Promise<boolean> => await compare(password, storedPassword)
+export async function hashPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, 12);
+}
 
+export async function comparePassword(password: string, hash: string): Promise<boolean> {
+    return bcrypt.compare(password, hash);
+}
