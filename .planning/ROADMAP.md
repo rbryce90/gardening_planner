@@ -43,7 +43,11 @@ Plans:
   1. A new user can register with an email and password and is redirected to their dashboard
   2. A returning user can log in and remain logged in after closing and reopening the browser tab
   3. An unauthenticated request to a protected API route returns 401
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Backend auth: userDb, repository, controller, JWT middleware, routes
+- [ ] 02-02-PLAN.md — Frontend auth: login/register pages, dashboard, route wiring
 
 ### Phase 3: Garden Builder
 **Goal**: Authenticated users can create named garden grids, place plants into cells, save their layouts, and see visual companion/antagonist feedback
@@ -74,6 +78,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Deno Migration and Infrastructure | 2/2 | Complete   | 2026-03-22 |
-| 2. User Authentication | 0/TBD | Not started | - |
+| 2. User Authentication | 0/2 | Not started | - |
 | 3. Garden Builder | 0/TBD | Not started | - |
 | 4. Seasonal Planting | 0/TBD | Not started | - |
