@@ -12,7 +12,7 @@ Starting from a brownfield Express/React codebase with Deno migration debt, this
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Deno Migration and Infrastructure** - Migrate server to latest Deno, clean up debt, establish logging, error handling, and seed data
+- [x] **Phase 1: Deno Migration and Infrastructure** - Migrate server to latest Deno, clean up debt, establish logging, error handling, and seed data (completed 2026-03-22)
 - [ ] **Phase 2: User Authentication** - Signup, login, JWT session persistence, and hardiness zone on user profile
 - [ ] **Phase 3: Garden Builder** - Grid creation, plant placement, save/load, and visual companion/antagonist indicators
 - [ ] **Phase 4: Seasonal Planting** - Zone-based monthly planting view
@@ -29,11 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Winston log entries appear in the console for server start and incoming requests — no console.log calls remain in server code
   4. Running the seed import script populates plants, types, companions, antagonists, zones, and planting seasons from a single JSON file without errors
   5. Re-running the seed import script completes without duplicate data errors
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 01-01-PLAN.md — Deno migration, node:sqlite, Winston logger, centralized error handler
-- [ ] 01-02-PLAN.md — Seed data JSON file and re-runnable import script
+- [x] 01-02-PLAN.md — Seed data JSON file and re-runnable import script
 
 ### Phase 2: User Authentication
 **Goal**: Users can create accounts, log in, and stay authenticated across browser sessions
@@ -73,7 +73,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Deno Migration and Infrastructure | 0/2 | Not started | - |
+| 1. Deno Migration and Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. User Authentication | 0/TBD | Not started | - |
 | 3. Garden Builder | 0/TBD | Not started | - |
 | 4. Seasonal Planting | 0/TBD | Not started | - |

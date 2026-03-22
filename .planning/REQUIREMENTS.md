@@ -32,8 +32,8 @@
 
 ### Seed Data
 
-- [ ] **SEED-01**: JSON file containing plants, types, companions, antagonists, zones, and planting seasons
-- [ ] **SEED-02**: Re-runnable import script that loads JSON seed data into the database
+- [x] **SEED-01**: JSON file containing plants, types, companions, antagonists, zones, and planting seasons
+- [x] **SEED-02**: Re-runnable import script that loads JSON seed data into the database
 
 ## v2 Requirements
 
@@ -72,8 +72,8 @@
 | INFRA-01 | Phase 1 | Complete |
 | INFRA-02 | Phase 1 | Complete |
 | INFRA-03 | Phase 1 | Complete |
-| SEED-01 | Phase 1 | Pending |
-| SEED-02 | Phase 1 | Pending |
+| SEED-01 | Phase 1 | Complete |
+| SEED-02 | Phase 1 | Complete |
 | AUTH-01 | Phase 2 | Pending |
 | AUTH-02 | Phase 2 | Pending |
 | GRID-01 | Phase 3 | Pending |
