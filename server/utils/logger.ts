@@ -1,21 +1,12 @@
-// logger.ts
-const getTimestamp = () => new Date().toISOString();
+import winston from "winston";
 
-const logger = {
-    info: (...args: unknown[]) => {
-        console.log(`[INFO] ${getTimestamp()} -`, ...args);
-    },
-    warn: (...args: unknown[]) => {
-        console.warn(`[WARN] ${getTimestamp()} -`, ...args);
-    },
-    error: (...args: unknown[]) => {
-        console.error(`[ERROR] ${getTimestamp()} -`, ...args);
-    },
-    debug: (...args: unknown[]) => {
-        if (process.env.DEBUG === "true") {
-            console.debug(`[DEBUG] ${getTimestamp()} -`, ...args);
-        }
-    },
-};
+const logger = winston.createLogger({
+    level: Deno.env.get("DEBUG") === "true" ? "debug" : "info",
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.simple()
+    ),
+    transports: [new winston.transports.Console()],
+});
 
 export default logger;
