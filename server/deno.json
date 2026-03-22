@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true
+  },
+  "imports": {
+    "express": "npm:express@^5.1.0",
+    "@types/express": "npm:@types/express@^5.0.3",
+    "winston": "npm:winston@^3.17.0",
+    "uuid": "npm:uuid@^11.1.0"
+  },
+  "tasks": {
+    "dev": "deno run --allow-net --allow-read --allow-write --allow-env --watch index.ts",
+    "seed": "deno run --allow-read --allow-write --allow-env scripts/seed.ts"
+  }
+}
