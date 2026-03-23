@@ -27,8 +27,8 @@
 
 ### Seasonal Planting
 
-- [ ] **SEAS-01**: User can select their USDA hardiness zone from a dropdown
-- [ ] **SEAS-02**: User can view what to plant by month based on their zone
+- [x] **SEAS-01**: User can select their USDA hardiness zone from a dropdown
+- [x] **SEAS-02**: User can view what to plant by month based on their zone
 
 ### Seed Data
 
@@ -82,8 +82,8 @@
 | GRID-04 | Phase 3 | Complete |
 | GRID-05 | Phase 3 | Complete |
 | GRID-06 | Phase 3 | Complete |
-| SEAS-01 | Phase 4 | Pending |
-| SEAS-02 | Phase 4 | Pending |
+| SEAS-01 | Phase 4 | Complete |
+| SEAS-02 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 15 total

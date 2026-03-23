@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-23T04:09:20.587Z"
+status: Ready to execute
+stopped_at: Completed 04-seasonal-planting 04-01-PLAN.md
+last_updated: "2026-03-23T04:24:18.770Z"
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-22)
 
 **Core value:** Users can visually design their garden on a grid and immediately see which plant placements work well together and which conflict
-**Current focus:** Phase 03 — garden-builder
+**Current focus:** Phase 04 — seasonal-planting
 
 ## Current Position
 
-Phase: 4
-Plan: Not started
+Phase: 04 (seasonal-planting) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Plan: Not started
 | Phase 02-user-authentication P02 | 10 | 3 tasks | 6 files |
 | Phase 03-garden-builder P01 | 88s | 2 tasks | 9 files |
 | Phase 03-garden-builder P02 | 94s | 3 tasks | 7 files |
+| Phase 04-seasonal-planting P01 | 3 | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,9 @@ Recent decisions affecting current work:
 - [Phase 03-garden-builder]: Antagonist takes priority over companion in getCellStatus — red always overrides green
 - [Phase 03-garden-builder]: CSS grid (display:grid) used in GardenGrid instead of MUI Grid for fixed-size 64px cells
 - [Phase 03-garden-builder]: Min-max pair key normalization in companion/antagonist sets matches DB storage constraint
+- [Phase 04-seasonal-planting]: calendarRouter exported as named export from zoneRoutes.ts — keeps related routes co-located without a new file
+- [Phase 04-seasonal-planting]: GET /api/zones is public (no auth) — needed for zone picker before login
+- [Phase 04-seasonal-planting]: zone_id ALTER TABLE in try/catch for idempotent migration on existing databases
 
 ### Pending Todos
 
@@ -89,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T04:09:20.585Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-seasonal-planting/04-CONTEXT.md
+Last session: 2026-03-23T04:24:18.768Z
+Stopped at: Completed 04-seasonal-planting 04-01-PLAN.md
+Resume file: None
