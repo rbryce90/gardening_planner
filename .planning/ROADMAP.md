@@ -59,10 +59,10 @@ Plans:
   3. User can save a garden layout and reload it in a later session with all placements intact
   4. A cell with a neighboring antagonist plant shows a red visual indicator; a cell with a neighboring companion shows a green indicator
   5. User can have multiple saved garden designs and switch between them
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 03-01-PLAN.md — Backend: garden/cell API with auth, bulk companion/antagonist endpoints
+- [x] 03-01-PLAN.md — Backend: garden/cell API with auth, bulk companion/antagonist endpoints
 - [ ] 03-02-PLAN.md — Frontend: garden page, grid, plant picker, companion/antagonist highlighting
 
 ### Phase 4: Seasonal Planting
@@ -83,5 +83,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Deno Migration and Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. User Authentication | 2/2 | Complete   | 2026-03-23 |
-| 3. Garden Builder | 0/2 | Planning complete | - |
+| 3. Garden Builder | 1/2 | In Progress|  |
 | 4. Seasonal Planting | 0/TBD | Not started | - |

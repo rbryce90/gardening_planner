@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase complete — ready for verification
-stopped_at: Completed 02-02-PLAN.md — frontend authentication UI
-last_updated: "2026-03-23T03:01:18.085Z"
+status: Ready to execute
+stopped_at: Completed 03-01-PLAN.md — garden builder backend API
+last_updated: "2026-03-23T03:58:25.485Z"
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
 ---
 
 # Project State
@@ -19,11 +19,11 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-22)
 
 **Core value:** Users can visually design their garden on a grid and immediately see which plant placements work well together and which conflict
-**Current focus:** Phase 02 — user-authentication
+**Current focus:** Phase 03 — garden-builder
 
 ## Current Position
 
-Phase: 02 (user-authentication) — EXECUTING
+Phase: 03 (garden-builder) — EXECUTING
 Plan: 2 of 2
 
 ## Performance Metrics
@@ -50,6 +50,7 @@ Plan: 2 of 2
 | Phase 01-deno-migration-and-infrastructure P02 | 8 | 2 tasks | 2 files |
 | Phase 02-user-authentication P01 | 17 | 2 tasks | 11 files |
 | Phase 02-user-authentication P02 | 10 | 3 tasks | 6 files |
+| Phase 03-garden-builder P01 | 88s | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,8 @@ Recent decisions affecting current work:
 - [Phase 02-user-authentication]: 7-day token expiry with no refresh rotation for v1
 - [Phase 02-user-authentication]: No global auth context — Header and Dashboard both call getMe() independently on mount; simple and avoids prop drilling
 - [Phase 02-user-authentication]: Route protection via component-level 401 check — Dashboard navigates to /login on getMe() 401, no PrivateRoute wrapper needed
+- [Phase 03-garden-builder]: Separate gardenDb.ts opens same plants.db — single database architecture maintained with FK constraints
+- [Phase 03-garden-builder]: UNIQUE (garden_id, row, col) constraint enables INSERT OR REPLACE upsert semantics
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T03:01:18.082Z
-Stopped at: Completed 02-02-PLAN.md — frontend authentication UI
+Last session: 2026-03-23T03:58:25.482Z
+Stopped at: Completed 03-01-PLAN.md — garden builder backend API
 Resume file: None

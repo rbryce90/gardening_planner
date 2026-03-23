@@ -18,12 +18,12 @@
 
 ### Garden Builder
 
-- [ ] **GRID-01**: User can create a named garden grid of any size
+- [x] **GRID-01**: User can create a named garden grid of any size
 - [ ] **GRID-02**: User can click a grid cell and select a plant to place in it
-- [ ] **GRID-03**: User can save and reload their garden layouts
-- [ ] **GRID-04**: User can have multiple saved garden designs
-- [ ] **GRID-05**: Grid cells highlight red when neighboring plants are antagonists
-- [ ] **GRID-06**: Grid cells highlight green when neighboring plants are companions
+- [x] **GRID-03**: User can save and reload their garden layouts
+- [x] **GRID-04**: User can have multiple saved garden designs
+- [x] **GRID-05**: Grid cells highlight red when neighboring plants are antagonists
+- [x] **GRID-06**: Grid cells highlight green when neighboring plants are companions
 
 ### Seasonal Planting
 
@@ -76,12 +76,12 @@
 | SEED-02 | Phase 1 | Complete |
 | AUTH-01 | Phase 2 | Complete |
 | AUTH-02 | Phase 2 | Complete |
-| GRID-01 | Phase 3 | Pending |
+| GRID-01 | Phase 3 | Complete |
 | GRID-02 | Phase 3 | Pending |
-| GRID-03 | Phase 3 | Pending |
-| GRID-04 | Phase 3 | Pending |
-| GRID-05 | Phase 3 | Pending |
-| GRID-06 | Phase 3 | Pending |
+| GRID-03 | Phase 3 | Complete |
+| GRID-04 | Phase 3 | Complete |
+| GRID-05 | Phase 3 | Complete |
+| GRID-06 | Phase 3 | Complete |
 | SEAS-01 | Phase 4 | Pending |
 | SEAS-02 | Phase 4 | Pending |
 
