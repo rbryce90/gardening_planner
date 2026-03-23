@@ -9,6 +9,7 @@ import PlantType from './pages/PlantType';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Garden from './pages/Garden';
 
 const darkTheme = createTheme({
   palette: {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/garden" element={<Garden />} />
           <Route path="/plants/:plantName/types" element={<PlantType />} />
           <Route path="/plants" element={<Plants />} />
         </Routes>
