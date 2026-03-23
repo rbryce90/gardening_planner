@@ -25,8 +25,8 @@ Users can visually design their garden on a grid and immediately see which plant
 - ✓ Place plants into grid cells and save the layout — Validated in Phase 3: Garden Builder
 - ✓ Visual conflict warnings — cells turn red when neighboring plants are antagonists — Validated in Phase 3: Garden Builder
 - ✓ Visual companion indicators — show when neighbors are beneficial pairings — Validated in Phase 3: Garden Builder
-- [ ] Seasonal planting view — show what to plant by month based on user's hardiness zone
-- [ ] User selects their USDA hardiness zone (dropdown)
+- ✓ Seasonal planting view — show what to plant by month based on user's hardiness zone — Validated in Phase 4: Seasonal Planting
+- ✓ User selects their USDA hardiness zone (dropdown) — Validated in Phase 4: Seasonal Planting
 - ✓ Save and load multiple garden designs per user — Validated in Phase 3: Garden Builder
 - ✓ Seed data file for plants, types, companions, antagonists — importable and re-runnable — Validated in Phase 1: Deno Migration and Infrastructure
 
@@ -51,6 +51,8 @@ Users can visually design their garden on a grid and immediately see which plant
 - Winston logger replaces hand-rolled console wrapper — Phase 1 complete
 - Garden builder API at /api/gardens with auth-protected CRUD and cell management — Phase 3 complete
 - Frontend garden page with grid, plant picker, companion/antagonist color highlighting — Phase 3 complete
+- Zone selection API and planting calendar endpoint at /api/planting-calendar — Phase 4 complete
+- Frontend zone dropdown on Dashboard and Calendar page with monthly tabs — Phase 4 complete
 
 ## Constraints
 
@@ -64,7 +66,7 @@ Users can visually design their garden on a grid and immediately see which plant
 |----------|-----------|---------|
 | Migrate to latest Deno | User preference; existing scaffolded code was Deno-era | ✓ Phase 1 |
 | Grid is flexible size | Users may model a single bed or a whole yard — don't constrain | ✓ Phase 3 |
-| User-selected hardiness zone | Simpler than geo-detection; user knows their zone | — Pending |
+| User-selected hardiness zone | Simpler than geo-detection; user knows their zone | ✓ Phase 4 |
 | JSON for seed data | Structured, easy to parse, can represent nested relationships | ✓ Phase 1 |
 
 ## Evolution
@@ -85,4 +87,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-03-22 after Phase 3 completion*
+*Last updated: 2026-03-22 after Phase 4 completion — all v1 phases complete*
