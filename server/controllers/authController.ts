@@ -1,29 +1,45 @@
-import { User, UserLoginInterface } from "../models/models.ts";
-import { createSession, destorySession } from "../repositories/authRepository.ts";
-import { validatePasswordAndGetUserId } from "../repositories/userRepository.ts";
-import { createUser as addUserToDb } from "../repositories/userRepository.ts";
-import { createCustomer } from "./stripeController.ts";
-import logger from "../utils/logger.ts";
+import { userRepository } from "../repositories/userRepository.ts";
+import { comparePassword } from "../utils/hash.ts";
+import { SignJWT, jwtVerify } from "jose";
 
-export const login = async (creds: UserLoginInterface) => {
-    return await validatePasswordAndGetUserId(creds)
+const secret = new TextEncoder().encode(Deno.env.get("JWT_SECRET")!);
+
+export async function signToken(userId: number, email: string): Promise<string> {
+    return await new SignJWT({ userId, email })
+        .setProtectedHeader({ alg: "HS256" })
+        .setIssuedAt()
+        .setExpirationTime("7d")
+        .sign(secret);
 }
 
-export const createUser = async (user: User) => {
-    try {
-        const customer = await createCustomer(user)
-        user.stripeCustomerId = customer.id
-    } catch (err) {
-        logger.error('Error creating Stripe customer: ', err.message)
-        throw Error('Error creating customer')
+export async function verifyToken(token: string): Promise<{ userId: number; email: string }> {
+    const { payload } = await jwtVerify(token, secret);
+    return payload as { userId: number; email: string };
+}
+
+export async function register(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string
+): Promise<{ userId: number; token: string }> {
+    const userId = await userRepository.createUser(email, password, firstName, lastName);
+    const token = await signToken(userId, email);
+    return { userId, token };
+}
+
+export async function login(
+    email: string,
+    password: string
+): Promise<{ userId: number; token: string }> {
+    const user = await userRepository.findByEmail(email);
+    if (!user) {
+        throw Object.assign(new Error("Invalid credentials"), { status: 401 });
     }
-    return await addUserToDb(user);
-};
-
-export const createAndGetSessionID = async (user: Partial<User>) => {
-    return await createSession(user)
-}
-
-export const logout = async (sessionId: string) => {
-    return await destorySession(sessionId)
+    const valid = await comparePassword(password, user.password);
+    if (!valid) {
+        throw Object.assign(new Error("Invalid credentials"), { status: 401 });
+    }
+    const token = await signToken(user.id, email);
+    return { userId: user.id, token };
 }
