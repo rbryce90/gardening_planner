@@ -23,9 +23,14 @@ export class UserRepository {
     async findById(id: number): Promise<Omit<User, "password" | "createdAt"> | null> {
         const db = getDatabase();
         const result = db.prepare(
-            "SELECT id, email, first_name as firstName, last_name as lastName FROM users WHERE id = ?"
+            "SELECT id, email, first_name as firstName, last_name as lastName, zone_id as zoneId FROM users WHERE id = ?"
         ).get(id) as Omit<User, "password" | "createdAt"> | undefined;
         return result ?? null;
+    }
+
+    async updateZone(userId: number, zoneId: number): Promise<void> {
+        const db = getDatabase();
+        db.prepare("UPDATE users SET zone_id = ? WHERE id = ?").run(zoneId, userId);
     }
 }
 

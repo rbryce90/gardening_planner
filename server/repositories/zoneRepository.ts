@@ -1,40 +1,47 @@
-// zone repostory 
-import { v4 } from "https://deno.land/std/uuid/mod.ts";
-import db from "../databases/plantDb.ts";
+import { getDatabase } from "../databases/plantDb.ts";
+import { Zone, PlantingSeason } from "../types/zone.d.ts";
 
 export class ZoneRepository {
-    async getZones(): Promise<any[]> {
-        const zones: any[] = [];
-        for (const [id, name, min_temperature, max_temperature] of db.query("SELECT id, name, min_temperature, max_temperature FROM zones")) {
-            zones.push({ id, name, min_temperature, max_temperature });
-        }
-        return zones;
+    async getZones(): Promise<Zone[]> {
+        const db = getDatabase();
+        const rows = db.prepare(
+            "SELECT id, name, min_temperature, max_temperature FROM zones ORDER BY id"
+        ).all() as any[];
+        return rows.map(row => ({
+            id: row.id,
+            name: row.name,
+            minTemperature: row.min_temperature,
+            maxTemperature: row.max_temperature,
+        }));
     }
 
-    async getZoneById(id: string): Promise<any | null> {
-        const result = db.query("SELECT id, name, min_temperature, max_temperature FROM zones WHERE id = ?", [id]);
-        if (result.length > 0) {
-            const data = result[0]
-            return { id: data[0], name: data[1], minTempature: data[2], maxTemperature: data[3] }
-        } else {
-            throw Error('Id not found')
-        }
-    }
-
-    async createZone(zone: any): Promise<any> {
-        const id = v4.generate();
-        db.query("INSERT INTO zones (id, name, min_temperature, max_temperature) VALUES (?, ?, ?, ?)", [id, zone.name, zone.min_temperature, zone.max_temperature]);
-        return { ...zone, id };
-    }
-
-    async updateZone(id: string, zone: any): Promise<any | null> {
-        const result = db.query("UPDATE zones SET name = ?, min_temperature = ?, max_temperature = ? WHERE id = ?", [zone.name, zone.min_temperature, zone.max_temperature, id]);
-        return result.rowsAffected > 0 ? { ...zone, id } : null;
-    }
-
-    async deleteZone(id: string): Promise<boolean> {
-        const result = db.query("DELETE FROM zones WHERE id = ?", [id]);
-        return result.rowsAffected > 0;
+    async getPlantingCalendar(zoneId: number): Promise<PlantingSeason[]> {
+        const db = getDatabase();
+        const rows = db.prepare(`
+            SELECT
+                ps.id,
+                ps.start_month,
+                ps.end_month,
+                ps.method,
+                ps.notes,
+                pt.name as plant_type_name,
+                p.name as plant_name
+            FROM planting_seasons ps
+            JOIN plant_types pt ON ps.plant_type_id = pt.id
+            JOIN plants p ON pt.plant_id = p.id
+            WHERE ps.zone_id = ?
+            ORDER BY p.name, pt.name
+        `).all(zoneId) as any[];
+        return rows.map(row => ({
+            id: row.id,
+            startMonth: row.start_month,
+            endMonth: row.end_month,
+            method: row.method,
+            notes: row.notes,
+            plantTypeName: row.plant_type_name,
+            plantName: row.plant_name,
+        }));
     }
 }
-export default ZoneRepository;
+
+export const zoneRepository = new ZoneRepository();

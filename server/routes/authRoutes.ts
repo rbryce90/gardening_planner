@@ -61,7 +61,21 @@ authRouter.get("/me", authMiddleware, async (req, res, next) => {
             res.status(404).json({ message: "User not found" });
             return;
         }
-        res.status(200).json({ id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName });
+        res.status(200).json({ id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName, zoneId: user.zoneId });
+    } catch (err) {
+        next(err);
+    }
+});
+
+authRouter.put("/zone", authMiddleware, async (req, res, next) => {
+    const { zoneId } = req.body;
+    if (typeof zoneId !== "number") {
+        res.status(400).json({ message: "zoneId is required and must be a number" });
+        return;
+    }
+    try {
+        await userRepository.updateZone(req.user!.userId, zoneId);
+        res.status(200).json({ message: "Zone updated" });
     } catch (err) {
         next(err);
     }

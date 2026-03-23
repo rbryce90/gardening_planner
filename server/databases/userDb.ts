@@ -23,6 +23,12 @@ const initializeDatabase = (): DatabaseSync => {
         );
       `);
 
+    try {
+        db.exec("ALTER TABLE users ADD COLUMN zone_id INTEGER REFERENCES zones(id)");
+    } catch {
+        // column already exists — safe to ignore
+    }
+
     logger.info("User database initialized.");
     dbInstance = db;
     return db;

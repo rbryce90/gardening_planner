@@ -7,6 +7,7 @@ import { errorHandler } from "./middleware/errorHandler.ts";
 import plantRouter from "./routes/plantRoutes.ts";
 import authRouter from "./routes/authRoutes.ts";
 import gardenRouter from "./routes/gardenRoutes.ts";
+import zoneRouter, { calendarRouter } from "./routes/zoneRoutes.ts";
 
 const app = express();
 const PORT = 8000;
@@ -19,6 +20,8 @@ app.use(requestLogger);
 app.use("/api/plants", plantRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/gardens", gardenRouter);
+app.use("/api/zones", zoneRouter);
+app.use("/api/planting-calendar", calendarRouter);
 
 app.use(errorHandler);
 
