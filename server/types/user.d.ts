@@ -4,5 +4,6 @@ export type User = {
     password: string;
     firstName: string;
     lastName: string;
+    zoneId?: number;
     createdAt?: string;
 };
