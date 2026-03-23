@@ -6,6 +6,7 @@ import requestIdMiddleware from "./middleware/requestId.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
 import plantRouter from "./routes/plantRoutes.ts";
 import authRouter from "./routes/authRoutes.ts";
+import gardenRouter from "./routes/gardenRoutes.ts";
 
 const app = express();
 const PORT = 8000;
@@ -17,6 +18,7 @@ app.use(requestLogger);
 
 app.use("/api/plants", plantRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/gardens", gardenRouter);
 
 app.use(errorHandler);
 
