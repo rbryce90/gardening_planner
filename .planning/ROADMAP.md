@@ -72,7 +72,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can select their USDA hardiness zone from a dropdown and have that preference saved
   2. User can view a planting calendar that shows which plants to start by month based on their selected zone
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Backend: zone types, repository, controller, routes, user zone migration
+- [ ] 04-02-PLAN.md — Frontend: zone dropdown on dashboard, planting calendar page, header nav
 
 ## Progress
 
@@ -84,4 +88,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Deno Migration and Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. User Authentication | 2/2 | Complete   | 2026-03-23 |
 | 3. Garden Builder | 2/2 | Complete   | 2026-03-23 |
-| 4. Seasonal Planting | 0/TBD | Not started | - |
+| 4. Seasonal Planting | 0/2 | Not started | - |
