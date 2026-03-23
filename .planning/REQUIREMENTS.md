@@ -13,8 +13,8 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can create account with email and password
-- [ ] **AUTH-02**: User can log in and stay logged in across browser refresh (JWT HttpOnly cookie)
+- [x] **AUTH-01**: User can create account with email and password
+- [x] **AUTH-02**: User can log in and stay logged in across browser refresh (JWT HttpOnly cookie)
 
 ### Garden Builder
 
@@ -74,8 +74,8 @@
 | INFRA-03 | Phase 1 | Complete |
 | SEED-01 | Phase 1 | Complete |
 | SEED-02 | Phase 1 | Complete |
-| AUTH-01 | Phase 2 | Pending |
-| AUTH-02 | Phase 2 | Pending |
+| AUTH-01 | Phase 2 | Complete |
+| AUTH-02 | Phase 2 | Complete |
 | GRID-01 | Phase 3 | Pending |
 | GRID-02 | Phase 3 | Pending |
 | GRID-03 | Phase 3 | Pending |

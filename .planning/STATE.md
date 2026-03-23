@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase complete — ready for verification
-stopped_at: Completed 01-02-PLAN.md — seed data and import script
-last_updated: "2026-03-22T22:51:13.318Z"
+status: Ready to execute
+stopped_at: Completed 02-01-PLAN.md — server-side authentication
+last_updated: "2026-03-23T01:46:53.708Z"
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 4
+  completed_plans: 3
 ---
 
 # Project State
@@ -19,11 +19,11 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-22)
 
 **Core value:** Users can visually design their garden on a grid and immediately see which plant placements work well together and which conflict
-**Current focus:** Phase 01 — deno-migration-and-infrastructure
+**Current focus:** Phase 02 — user-authentication
 
 ## Current Position
 
-Phase: 01 (deno-migration-and-infrastructure) — EXECUTING
+Phase: 02 (user-authentication) — EXECUTING
 Plan: 2 of 2
 
 ## Performance Metrics
@@ -48,6 +48,7 @@ Plan: 2 of 2
 *Updated after each plan completion*
 | Phase 01-deno-migration-and-infrastructure P01 | 3 | 2 tasks | 11 files |
 | Phase 01-deno-migration-and-infrastructure P02 | 8 | 2 tasks | 2 files |
+| Phase 02-user-authentication P01 | 17 | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -63,6 +64,9 @@ Recent decisions affecting current work:
 - [Phase 01-deno-migration-and-infrastructure]: Remove dead-code repository methods referencing non-existent plant_type_id column on companions/antagonists tables
 - [Phase 01-deno-migration-and-infrastructure]: WHERE NOT EXISTS pattern used for plant_types, companions, antagonists since tables have no UNIQUE constraint
 - [Phase 01-deno-migration-and-infrastructure]: Seed script creates schema tables itself (CREATE TABLE IF NOT EXISTS) to work standalone on fresh DB
+- [Phase 02-user-authentication]: JWT stored in HttpOnly cookie for XSS protection
+- [Phase 02-user-authentication]: Users table added to plants.db to maintain single-database architecture
+- [Phase 02-user-authentication]: 7-day token expiry with no refresh rotation for v1
 
 ### Pending Todos
 
@@ -75,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-22T22:51:13.314Z
-Stopped at: Completed 01-02-PLAN.md — seed data and import script
+Last session: 2026-03-23T01:46:53.706Z
+Stopped at: Completed 02-01-PLAN.md — server-side authentication
 Resume file: None
