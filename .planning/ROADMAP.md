@@ -13,7 +13,7 @@ Starting from a brownfield Express/React codebase with Deno migration debt, this
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Deno Migration and Infrastructure** - Migrate server to latest Deno, clean up debt, establish logging, error handling, and seed data (completed 2026-03-22)
-- [ ] **Phase 2: User Authentication** - Signup, login, JWT session persistence, and hardiness zone on user profile
+- [x] **Phase 2: User Authentication** - Signup, login, JWT session persistence, and hardiness zone on user profile (completed 2026-03-23)
 - [ ] **Phase 3: Garden Builder** - Grid creation, plant placement, save/load, and visual companion/antagonist indicators
 - [ ] **Phase 4: Seasonal Planting** - Zone-based monthly planting view
 
@@ -43,11 +43,11 @@ Plans:
   1. A new user can register with an email and password and is redirected to their dashboard
   2. A returning user can log in and remain logged in after closing and reopening the browser tab
   3. An unauthenticated request to a protected API route returns 401
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 02-01-PLAN.md — Backend auth: userDb, repository, controller, JWT middleware, routes
-- [ ] 02-02-PLAN.md — Frontend auth: login/register pages, dashboard, route wiring
+- [x] 02-02-PLAN.md — Frontend auth: login/register pages, dashboard, route wiring
 
 ### Phase 3: Garden Builder
 **Goal**: Authenticated users can create named garden grids, place plants into cells, save their layouts, and see visual companion/antagonist feedback
@@ -78,6 +78,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Deno Migration and Infrastructure | 2/2 | Complete   | 2026-03-22 |
-| 2. User Authentication | 1/2 | In Progress|  |
+| 2. User Authentication | 2/2 | Complete   | 2026-03-23 |
 | 3. Garden Builder | 0/TBD | Not started | - |
 | 4. Seasonal Planting | 0/TBD | Not started | - |

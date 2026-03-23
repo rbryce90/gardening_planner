@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 02-01-PLAN.md — server-side authentication
-last_updated: "2026-03-23T01:46:53.708Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 02-02-PLAN.md — frontend authentication UI
+last_updated: "2026-03-23T03:01:18.085Z"
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -49,6 +49,7 @@ Plan: 2 of 2
 | Phase 01-deno-migration-and-infrastructure P01 | 3 | 2 tasks | 11 files |
 | Phase 01-deno-migration-and-infrastructure P02 | 8 | 2 tasks | 2 files |
 | Phase 02-user-authentication P01 | 17 | 2 tasks | 11 files |
+| Phase 02-user-authentication P02 | 10 | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,8 @@ Recent decisions affecting current work:
 - [Phase 02-user-authentication]: JWT stored in HttpOnly cookie for XSS protection
 - [Phase 02-user-authentication]: Users table added to plants.db to maintain single-database architecture
 - [Phase 02-user-authentication]: 7-day token expiry with no refresh rotation for v1
+- [Phase 02-user-authentication]: No global auth context — Header and Dashboard both call getMe() independently on mount; simple and avoids prop drilling
+- [Phase 02-user-authentication]: Route protection via component-level 401 check — Dashboard navigates to /login on getMe() 401, no PrivateRoute wrapper needed
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-23T01:46:53.706Z
-Stopped at: Completed 02-01-PLAN.md — server-side authentication
+Last session: 2026-03-23T03:01:18.082Z
+Stopped at: Completed 02-02-PLAN.md — frontend authentication UI
 Resume file: None
