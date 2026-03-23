@@ -90,6 +90,18 @@ export class PlantRepository {
         });
     }
 
+    async getAllCompanions(): Promise<Array<{ plantId: number; companionId: number }>> {
+        const db = getDatabase();
+        const rows = db.prepare("SELECT plant_id, companion_id FROM companions").all() as any[];
+        return rows.map(row => ({ plantId: row.plant_id, companionId: row.companion_id }));
+    }
+
+    async getAllAntagonists(): Promise<Array<{ plantId: number; antagonistId: number }>> {
+        const db = getDatabase();
+        const rows = db.prepare("SELECT plant_id, antagonist_id FROM antagonists").all() as any[];
+        return rows.map(row => ({ plantId: row.plant_id, antagonistId: row.antagonist_id }));
+    }
+
     async getPlantingSeasonsByPlantTypeId(plantTypeId: string): Promise<any[]> {
         const db = getDatabase();
         const rows = db.prepare("SELECT id, zone_id, start_month, end_month, method, notes FROM planting_seasons WHERE plant_type_id = ?").all(plantTypeId) as any[];

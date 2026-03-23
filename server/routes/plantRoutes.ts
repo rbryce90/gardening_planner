@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getPlants, getPlantById, createPlant, deletePlant, updatePlant, getPlantTypesByPlantIdWithCompanionsAndAtagonists, getPlantByName, addCompanion, createAntagonist } from "../controllers/plantController.ts";
+import { getPlants, getPlantById, createPlant, deletePlant, updatePlant, getPlantTypesByPlantIdWithCompanionsAndAtagonists, getPlantByName, addCompanion, createAntagonist, getAllCompanions, getAllAntagonists } from "../controllers/plantController.ts";
 import { Plant, PlantType } from "../types/plant.d.ts";
 
 const plantRouter = Router();
@@ -7,6 +7,16 @@ const plantRouter = Router();
 plantRouter.get("/", async (req, res) => {
     const plants = await getPlants();
     res.status(200).json(plants);
+});
+
+plantRouter.get("/companions", async (req, res) => {
+    const companions = await getAllCompanions();
+    res.status(200).json(companions);
+});
+
+plantRouter.get("/antagonists", async (req, res) => {
+    const antagonists = await getAllAntagonists();
+    res.status(200).json(antagonists);
 });
 
 plantRouter.get("/:id", async (req, res) => {

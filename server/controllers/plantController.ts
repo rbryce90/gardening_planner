@@ -69,6 +69,14 @@ export const createAntagonist = async (plant_id: string, antagonist_id: string):
     await plantRepository.createAntagonist(plant_id, antagonist_id);
 };
 
+export const getAllCompanions = async (): Promise<Array<{ plantId: number; companionId: number }>> => {
+    return await plantRepository.getAllCompanions();
+};
+
+export const getAllAntagonists = async (): Promise<Array<{ plantId: number; antagonistId: number }>> => {
+    return await plantRepository.getAllAntagonists();
+};
+
 export const getPlantingSeasonsByPlantTypeId = async (plantTypeId: string): Promise<any[]> => {
     return await plantRepository.getPlantingSeasonsByPlantTypeId(plantTypeId);
 };
