@@ -1,11 +1,14 @@
 import react from 'react'
 import './index.css'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './components/Header'
 import Plants from './pages/Plants';
 import PlantType from './pages/PlantType';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
 
 const darkTheme = createTheme({
   palette: {
@@ -19,10 +22,12 @@ function App() {
     <>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        {/* You can define your theme here */}
         <Header />
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/plants/:plantName/types" element={<PlantType />} />
           <Route path="/plants" element={<Plants />} />
         </Routes>
