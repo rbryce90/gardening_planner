@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Deno Migration and Infrastructure** - Migrate server to latest Deno, clean up debt, establish logging, error handling, and seed data (completed 2026-03-22)
 - [x] **Phase 2: User Authentication** - Signup, login, JWT session persistence, and hardiness zone on user profile (completed 2026-03-23)
-- [ ] **Phase 3: Garden Builder** - Grid creation, plant placement, save/load, and visual companion/antagonist indicators
+- [x] **Phase 3: Garden Builder** - Grid creation, plant placement, save/load, and visual companion/antagonist indicators (completed 2026-03-23)
 - [ ] **Phase 4: Seasonal Planting** - Zone-based monthly planting view
 
 ## Phase Details
@@ -59,11 +59,11 @@ Plans:
   3. User can save a garden layout and reload it in a later session with all placements intact
   4. A cell with a neighboring antagonist plant shows a red visual indicator; a cell with a neighboring companion shows a green indicator
   5. User can have multiple saved garden designs and switch between them
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 03-01-PLAN.md — Backend: garden/cell API with auth, bulk companion/antagonist endpoints
-- [ ] 03-02-PLAN.md — Frontend: garden page, grid, plant picker, companion/antagonist highlighting
+- [x] 03-02-PLAN.md — Frontend: garden page, grid, plant picker, companion/antagonist highlighting
 
 ### Phase 4: Seasonal Planting
 **Goal**: Users can select their USDA hardiness zone and see a monthly planting calendar for their zone
@@ -83,5 +83,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Deno Migration and Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. User Authentication | 2/2 | Complete   | 2026-03-23 |
-| 3. Garden Builder | 1/2 | In Progress|  |
+| 3. Garden Builder | 2/2 | Complete   | 2026-03-23 |
 | 4. Seasonal Planting | 0/TBD | Not started | - |

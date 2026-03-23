@@ -19,7 +19,7 @@
 ### Garden Builder
 
 - [x] **GRID-01**: User can create a named garden grid of any size
-- [ ] **GRID-02**: User can click a grid cell and select a plant to place in it
+- [x] **GRID-02**: User can click a grid cell and select a plant to place in it
 - [x] **GRID-03**: User can save and reload their garden layouts
 - [x] **GRID-04**: User can have multiple saved garden designs
 - [x] **GRID-05**: Grid cells highlight red when neighboring plants are antagonists
@@ -77,7 +77,7 @@
 | AUTH-01 | Phase 2 | Complete |
 | AUTH-02 | Phase 2 | Complete |
 | GRID-01 | Phase 3 | Complete |
-| GRID-02 | Phase 3 | Pending |
+| GRID-02 | Phase 3 | Complete |
 | GRID-03 | Phase 3 | Complete |
 | GRID-04 | Phase 3 | Complete |
 | GRID-05 | Phase 3 | Complete |
