@@ -20,7 +20,7 @@ Users can visually design their garden on a grid and immediately see which plant
 
 ### Active
 
-- [ ] User accounts (signup, login, session persistence)
+- ✓ User accounts (signup, login, session persistence) — Validated in Phase 2: User Authentication
 - [ ] Grid-based garden builder — user creates grids of any size, representing beds or whole yards
 - [ ] Place plants into grid cells and save the layout
 - [ ] Visual conflict warnings — cells turn red when neighboring plants are antagonists
