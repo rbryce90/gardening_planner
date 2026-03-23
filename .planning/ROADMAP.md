@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Deno Migration and Infrastructure** - Migrate server to latest Deno, clean up debt, establish logging, error handling, and seed data (completed 2026-03-22)
 - [x] **Phase 2: User Authentication** - Signup, login, JWT session persistence, and hardiness zone on user profile (completed 2026-03-23)
 - [x] **Phase 3: Garden Builder** - Grid creation, plant placement, save/load, and visual companion/antagonist indicators (completed 2026-03-23)
-- [ ] **Phase 4: Seasonal Planting** - Zone-based monthly planting view
+- [x] **Phase 4: Seasonal Planting** - Zone-based monthly planting view (completed 2026-03-23)
 
 ## Phase Details
 
@@ -72,11 +72,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can select their USDA hardiness zone from a dropdown and have that preference saved
   2. User can view a planting calendar that shows which plants to start by month based on their selected zone
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 04-01-PLAN.md — Backend: zone types, repository, controller, routes, user zone migration
-- [ ] 04-02-PLAN.md — Frontend: zone dropdown on dashboard, planting calendar page, header nav
+- [x] 04-02-PLAN.md — Frontend: zone dropdown on dashboard, planting calendar page, header nav
 
 ## Progress
 
@@ -88,4 +88,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Deno Migration and Infrastructure | 2/2 | Complete   | 2026-03-22 |
 | 2. User Authentication | 2/2 | Complete   | 2026-03-23 |
 | 3. Garden Builder | 2/2 | Complete   | 2026-03-23 |
-| 4. Seasonal Planting | 1/2 | In Progress|  |
+| 4. Seasonal Planting | 2/2 | Complete   | 2026-03-23 |
