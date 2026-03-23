@@ -6,11 +6,18 @@ import {
   CircularProgress,
   Alert,
   Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { getMe } from "../services/authService";
+import { getZones, updateUserZone } from "../services/zoneService";
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
+  const [zones, setZones] = useState([]);
+  const [selectedZone, setSelectedZone] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -19,6 +26,11 @@ export default function Dashboard() {
     getMe()
       .then((res) => {
         setUser(res.data);
+        setSelectedZone(res.data.zoneId || "");
+        return getZones();
+      })
+      .then((res) => {
+        setZones(res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -30,6 +42,16 @@ export default function Dashboard() {
         }
       });
   }, [navigate]);
+
+  const handleZoneChange = async (event) => {
+    const newZoneId = event.target.value;
+    setSelectedZone(newZoneId);
+    try {
+      await updateUserZone(newZoneId);
+    } catch (err) {
+      setError("Failed to save zone preference");
+    }
+  };
 
   if (loading) {
     return (
@@ -53,6 +75,21 @@ export default function Dashboard() {
         Welcome, {user.firstName}!
       </Typography>
       <Typography variant="body1">{user.email}</Typography>
+      <FormControl fullWidth sx={{ mt: 3 }}>
+        <InputLabel id="zone-select-label">USDA Hardiness Zone</InputLabel>
+        <Select
+          labelId="zone-select-label"
+          value={selectedZone}
+          label="USDA Hardiness Zone"
+          onChange={handleZoneChange}
+        >
+          {zones.map((zone) => (
+            <MenuItem key={zone.id} value={zone.id}>
+              {zone.name} ({zone.minTemperature}°F to {zone.maxTemperature}°F)
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
     </Container>
   );
 }
