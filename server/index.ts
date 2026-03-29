@@ -1,32 +1,58 @@
-import express from 'express';
-// import logger from "./utils/logger";
-import requestLogger from "./middleware/requestLogger";
-import requestIdMiddleware from "./middleware/requestId";
-
-// import stripeRouter from "./routes/stripeRoutes";
-// import userRouter from "./routes/userRoutes";
-// import authRouter from "./routes/authRoutes";
-
-import plantRouter from "./routes/plantRoutes";
-// import zoneRouter from "./routes/zoneRoutes";
+import express from "express";
+import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import logger from "./utils/logger.ts";
+import requestLogger from "./middleware/requestLogger.ts";
+import requestIdMiddleware from "./middleware/requestId.ts";
+import { errorHandler } from "./middleware/errorHandler.ts";
+import { RegisterRoutes } from "./generated/routes.ts";
+import { getDriver, closeDriver } from "./databases/neo4jDb.ts";
 
 const app = express();
 const PORT = 8000;
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
+app.use(cookieParser());
+app.use(requestIdMiddleware);
+app.use(requestLogger);
 
-// Uncomment these if you want to use request logging and request ID middleware
-// app.use(requestIdMiddleware);
-// app.use(requestLogger);
+// Swagger docs
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const swaggerDocument = require("./generated/swagger.json");
+  app.use("/v1/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+} catch {
+  logger.warn("Swagger spec not found — run 'npm run generate' to create it");
+}
 
-// Plant routes
-app.use("/api/plants", plantRouter);
+// TSOA generated routes
+RegisterRoutes(app);
 
-// Zone routes (if needed in the future)
-// app.use("/api/zones", zoneRouter);
+app.use(errorHandler);
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Example app listening on port ${PORT}`);
+// Initialize Neo4j connection
+try {
+  getDriver();
+  logger.info("Neo4j connection established");
+} catch (error) {
+  logger.warn("Neo4j connection failed — graph features will be unavailable", { error });
+}
+
+const server = app.listen(PORT, () => {
+  logger.info(`Server listening on port ${PORT}`);
 });
+
+// Graceful shutdown
+const shutdown = async () => {
+  logger.info("Shutting down...");
+  await closeDriver();
+  server.close(() => {
+    process.exit(0);
+  });
+};
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
+
+// Keep Deno process alive — Express via npm doesn't hold the event loop open
+setInterval(() => { }, 1 << 30);
