@@ -1,0 +1,11 @@
+node_modules
+dist
+*.db
+.env
+server/generated
+.planning
+.claude
+CLAUDE.md
+take-screenshots.mjs
+server/npx
+server/garden@1.0.0

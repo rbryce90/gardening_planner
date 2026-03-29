@@ -1,0 +1,27 @@
+{
+  "entryFile": "index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["routes/**/*.ts"],
+  "spec": {
+    "outputDirectory": "generated",
+    "specVersion": 3,
+    "basePath": "/v1",
+    "securityDefinitions": {
+      "jwt": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "cookie"
+      },
+      "admin": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "cookie"
+      }
+    }
+  },
+  "routes": {
+    "routesDir": "generated",
+    "middleware": "express",
+    "authenticationModule": "./authentication.ts"
+  }
+}

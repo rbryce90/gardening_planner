@@ -1,0 +1,23 @@
+{
+  "name": "gardening_planner",
+  "version": "1.0.0",
+  "description": "A full-stack garden design tool for planning bed layouts, placing plants on a visual grid, and getting instant feedback on companion and antagonist plant relationships.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "format": "prettier --write 'server/**/*.ts' 'ui/src/**/*.{js,jsx,ts,tsx}'",
+    "format:check": "prettier --check 'server/**/*.ts' 'ui/src/**/*.{js,jsx,ts,tsx}'",
+    "test:e2e": "node tests/e2e.test.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^3.8.1"
+  },
+  "dependencies": {
+    "puppeteer": "^24.40.0"
+  }
+}

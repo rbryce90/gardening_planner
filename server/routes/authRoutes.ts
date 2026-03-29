@@ -1,59 +1,173 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
-import { User, UserLoginInterface } from "../models/models.ts";
-import { login, createUser, createAndGetSessionID, logout } from "../controllers/authController.ts";
-import { getCookies } from "https://deno.land/std/http/cookie.ts";
-import logger from "../utils/logger.ts";
-import { AuthHeaders } from "../models/models.ts";
+import { Controller, Route, Tags, Post, Get, Put, Body, Request, Security } from "tsoa";
+import * as express from "express";
+import { register, login, changePassword } from "../controllers/authController.ts";
+import { userRepository } from "../repositories/userRepository.ts";
+import type {
+  RegisterRequest,
+  LoginRequest,
+  ZoneUpdateRequest,
+  ProfileUpdateRequest,
+  PasswordChangeRequest,
+  UserResponse,
+  MessageResponse,
+  RegisterResponse,
+} from "../types/models.ts";
 
-const authRouter = new Router({ prefix: "/api/auth" });
+@Route("v1/api/auth")
+@Tags("Auth")
+export class AuthController extends Controller {
+  @Post("/")
+  public async register(
+    @Body() body: RegisterRequest,
+    @Request() req: express.Request,
+  ): Promise<RegisterResponse> {
+    const { email, password, firstName, lastName } = body;
+    if (!email || !password || !firstName || !lastName) {
+      this.setStatus(400);
+      return { message: "Email, password, first name, and last name are required", userId: 0 };
+    }
+    if (password.length < 8) {
+      this.setStatus(400);
+      return { message: "Password must be at least 8 characters", userId: 0 };
+    }
+    try {
+      const result = await register(email, password, firstName, lastName);
+      req.res!.cookie("token", result.token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+      this.setStatus(201);
+      return { message: "Registration successful", userId: result.userId };
+    } catch (err) {
+      const error = err as Error;
+      if (
+        error.message.includes("UNIQUE constraint") ||
+        error.message.includes("SQLITE_CONSTRAINT")
+      ) {
+        this.setStatus(409);
+        return { message: "Email already registered", userId: 0 };
+      }
+      throw err;
+    }
+  }
 
-authRouter
-    .post("/register", async (context) => {
-        const { firstName, lastName, email, password, phoneNumber } = await context.request.body.json()
-        if (!firstName || !lastName || !email || !password) {
-            context.response.status = 400;
-            context.response.body = { message: "Invalid input" };
-            return;
-        }
-        try {
-            const userId = await createUser({ firstName, lastName, email, password, phoneNumber } as User)
-            context.response.body = { id: userId };
-        } catch (err) {
-            context.response.status = 500;
-            context.response.body = { message: err?.message }
-        }
-    })
-    .post('/login', async (context) => {
-        const { email, password }: User = await context.request.body.json()
-        if (!email || !password) {
-            context.response.status = 400;
-            context.response.body = { message: "Invalid input" };
-            return;
-        }
-        try {
-            const user = await login({ email, password } as UserLoginInterface)
-            if (user) {
-                const sessionId = await createAndGetSessionID(user as User)
-                context.response.headers.set("Set-Cookie", `${AuthHeaders.SESSION_ID}=${sessionId}; HttpOnly`);
-                context.response.body = { message: "Login success" }
-                return
-            } else {
-                context.response.body = { message: "Login failed" }
-                context.response.status = 403
-                return
-            }
-        } catch (err) {
-            logger.error(err)
-            context.response.body = { message: "Login failed" }
-            context.response.status = 500
-        }
-    })
-    .post('/logout', async (context) => {
-        const sessionId: string = getCookies(context.request.headers)[AuthHeaders.SESSION_ID];
-        await logout(sessionId)
-        context.state.session = {}
-        context.cookies.set(sessionId, "")
-        context.response.body = { message: "Logout successful" }
-    })
+  @Post("/login")
+  public async login(
+    @Body() body: LoginRequest,
+    @Request() req: express.Request,
+  ): Promise<MessageResponse> {
+    const { email, password } = body;
+    if (!email || !password) {
+      this.setStatus(400);
+      return { message: "Email and password are required" };
+    }
+    const result = await login(email, password);
+    req.res!.cookie("token", result.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    return { message: "Login successful" };
+  }
 
-export default authRouter;
+  @Post("/logout")
+  public async logout(@Request() req: express.Request): Promise<MessageResponse> {
+    req.res!.clearCookie("token");
+    return { message: "Logged out" };
+  }
+
+  @Get("/me")
+  @Security("jwt")
+  public async getMe(@Request() req: express.Request): Promise<UserResponse> {
+    const user = await userRepository.findById(req.user!.userId);
+    if (!user) {
+      this.setStatus(404);
+      return { id: 0, email: "", firstName: "", lastName: "" };
+    }
+    return {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      zoneId: user.zoneId,
+      isAdmin: user.isAdmin,
+    };
+  }
+
+  @Put("/zone")
+  @Security("jwt")
+  public async updateZone(
+    @Body() body: ZoneUpdateRequest,
+    @Request() req: express.Request,
+  ): Promise<MessageResponse> {
+    if (typeof body.zoneId !== "number") {
+      this.setStatus(400);
+      return { message: "zoneId is required and must be a number" };
+    }
+    await userRepository.updateZone(req.user!.userId, body.zoneId);
+    return { message: "Zone updated" };
+  }
+
+  @Put("/password")
+  @Security("jwt")
+  public async changePassword(
+    @Body() body: PasswordChangeRequest,
+    @Request() req: express.Request,
+  ): Promise<MessageResponse> {
+    const { currentPassword, newPassword } = body;
+    if (!currentPassword || !newPassword) {
+      this.setStatus(400);
+      return { message: "Current password and new password are required" };
+    }
+    if (newPassword.length < 8) {
+      this.setStatus(400);
+      return { message: "New password must be at least 8 characters" };
+    }
+    try {
+      await changePassword(req.user!.userId, currentPassword, newPassword);
+      return { message: "Password updated" };
+    } catch (err) {
+      const error = err as Error;
+      if (error.message === "Invalid credentials") {
+        this.setStatus(401);
+        return { message: "Current password is incorrect" };
+      }
+      throw err;
+    }
+  }
+
+  @Put("/profile")
+  @Security("jwt")
+  public async updateProfile(
+    @Body() body: ProfileUpdateRequest,
+    @Request() req: express.Request,
+  ): Promise<UserResponse> {
+    const { email, firstName, lastName } = body;
+    if (!email || !firstName || !lastName) {
+      this.setStatus(400);
+      return { id: 0, email: "", firstName: "", lastName: "" };
+    }
+    try {
+      await userRepository.updateProfile(req.user!.userId, email, firstName, lastName);
+    } catch (err) {
+      const error = err as Error;
+      if (error.message.includes("UNIQUE constraint")) {
+        this.setStatus(409);
+        return { id: 0, email: "", firstName: "", lastName: "" };
+      }
+      throw err;
+    }
+    const updated = await userRepository.findById(req.user!.userId);
+    return {
+      id: updated!.id,
+      email: updated!.email,
+      firstName: updated!.firstName,
+      lastName: updated!.lastName,
+      zoneId: updated!.zoneId,
+      isAdmin: updated!.isAdmin,
+    };
+  }
+}

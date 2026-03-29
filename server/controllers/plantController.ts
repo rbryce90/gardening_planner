@@ -1,128 +1,121 @@
-// make a controller for plants like the others 
-import { PlantRepository } from "../repositories/plantRepository";
-import { Plant } from "../types/plant";
+import { PlantRepository } from "../repositories/plantRepository.ts";
+import { graphRepository } from "../repositories/graphRepository.ts";
+import type { Plant } from "../types/plant.d.ts";
 
 const plantRepository = new PlantRepository();
+
 export const getPlants = async (): Promise<Plant[]> => {
-    return await plantRepository.getPlants();
-}
+  return await plantRepository.getPlants();
+};
 
 export const getPlantById = async (id: string): Promise<Plant | null> => {
-    return await plantRepository.getPlantById(id);
-}
+  return await plantRepository.getPlantById(id);
+};
+
 export const getPlantByName = async (name: string): Promise<Plant | null> => {
-    return await plantRepository.getPlantByName(name);
-}
+  return await plantRepository.getPlantByName(name);
+};
 
 export const createPlant = async (plant: Plant): Promise<number | undefined> => {
-    return await plantRepository.createPlant(plant);
-}
+  const id = await plantRepository.createPlant(plant);
+  if (id) {
+    await graphRepository.upsertPlant(id, plant.name, plant.category, plant.growthForm);
+  }
+  return id;
+};
+
 export const updatePlant = async (id: string, plant: Plant): Promise<Plant | undefined> => {
-    return await plantRepository.updatePlant(id, plant);
-}
+  const result = await plantRepository.updatePlant(id, plant);
+  await graphRepository.upsertPlant(Number(id), plant.name, plant.category, plant.growthForm);
+  return result;
+};
+
 export const deletePlant = async (id: string): Promise<boolean> => {
-    return await plantRepository.deletePlant(id);
-}
-export const getPlantTypesByPlantIdWithCompanionsAndAtagonists = async (plantId: string): Promise<any> => {
-    const types = await plantRepository.getPlantTypesByPlantId(plantId);
+  const result = await plantRepository.deletePlant(id);
+  await graphRepository.deletePlant(Number(id));
+  return result;
+};
 
-    // Fetch companions
-    const companions = await plantRepository.getCompanionsById(plantId);
-    const companionsEnhanced = [];
-    for (let companion of companions) {
-        const plant = await getPlantById(companion.companionId);
-        delete companion.companionId;
-        delete companion.plantId;
-        companionsEnhanced.push({
-            ...companion,
-            ...plant,
-        });
-    }
+export const getPlantTypesByPlantIdWithCompanionsAndAtagonists = async (
+  plantId: string,
+): Promise<any> => {
+  const types = await plantRepository.getPlantTypesByPlantId(plantId);
 
-    // Fetch antagonists
-    const antagonists = await plantRepository.getAntagonistsById(plantId);
-    const antagonistsEnhanced = [];
-    for (let antagonist of antagonists) {
-        const plant = await getPlantById(antagonist.antagonistId);
-        delete antagonist.antagonistId;
-        delete antagonist.plantId;
-        antagonistsEnhanced.push({
-            ...antagonist,
-            ...plant,
-        });
-    }
+  const companions = await plantRepository.getCompanionsById(plantId);
+  const companionsEnhanced = [];
+  for (const companion of companions) {
+    const otherPlantId =
+      String(companion.plantId) === String(plantId) ? companion.companionId : companion.plantId;
+    const plant = await getPlantById(String(otherPlantId));
+    if (!plant) continue;
+    companionsEnhanced.push({
+      id: companion.id,
+      ...plant,
+    });
+  }
 
-    return { types, companions: companionsEnhanced, antagonists: antagonistsEnhanced };
-}
+  const antagonists = await plantRepository.getAntagonistsById(plantId);
+  const antagonistsEnhanced = [];
+  for (const antagonist of antagonists) {
+    const otherPlantId =
+      String(antagonist.plantId) === String(plantId) ? antagonist.antagonistId : antagonist.plantId;
+    const plant = await getPlantById(String(otherPlantId));
+    if (!plant) continue;
+    antagonistsEnhanced.push({
+      id: antagonist.id,
+      ...plant,
+    });
+  }
+
+  return { types, companions: companionsEnhanced, antagonists: antagonistsEnhanced };
+};
 
 export const createPlantType = async (plantId: string, plantType: any): Promise<any> => {
-    return await plantRepository.createPlantType(plantId, plantType);
-}
-// export const updatePlantType = async (id: string, plantType: any): Promise<any | null> => {
-//     return await plantRepository.updatePlantType(id, plantType);
-// }
-// export const deletePlantType = async (id: string): Promise<boolean> => {
-//     return await plantRepository.deletePlantType(id);
-// }
-export const getCompanionsByPlantTypeId = async (plantTypeId: string): Promise<any[]> => {
-    return await plantRepository.getCompanionsByPlantTypeId(plantTypeId);
-}
-export const createCompanion = async (plantTypeId: string, companion: any): Promise<any> => {
-    return await plantRepository.createCompanion(plantTypeId, companion);
-}
-// export const deleteCompanion = async (id: string): Promise<boolean> => {
-//     return await plantRepository.deleteCompanion(id);
-// }
+  return await plantRepository.createPlantType(plantId, plantType);
+};
 
 export const addCompanion = async (plant_id: string, companion_id: string): Promise<void> => {
-    await plantRepository.addCompanion(plant_id, companion_id);
+  await plantRepository.addCompanion(plant_id, companion_id);
+  await graphRepository.addCompanion(Number(plant_id), Number(companion_id));
 };
 
-export const getAntagonistsByPlantTypeId = async (plantTypeId: string): Promise<any[]> => {
-    return await plantRepository.getAntagonistsByPlantTypeId(plantTypeId);
-}
 export const createAntagonist = async (plant_id: string, antagonist_id: string): Promise<void> => {
-    await plantRepository.createAntagonist(plant_id, antagonist_id);
+  await plantRepository.createAntagonist(plant_id, antagonist_id);
+  await graphRepository.addAntagonist(Number(plant_id), Number(antagonist_id));
 };
-// export const deleteAntagonist = async (id: string): Promise<boolean> => {
-//     return await plantRepository.deleteAntagonist(id);
-// }
+
+export const deletePlantType = async (plantId: string, typeId: string): Promise<boolean> => {
+  return await plantRepository.deletePlantType(plantId, typeId);
+};
+
+export const deleteCompanion = async (plantId: string, companionId: string): Promise<boolean> => {
+  const deleted = await plantRepository.deleteCompanion(plantId, companionId);
+  if (deleted) {
+    await graphRepository.removeCompanion(Number(plantId), Number(companionId));
+  }
+  return deleted;
+};
+
+export const deleteAntagonist = async (plantId: string, antagonistId: string): Promise<boolean> => {
+  const deleted = await plantRepository.deleteAntagonist(plantId, antagonistId);
+  if (deleted) {
+    await graphRepository.removeAntagonist(Number(plantId), Number(antagonistId));
+  }
+  return deleted;
+};
+
+export const getAllCompanions = async (): Promise<
+  Array<{ plantId: number; companionId: number }>
+> => {
+  return await plantRepository.getAllCompanions();
+};
+
+export const getAllAntagonists = async (): Promise<
+  Array<{ plantId: number; antagonistId: number }>
+> => {
+  return await plantRepository.getAllAntagonists();
+};
+
 export const getPlantingSeasonsByPlantTypeId = async (plantTypeId: string): Promise<any[]> => {
-    return await plantRepository.getPlantingSeasonsByPlantTypeId(plantTypeId);
-}
-// export const createPlantingSeason = async (plantTypeId: string, zoneId: string, plantingSeason: any): Promise<any> => {
-//     return await plantRepository.createPlantingSeason(plantTypeId, zoneId, plantingSeason);
-// }
-// export const updatePlantingSeason = async (id: string, plantingSeason: any): Promise<any | null> => {
-//     return await plantRepository.updatePlantingSeason(id, plantingSeason);
-// }
-// export const deletePlantingSeason = async (id: string): Promise<boolean> => {
-//     return await plantRepository.deletePlantingSeason(id);
-// }
-// export const getPlantingSeasonsByZoneId = async (zoneId: string): Promise<any[]> => {
-//     return await plantRepository.getPlantingSeasonsByZoneId(zoneId);
-// }
-// export const getPlantingSeasons = async (): Promise<any[]> => {
-//     return await plantRepository.getPlantingSeasons();
-// }
-// export const getPlantingSeasonById = async (id: string): Promise<any | null> => {
-//     return await plantRepository.getPlantingSeasonById(id);
-// }
-// export const getPlantingSeasonByPlantTypeIdAndZoneId = async (plantTypeId: string, zoneId: string): Promise<any | null> => {
-//     return await plantRepository.getPlantingSeasonByPlantTypeIdAndZoneId(plantTypeId, zoneId);
-// }
-// export const createPlantingSeasonByPlantTypeIdAndZoneId = async (plantTypeId: string, zoneId: string, plantingSeason: any): Promise<any> => {
-//     return await plantRepository.createPlantingSeasonByPlantTypeIdAndZoneId(plantTypeId, zoneId, plantingSeason);
-// }
-// export const updatePlantingSeasonByPlantTypeIdAndZoneId = async (plantTypeId: string, zoneId: string, plantingSeason: any): Promise<any | null> => {
-//     return await plantRepository.updatePlantingSeasonByPlantTypeIdAndZoneId(plantTypeId, zoneId, plantingSeason);
-// }
-// export const deletePlantingSeasonByPlantTypeIdAndZoneId = async (plantTypeId: string, zoneId: string): Promise<boolean> => {
-//     return await plantRepository.deletePlantingSeasonByPlantTypeIdAndZoneId(plantTypeId, zoneId);
-// }
-// export const getPlantingSeasonByIdAndZoneId = async (id: string, zoneId: string): Promise<any | null> => {
-//     return await plantRepository.getPlantingSeasonByIdAndZoneId(id, zoneId);
-// }
-// export const createPlantingSeasonByIdAndZoneId = async (id: string, zoneId: string, plantingSeason: any): Promise<any> => {
-//     return await plantRepository.createPlantingSeasonByIdAndZoneId(id, zoneId, plantingSeason);
-// }
+  return await plantRepository.getPlantingSeasonsByPlantTypeId(plantTypeId);
+};
