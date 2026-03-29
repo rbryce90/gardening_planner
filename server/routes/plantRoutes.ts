@@ -59,7 +59,9 @@ export class PlantController extends Controller {
       this.setStatus(404);
       return { name: "", category: "", growthForm: "", types: [], companions: [], antagonists: [] };
     }
-    const typesAndCompanions = await getPlantTypesByPlantIdWithCompanionsAndAtagonists(plant.id);
+    const typesAndCompanions = await getPlantTypesByPlantIdWithCompanionsAndAtagonists(
+      String(plant.id),
+    );
     return {
       ...plant,
       ...typesAndCompanions,

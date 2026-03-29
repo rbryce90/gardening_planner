@@ -44,11 +44,12 @@ export const getPlantTypesByPlantIdWithCompanionsAndAtagonists = async (
   const companions = await plantRepository.getCompanionsById(plantId);
   const companionsEnhanced = [];
   for (const companion of companions) {
-    const plant = await getPlantById(companion.companionId);
-    delete companion.companionId;
-    delete companion.plantId;
+    const otherPlantId =
+      String(companion.plantId) === String(plantId) ? companion.companionId : companion.plantId;
+    const plant = await getPlantById(String(otherPlantId));
+    if (!plant) continue;
     companionsEnhanced.push({
-      ...companion,
+      id: companion.id,
       ...plant,
     });
   }
@@ -56,11 +57,12 @@ export const getPlantTypesByPlantIdWithCompanionsAndAtagonists = async (
   const antagonists = await plantRepository.getAntagonistsById(plantId);
   const antagonistsEnhanced = [];
   for (const antagonist of antagonists) {
-    const plant = await getPlantById(antagonist.antagonistId);
-    delete antagonist.antagonistId;
-    delete antagonist.plantId;
+    const otherPlantId =
+      String(antagonist.plantId) === String(plantId) ? antagonist.antagonistId : antagonist.plantId;
+    const plant = await getPlantById(String(otherPlantId));
+    if (!plant) continue;
     antagonistsEnhanced.push({
-      ...antagonist,
+      id: antagonist.id,
       ...plant,
     });
   }

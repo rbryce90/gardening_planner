@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -10,19 +10,26 @@ import {
   ListItemText,
   Typography,
   Divider,
+  TextField,
 } from "@mui/material";
 
 export default function PlantPickerDialog({
-  open, onClose, onSelect, plants, currentPlant,
-  companions = [], antagonists = [], neighborPlantIds = [],
+  open,
+  onClose,
+  onSelect,
+  plants,
+  currentPlant,
+  companions = [],
+  antagonists = [],
+  neighborPlantIds = [],
 }) {
   const pairKey = (a, b) => `${Math.min(a, b)}-${Math.max(a, b)}`;
 
   const companionSet = new Set(
-    companions.map(({ plantId, companionId }) => pairKey(plantId, companionId))
+    companions.map(({ plantId, companionId }) => pairKey(plantId, companionId)),
   );
   const antagonistSet = new Set(
-    antagonists.map(({ plantId, antagonistId }) => pairKey(plantId, antagonistId))
+    antagonists.map(({ plantId, antagonistId }) => pairKey(plantId, antagonistId)),
   );
 
   // Categorize each plant relative to neighbors
@@ -30,15 +37,23 @@ export default function PlantPickerDialog({
     let relation = "neutral";
     for (const nId of neighborPlantIds) {
       const key = pairKey(plant.id, nId);
-      if (antagonistSet.has(key)) { relation = "antagonist"; break; }
+      if (antagonistSet.has(key)) {
+        relation = "antagonist";
+        break;
+      }
       if (companionSet.has(key)) relation = "companion";
     }
     return { ...plant, relation };
   });
 
-  const companionPlants = categorized.filter((p) => p.relation === "companion");
-  const neutralPlants = categorized.filter((p) => p.relation === "neutral");
-  const antagonistPlants = categorized.filter((p) => p.relation === "antagonist");
+  const [search, setSearch] = useState("");
+  const filtered = search
+    ? categorized.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
+    : categorized;
+
+  const companionPlants = filtered.filter((p) => p.relation === "companion");
+  const neutralPlants = filtered.filter((p) => p.relation === "neutral");
+  const antagonistPlants = filtered.filter((p) => p.relation === "antagonist");
 
   const hasNeighbors = neighborPlantIds.length > 0;
 
@@ -47,15 +62,22 @@ export default function PlantPickerDialog({
       key={plant.id}
       onClick={() => onSelect(plant)}
       sx={{
-        borderLeft: plant.relation === "companion" ? "3px solid" : plant.relation === "antagonist" ? "3px solid" : "3px solid transparent",
-        borderColor: plant.relation === "companion" ? "success.main" : plant.relation === "antagonist" ? "error.main" : "transparent",
+        borderLeft:
+          plant.relation === "companion"
+            ? "3px solid"
+            : plant.relation === "antagonist"
+              ? "3px solid"
+              : "3px solid transparent",
+        borderColor:
+          plant.relation === "companion"
+            ? "success.main"
+            : plant.relation === "antagonist"
+              ? "error.main"
+              : "transparent",
         transition: "background-color 0.15s",
       }}
     >
-      <ListItemText
-        primary={plant.name}
-        secondary={plant.category}
-      />
+      <ListItemText primary={plant.name} secondary={plant.category} />
       {hasNeighbors && plant.relation === "companion" && (
         <Typography variant="caption" sx={{ color: "success.main", ml: 1 }}>
           companion
@@ -70,9 +92,26 @@ export default function PlantPickerDialog({
   );
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setSearch("");
+        onClose();
+      }}
+      maxWidth="xs"
+      fullWidth
+    >
       <DialogTitle>Select Plant</DialogTitle>
       <DialogContent>
+        <TextField
+          size="small"
+          placeholder="Search plants..."
+          fullWidth
+          autoFocus
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          sx={{ mb: 1 }}
+        />
         {currentPlant && (
           <Button
             variant="outlined"

@@ -29,9 +29,14 @@ export class GraphRepository {
         const rawNodes = record.get("nodes");
         const rawRels = record.get("rels");
 
+        // Build map from Neo4j internal ID to plant ID, skipping nodes with no id
+        const nodeIdMap = new Map<number, number>();
         for (const node of rawNodes) {
+          const plantId = toNumber(node.properties.id);
+          if (plantId == null || isNaN(plantId)) continue;
+          nodeIdMap.set(toNumber(node.identity), plantId);
           nodes.push({
-            id: toNumber(node.properties.id),
+            id: plantId,
             name: node.properties.name,
             category: node.properties.category,
             growthForm: node.properties.growthForm,
@@ -39,24 +44,14 @@ export class GraphRepository {
         }
 
         for (const rel of rawRels) {
+          const source = nodeIdMap.get(toNumber(rel.start));
+          const target = nodeIdMap.get(toNumber(rel.end));
+          if (source == null || target == null) continue;
           edges.push({
-            source: toNumber(rel.start),
-            target: toNumber(rel.end),
+            source,
+            target,
             type: rel.type === "COMPANION_OF" ? "companion" : "antagonist",
           });
-        }
-
-        // Remap edges from internal neo4j node IDs to plant IDs
-        const nodeIdMap = new Map<number, number>();
-        if (result.records.length > 0) {
-          const rawNodesForMap = record.get("nodes");
-          for (const node of rawNodesForMap) {
-            nodeIdMap.set(toNumber(node.identity), toNumber(node.properties.id));
-          }
-        }
-        for (const edge of edges) {
-          edge.source = nodeIdMap.get(edge.source) ?? edge.source;
-          edge.target = nodeIdMap.get(edge.target) ?? edge.target;
         }
       }
 
