@@ -59,17 +59,25 @@ Users create grid-based garden bed layouts and place plants into individual cell
 
 - User registration and login with JWT authentication (HTTP-only cookies)
 - Role-based access control: admin users can manage plant data, regular users are read-only
-- Create and manage multiple named garden bed layouts
-- Visual grid designer with click-to-place plant placement
-- Companion plant highlighting (green) and antagonist warnings (red) on neighboring cells
-- Interactive force-directed graph visualization of plant relationships (2-hop depth)
+- Password change for authenticated users
+- Create and manage multiple named garden bed layouts with delete confirmation
+- Paint mode: select a plant from the sidebar, click cells to place it, right-click to enter eraser mode
+- Sidebar plant list sorts by relationship to selected cell's neighbors (companions top, antagonists bottom)
+- Each plant displays a unique color in the grid for quick visual identification
+- Antagonist cells highlighted in full red (background + border)
+- Interactive force-directed graph visualization of plant relationships (1-hop depth)
+- Graph preview on 1-second hover over plants in the sidebar
+- Plant search/filter on both the Plants page and garden sidebar
 - Smart plant recommendations via Neo4j graph queries
 - USDA hardiness zone selection with zone-based seasonal planting calendar
+- Planting calendar populated via ETL pipeline (400+ entries across 11 zones)
 - Dual-write architecture: plant mutations sync to both SQLite and Neo4j
-- ETL script to migrate existing SQLite plant data into Neo4j
+- Security: helmet headers, rate limiting on auth, env-based secure cookies
+- Health check endpoint at `/health`
 - Auto-generated OpenAPI 3 spec and Swagger UI at `/v1/api/docs`
 - Centralized error handling middleware with structured error responses
 - Request ID tracing and Winston-based request logging
+- E2E test suite with Puppeteer (10 tests)
 
 ## Architecture
 
@@ -83,8 +91,8 @@ TSOA Routes --> Controllers --> Repositories --> SQLite (tabular data)
 - **Routes** are TSOA controller classes with decorators for routing, validation, and security. They auto-generate OpenAPI specs and type-safe Express routes.
 - **Controllers** contain business logic and orchestrate calls across repositories. Plant write operations dual-write to both SQLite and Neo4j.
 - **Repositories** own all data access. `plantRepository` and `gardenRepository` use SQLite for CRUD. `graphRepository` uses Neo4j for relationship traversal and recommendations.
-- **Middleware** provides cross-cutting concerns: JWT authentication, admin authorization, request ID injection, request logging, and centralized error handling.
-- **Authentication** uses two security schemes: `jwt` (any logged-in user) and `admin` (admin users only). Admin status is stored in the database and embedded in the JWT.
+- **Middleware** provides cross-cutting concerns: helmet security headers, rate limiting, JWT authentication, admin authorization, request ID injection, request logging, and centralized error handling.
+- **Authentication** uses two security schemes: `jwt` (any logged-in user) and `admin` (admin users only). Admin status is stored in the database and embedded in the JWT. Cookies use `secure` flag in production.
 
 **Why two databases?** SQLite is ideal for tabular data (users, gardens, grid cells). Neo4j is purpose-built for traversing relationships — finding all plants within 1 hop, or plants compatible with every plant in a garden, are queries that are trivial in Cypher and painful in SQL. See [docs/neo4j-guide.md](docs/neo4j-guide.md) for a detailed comparison.
 
@@ -286,6 +294,7 @@ All endpoints are prefixed with `/v1`. Full OpenAPI spec available at `/v1/api/d
 | `npm run seed:users`   | `server/` | Create demo user accounts                |
 | `npm run dev`          | `ui/`     | Start Vite dev server (port 5173)        |
 | `npm run build`        | `ui/`     | Production build                         |
+| `npm run test:e2e`     | root      | Run Puppeteer E2E tests (10 tests)       |
 | `npm run format`       | root      | Format all source files with Prettier    |
 | `npm run format:check` | root      | Check formatting without writing         |
 
@@ -293,15 +302,18 @@ All endpoints are prefixed with `/v1`. Full OpenAPI spec available at `/v1/api/d
 
 ```
 gardening_planner/
-  podman-compose.yml           # Container orchestration (Neo4j, server, UI)
+  podman-compose.yml           # Container orchestration (Neo4j, Redis, server, UI)
   .prettierrc.json             # Prettier config
+  tests/
+    e2e.test.mjs               # Puppeteer E2E tests (10 tests)
+  screenshots/                 # README screenshots (auto-generated)
   docs/
     neo4j-guide.md             # How Neo4j and Cypher work in this project
   server/
-    index.ts                   # Express app entry point, Swagger UI mount
+    index.ts                   # Express app entry point, helmet, rate limiting, health check
     tsoa.json                  # TSOA config (routes, spec, security schemes)
     authentication.ts          # TSOA auth handler (jwt + admin schemes)
-    routes/                    # TSOA controller classes (one per resource)
+    routes/                    # TSOA controller classes (auth, plants, gardens, zones, graph)
     controllers/               # Business logic (dual-write to SQLite + Neo4j)
     repositories/              # Data access (plantRepository → SQLite, graphRepository → Neo4j)
     databases/                 # SQLite + Neo4j connection management
@@ -310,7 +322,8 @@ gardening_planner/
     utils/                     # Winston logger, password hashing
     generated/                 # Auto-generated TSOA routes + swagger.json
     scripts/
-      seed.ts                  # SQLite seed script
+      seed.ts                  # SQLite seed script (plants, zones, types, seasons)
+      seedUsers.ts             # Demo user accounts
       seedNeo4j.ts             # Neo4j seed from JSON
       etlToNeo4j.ts            # ETL: SQLite → Neo4j sync
       seed-data.json           # Plant, zone, and relationship seed data
@@ -318,7 +331,7 @@ gardening_planner/
     src/
       App.jsx                  # Root component, routing, MUI dark theme
       pages/                   # Dashboard, Garden, Calendar, Plants, PlantType, Login, Register
-      components/              # GardenGrid, PlantCard, PlantGraph, PlantPickerDialog, Header
+      components/              # GardenGrid, GardenCell, PlantCard, PlantGraph, Header, ErrorBoundary
       services/                # api.js (Axios base), authService, gardenService, zoneService, graphService
       models/                  # Shared TypeScript types
       utils/                   # Helper functions
