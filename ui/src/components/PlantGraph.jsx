@@ -8,7 +8,7 @@ import { getPlantGraph } from "../services/graphService";
 const COMPANION_COLOR = "#4caf50";
 const ANTAGONIST_COLOR = "#f44336";
 
-export default function PlantGraph({ plantId }) {
+export default function PlantGraph({ plantId, compact = false }) {
   const [graphData, setGraphData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,7 +26,12 @@ export default function PlantGraph({ plantId }) {
       .then((res) => {
         const { nodes, edges } = res.data;
         setGraphData({
-          nodes: nodes.map((n) => ({ ...n, id: n.id })),
+          nodes: nodes.map((n, i) => ({
+            ...n,
+            id: n.id,
+            x: Math.cos((2 * Math.PI * i) / nodes.length) * 300,
+            y: Math.sin((2 * Math.PI * i) / nodes.length) * 300,
+          })),
           links: edges.map((e) => ({
             source: e.source,
             target: e.target,
@@ -43,17 +48,34 @@ export default function PlantGraph({ plantId }) {
 
   useEffect(() => {
     const updateWidth = () => {
-      setDimensions({ width: window.innerWidth, height: 500 });
+      setDimensions({ width: window.innerWidth, height: compact ? 350 : 700 });
     };
     updateWidth();
     window.addEventListener("resize", updateWidth);
     return () => window.removeEventListener("resize", updateWidth);
   }, []);
 
-  // Re-center after data loads
+  // Configure forces, disable wheel zoom, and re-center after data loads
   useEffect(() => {
     if (graphData && graphRef.current) {
-      setTimeout(() => graphRef.current.zoomToFit(300, 40), 500);
+      const fg = graphRef.current;
+      fg.d3Force("charge")
+        .strength(compact ? -150 : -250)
+        .distanceMax(compact ? 300 : 500);
+      fg.d3Force("link").distance(compact ? 50 : 80);
+      fg.d3ReheatSimulation();
+
+      // Prevent ForceGraph2D from capturing wheel events so page scrolls normally
+      const canvas = containerRef.current?.querySelector("canvas");
+      if (canvas) {
+        const blockZoom = (e) => {
+          e.stopImmediatePropagation();
+        };
+        canvas.addEventListener("wheel", blockZoom, { capture: true });
+        return () => canvas.removeEventListener("wheel", blockZoom, { capture: true });
+      }
+
+      setTimeout(() => fg.zoomToFit(400, 60), 1200);
     }
   }, [graphData]);
 
@@ -68,6 +90,7 @@ export default function PlantGraph({ plantId }) {
 
   const nodeCanvasObject = useCallback(
     (node, ctx, globalScale) => {
+      if (node.x == null || node.y == null) return;
       const isCenterNode = node.id === plantId;
       const radius = isCenterNode ? 8 : 5;
       const fontSize = Math.max(12 / globalScale, 2);
@@ -95,6 +118,7 @@ export default function PlantGraph({ plantId }) {
   );
 
   const linkCanvasObject = useCallback((link, ctx) => {
+    if (link.source.x == null || link.target.x == null) return;
     const isAntagonist = link.type === "antagonist";
     const color = isAntagonist ? ANTAGONIST_COLOR : COMPANION_COLOR;
 
@@ -114,9 +138,9 @@ export default function PlantGraph({ plantId }) {
 
   if (loading) {
     return (
-      <Box sx={{ mt: 4 }}>
-        <Skeleton variant="text" width={200} height={32} sx={{ mb: 2 }} />
-        <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 3 }} />
+      <Box sx={{ mt: compact ? 0 : 4 }}>
+        {!compact && <Skeleton variant="text" width={200} height={32} sx={{ mb: 2 }} />}
+        <Skeleton variant="rectangular" height={compact ? 200 : 400} sx={{ borderRadius: 3 }} />
       </Box>
     );
   }
@@ -130,10 +154,12 @@ export default function PlantGraph({ plantId }) {
   }
 
   return (
-    <Box sx={{ mt: 4, mx: -4 }}>
-      <Typography variant="h5" gutterBottom sx={{ px: 4 }}>
-        Relationship Graph
-      </Typography>
+    <Box sx={{ mt: compact ? 0 : 4, mx: compact ? 0 : -4 }}>
+      {!compact && (
+        <Typography variant="h5" gutterBottom sx={{ px: 4 }}>
+          Relationship Graph
+        </Typography>
+      )}
       <Paper
         ref={containerRef}
         sx={{
@@ -153,6 +179,7 @@ export default function PlantGraph({ plantId }) {
           backgroundColor="rgba(0,0,0,0)"
           nodeCanvasObject={nodeCanvasObject}
           nodePointerAreaPaint={(node, color, ctx) => {
+            if (node.x == null || node.y == null) return;
             const radius = node.id === plantId ? 8 : 5;
             ctx.beginPath();
             ctx.arc(node.x, node.y, radius + 4, 0, 2 * Math.PI);
@@ -160,8 +187,12 @@ export default function PlantGraph({ plantId }) {
             ctx.fill();
           }}
           linkCanvasObject={linkCanvasObject}
+          enableZoom={false}
           onNodeClick={handleNodeClick}
-          cooldownTicks={80}
+          cooldownTicks={150}
+          d3AlphaDecay={0.02}
+          d3VelocityDecay={0.3}
+          dagLevelDistance={80}
           nodeLabel=""
         />
         {/* Legend */}
