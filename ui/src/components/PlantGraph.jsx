@@ -47,13 +47,14 @@ export default function PlantGraph({ plantId, compact = false }) {
   }, [plantId]);
 
   useEffect(() => {
-    const updateWidth = () => {
-      setDimensions({ width: window.innerWidth, height: compact ? 350 : 700 });
+    const updateDimensions = () => {
+      const width = containerRef.current?.offsetWidth || window.innerWidth;
+      setDimensions({ width, height: compact ? 350 : 700 });
     };
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, []);
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, [compact]);
 
   // Configure forces, disable wheel zoom, and re-center after data loads
   useEffect(() => {

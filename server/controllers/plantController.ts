@@ -84,6 +84,26 @@ export const createAntagonist = async (plant_id: string, antagonist_id: string):
   await graphRepository.addAntagonist(Number(plant_id), Number(antagonist_id));
 };
 
+export const deletePlantType = async (plantId: string, typeId: string): Promise<boolean> => {
+  return await plantRepository.deletePlantType(plantId, typeId);
+};
+
+export const deleteCompanion = async (plantId: string, companionId: string): Promise<boolean> => {
+  const deleted = await plantRepository.deleteCompanion(plantId, companionId);
+  if (deleted) {
+    await graphRepository.removeCompanion(Number(plantId), Number(companionId));
+  }
+  return deleted;
+};
+
+export const deleteAntagonist = async (plantId: string, antagonistId: string): Promise<boolean> => {
+  const deleted = await plantRepository.deleteAntagonist(plantId, antagonistId);
+  if (deleted) {
+    await graphRepository.removeAntagonist(Number(plantId), Number(antagonistId));
+  }
+  return deleted;
+};
+
 export const getAllCompanions = async (): Promise<
   Array<{ plantId: number; companionId: number }>
 > => {

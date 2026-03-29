@@ -12,6 +12,9 @@ import {
   getAllCompanions,
   getAllAntagonists,
   createPlantType,
+  deletePlantType,
+  deleteCompanion,
+  deleteAntagonist,
 } from "../controllers/plantController.ts";
 import type {
   PlantResponse,
@@ -118,6 +121,51 @@ export class PlantController extends Controller {
     const result = await createPlantType(String(id), body);
     this.setStatus(201);
     return result;
+  }
+
+  @Security("admin")
+  @Delete("/{plantId}/types/{typeId}")
+  public async deletePlantType(
+    @Path() plantId: number,
+    @Path() typeId: number,
+  ): Promise<MessageResponse> {
+    const deleted = await deletePlantType(String(plantId), String(typeId));
+    if (!deleted) {
+      this.setStatus(404);
+      return { message: "Plant type not found" };
+    }
+    this.setStatus(200);
+    return { message: "Plant type deleted" };
+  }
+
+  @Security("admin")
+  @Delete("/{id}/companion/{companionId}")
+  public async deleteCompanion(
+    @Path() id: number,
+    @Path() companionId: number,
+  ): Promise<MessageResponse> {
+    const deleted = await deleteCompanion(String(id), String(companionId));
+    if (!deleted) {
+      this.setStatus(404);
+      return { message: "Companion relationship not found" };
+    }
+    this.setStatus(200);
+    return { message: "Companion removed" };
+  }
+
+  @Security("admin")
+  @Delete("/{id}/antagonist/{antagonistId}")
+  public async deleteAntagonist(
+    @Path() id: number,
+    @Path() antagonistId: number,
+  ): Promise<MessageResponse> {
+    const deleted = await deleteAntagonist(String(id), String(antagonistId));
+    if (!deleted) {
+      this.setStatus(404);
+      return { message: "Antagonist relationship not found" };
+    }
+    this.setStatus(200);
+    return { message: "Antagonist removed" };
   }
 
   @Security("admin")

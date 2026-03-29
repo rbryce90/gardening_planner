@@ -1,12 +1,13 @@
 import { Controller, Route, Tags, Post, Get, Put, Body, Request, Security } from "tsoa";
 import * as express from "express";
-import { register, login } from "../controllers/authController.ts";
+import { register, login, changePassword } from "../controllers/authController.ts";
 import { userRepository } from "../repositories/userRepository.ts";
 import type {
   RegisterRequest,
   LoginRequest,
   ZoneUpdateRequest,
   ProfileUpdateRequest,
+  PasswordChangeRequest,
   UserResponse,
   MessageResponse,
   RegisterResponse,
@@ -33,7 +34,7 @@ export class AuthController extends Controller {
       const result = await register(email, password, firstName, lastName);
       req.res!.cookie("token", result.token, {
         httpOnly: true,
-        secure: false,
+        secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
@@ -65,7 +66,7 @@ export class AuthController extends Controller {
     const result = await login(email, password);
     req.res!.cookie("token", result.token, {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -108,6 +109,34 @@ export class AuthController extends Controller {
     }
     await userRepository.updateZone(req.user!.userId, body.zoneId);
     return { message: "Zone updated" };
+  }
+
+  @Put("/password")
+  @Security("jwt")
+  public async changePassword(
+    @Body() body: PasswordChangeRequest,
+    @Request() req: express.Request,
+  ): Promise<MessageResponse> {
+    const { currentPassword, newPassword } = body;
+    if (!currentPassword || !newPassword) {
+      this.setStatus(400);
+      return { message: "Current password and new password are required" };
+    }
+    if (newPassword.length < 8) {
+      this.setStatus(400);
+      return { message: "New password must be at least 8 characters" };
+    }
+    try {
+      await changePassword(req.user!.userId, currentPassword, newPassword);
+      return { message: "Password updated" };
+    } catch (err) {
+      const error = err as Error;
+      if (error.message === "Invalid credentials") {
+        this.setStatus(401);
+        return { message: "Current password is incorrect" };
+      }
+      throw err;
+    }
   }
 
   @Put("/profile")

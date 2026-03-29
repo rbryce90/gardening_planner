@@ -43,7 +43,7 @@ export default function PlantType() {
 
   useEffect(() => {
     getMe()
-      .then((res) => setIsAdmin(res.data.role === "admin"))
+      .then((res) => setIsAdmin(res.data.isAdmin === true))
       .catch(() => setIsAdmin(false));
   }, []);
 
@@ -59,8 +59,8 @@ export default function PlantType() {
         setPlantData(res.data);
         setLoading(false);
       })
-      .catch(() => {
-        setError("Failed to fetch plant data");
+      .catch((err) => {
+        setError(err.response?.data?.message || "Failed to fetch plant data");
         setLoading(false);
       });
   };
@@ -84,7 +84,7 @@ export default function PlantType() {
         setCompanionDialogOpen(false);
         fetchPlantData();
       })
-      .catch(() => setError("Failed to add companion"));
+      .catch((err) => setError(err.response?.data?.message || "Failed to add companion"));
   };
 
   // Antagonist
@@ -102,7 +102,7 @@ export default function PlantType() {
         setAntagonistDialogOpen(false);
         fetchPlantData();
       })
-      .catch(() => setError("Failed to add antagonist"));
+      .catch((err) => setError(err.response?.data?.message || "Failed to add antagonist"));
   };
 
   // Plant type
@@ -119,7 +119,7 @@ export default function PlantType() {
         setTypeDialogOpen(false);
         fetchPlantData();
       })
-      .catch(() => setError("Failed to add plant type"));
+      .catch((err) => setError(err.response?.data?.message || "Failed to add plant type"));
   };
 
   // Filter helpers

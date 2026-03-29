@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import { getMe } from "../services/authService";
-import { Box, Typography, Alert, Button, Grid, Skeleton } from "@mui/material";
+import { Box, Typography, Alert, Button, Grid, Skeleton, TextField } from "@mui/material";
 import PlantGrid from "../components/PlantGrid";
 import AddPlantCard from "../components/AddPlantCard";
 import Notification from "../components/Notification";
@@ -13,6 +13,7 @@ export default function Plants() {
   const [addingPlant, setAddingPlant] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     getPlants();
@@ -29,8 +30,8 @@ export default function Plants() {
         setPlants(res.data);
         setLoading(false);
       })
-      .catch(() => {
-        setError("Failed to fetch plants");
+      .catch((err) => {
+        setError(err.response?.data?.message || "Failed to fetch plants");
         setLoading(false);
       });
   };
@@ -76,6 +77,13 @@ export default function Plants() {
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
         Plants
       </Typography>
+      <TextField
+        size="small"
+        placeholder="Search plants..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        sx={{ mb: 3, mr: 2, width: 300 }}
+      />
       {isAdmin && (
         <Button
           variant="outlined"
@@ -88,7 +96,7 @@ export default function Plants() {
       )}
       {addingPlant && <AddPlantCard onClose={() => setAddingPlant(false)} getPlants={getPlants} />}
       <PlantGrid
-        plants={plants}
+        plants={plants.filter((p) => p.name.toLowerCase().includes(searchTerm.toLowerCase()))}
         getPlants={getPlants}
         onDeletePlant={isAdmin ? handleDeletePlant : null}
         setPlants={setPlants}

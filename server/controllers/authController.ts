@@ -1,5 +1,5 @@
 import { userRepository } from "../repositories/userRepository.ts";
-import { comparePassword } from "../utils/hash.ts";
+import { comparePassword, hashPassword } from "../utils/hash.ts";
 import { SignJWT, jwtVerify } from "jose";
 
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-in-production";
@@ -51,4 +51,21 @@ export async function login(
   }
   const token = await signToken(user.id, email, user.isAdmin);
   return { userId: user.id, token };
+}
+
+export async function changePassword(
+  userId: number,
+  currentPassword: string,
+  newPassword: string,
+): Promise<void> {
+  const user = await userRepository.findByIdWithPassword(userId);
+  if (!user) {
+    throw Object.assign(new Error("Invalid credentials"), { status: 401 });
+  }
+  const valid = await comparePassword(currentPassword, user.password);
+  if (!valid) {
+    throw Object.assign(new Error("Invalid credentials"), { status: 401 });
+  }
+  const hashedPassword = await hashPassword(newPassword);
+  await userRepository.updatePassword(userId, hashedPassword);
 }

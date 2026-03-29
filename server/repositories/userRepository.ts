@@ -32,6 +32,14 @@ export class UserRepository {
     return { ...result, isAdmin: result.isAdmin === 1 };
   }
 
+  async findByIdWithPassword(id: number): Promise<{ id: number; password: string } | null> {
+    const db = getDatabase();
+    const result = db.prepare("SELECT id, password FROM users WHERE id = ?").get(id) as
+      | any
+      | undefined;
+    return result || null;
+  }
+
   async findById(
     id: number,
   ): Promise<(Omit<User, "password" | "createdAt"> & { isAdmin: boolean }) | null> {
@@ -68,6 +76,11 @@ export class UserRepository {
   async setAdmin(userId: number, isAdmin: boolean): Promise<void> {
     const db = getDatabase();
     db.prepare("UPDATE users SET is_admin = ? WHERE id = ?").run(isAdmin ? 1 : 0, userId);
+  }
+
+  async updatePassword(userId: number, hashedPassword: string): Promise<void> {
+    const db = getDatabase();
+    db.prepare("UPDATE users SET password = ? WHERE id = ?").run(hashedPassword, userId);
   }
 }
 

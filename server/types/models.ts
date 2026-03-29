@@ -145,6 +145,11 @@ export interface ProfileUpdateRequest {
   lastName: string;
 }
 
+export interface PasswordChangeRequest {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface UserResponse {
   id: number;
   email: string;

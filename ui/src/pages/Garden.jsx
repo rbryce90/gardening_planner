@@ -30,12 +30,14 @@ import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import GridViewIcon from "@mui/icons-material/GridView";
+import DeleteIcon from "@mui/icons-material/Delete";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import { getMe } from "../services/authService";
 import {
   getGardens,
   createGarden,
   getGarden,
+  deleteGarden,
   upsertCell,
   clearCell,
   getAllCompanions,
@@ -67,6 +69,7 @@ export default function Garden() {
   const [successMsg, setSuccessMsg] = useState("");
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [plantSearch, setPlantSearch] = useState("");
+  const [pendingDeleteGarden, setPendingDeleteGarden] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -139,9 +142,24 @@ export default function Garden() {
       );
   };
 
+  const handleDeleteGarden = () => {
+    if (!pendingDeleteGarden) return;
+    deleteGarden(pendingDeleteGarden.id)
+      .then(() => getGardens())
+      .then((res) => {
+        setGardens(res.data);
+        setPendingDeleteGarden(null);
+        setSuccessMsg("Garden deleted");
+      })
+      .catch((err) => {
+        setError(err.response?.data?.message || "Failed to delete garden");
+        setPendingDeleteGarden(null);
+      });
+  };
+
   const handleCellClick = (row, col, cell) => {
     if (paintPlant) {
-      // Paint mode: optimistically update local state, fire API in background
+      // Paint mode: place the plant and show its graph
       setSelectedGarden((prev) => {
         if (!prev) return prev;
         const existing = (prev.cells || []).filter((c) => !(c.row === row && c.col === col));
@@ -154,11 +172,14 @@ export default function Garden() {
       upsertCell(selectedGarden.id, row, col, paintPlant.id).catch((err) =>
         setError(`Failed to paint cell: ${err.response?.data?.message || err.message}`),
       );
-    } else if (cell?.plantId) {
-      // Cell has a plant: show its graph
+    }
+
+    if (cell?.plantId) {
       setSelectedPlant({ id: cell.plantId, name: cell.plantName });
-    } else {
-      // Empty cell: open picker
+    }
+
+    if (!paintPlant) {
+      // Normal mode: open picker
       setPickerCell({ row, col, cell });
       setPickerOpen(true);
     }
@@ -355,6 +376,7 @@ export default function Garden() {
               sx={{
                 height: 160,
                 cursor: "pointer",
+                position: "relative",
                 background:
                   "linear-gradient(135deg, rgba(76,175,80,0.08) 0%, rgba(76,175,80,0.02) 100%)",
                 border: "1px solid",
@@ -366,6 +388,17 @@ export default function Garden() {
               }}
               onClick={() => handleSelectGarden(g.id)}
             >
+              <IconButton
+                size="small"
+                sx={{ position: "absolute", top: 8, right: 8 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setPendingDeleteGarden(g);
+                }}
+                aria-label={`Delete ${g.name}`}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
               <CardContent sx={{ textAlign: "center", pt: 4 }}>
                 <GridViewIcon sx={{ fontSize: 32, color: "success.main", mb: 1 }} />
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
@@ -438,6 +471,22 @@ export default function Garden() {
           </DialogActions>
         </Dialog>
 
+        {/* Delete garden confirmation dialog */}
+        <Dialog open={!!pendingDeleteGarden} onClose={() => setPendingDeleteGarden(null)}>
+          <DialogTitle>Delete Garden</DialogTitle>
+          <DialogContent>
+            <Typography>
+              Are you sure you want to delete "{pendingDeleteGarden?.name}"? This cannot be undone.
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setPendingDeleteGarden(null)}>Cancel</Button>
+            <Button variant="contained" color="error" onClick={handleDeleteGarden}>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+
         <Notification message={successMsg} open={!!successMsg} onClose={() => setSuccessMsg("")} />
       </Box>
     );
@@ -494,25 +543,36 @@ export default function Garden() {
             />
           )}
         </Box>
-        <GardenGrid
-          garden={selectedGarden}
-          cells={selectedGarden.cells}
-          companions={companions}
-          antagonists={antagonists}
-          onCellClick={handleCellClick}
-          onCellRightClick={handleCellRightClick}
-        />
-        {selectedPlant && (
-          <Box sx={{ mt: 2 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                {selectedPlant.name}
-              </Typography>
-              <Chip label="Close" size="small" onDelete={() => setSelectedPlant(null)} />
-            </Box>
-            <PlantGraph plantId={selectedPlant.id} compact />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", lg: "row" },
+            gap: 2,
+            alignItems: "flex-start",
+          }}
+        >
+          <Box sx={{ flexShrink: 0 }}>
+            <GardenGrid
+              garden={selectedGarden}
+              cells={selectedGarden.cells}
+              companions={companions}
+              antagonists={antagonists}
+              onCellClick={handleCellClick}
+              onCellRightClick={handleCellRightClick}
+            />
           </Box>
-        )}
+          {selectedPlant && (
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  {selectedPlant.name}
+                </Typography>
+                <Chip label="Close" size="small" onDelete={() => setSelectedPlant(null)} />
+              </Box>
+              <PlantGraph plantId={selectedPlant.id} compact />
+            </Box>
+          )}
+        </Box>
       </Box>
 
       {/* Create garden dialog */}

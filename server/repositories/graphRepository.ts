@@ -214,6 +214,38 @@ export class GraphRepository {
     }
   }
 
+  async removeCompanion(plantId: number, companionId: number): Promise<void> {
+    const driver = getDriver();
+    const session = driver.session();
+    try {
+      await session.run(
+        `MATCH (a:Plant {id: $plantId})-[r:COMPANION_OF]-(b:Plant {id: $companionId})
+                 DELETE r`,
+        { plantId: neo4jInt(plantId), companionId: neo4jInt(companionId) },
+      );
+    } catch (error) {
+      logger.error("Failed to remove companion in Neo4j", { plantId, companionId, error });
+    } finally {
+      await session.close();
+    }
+  }
+
+  async removeAntagonist(plantId: number, antagonistId: number): Promise<void> {
+    const driver = getDriver();
+    const session = driver.session();
+    try {
+      await session.run(
+        `MATCH (a:Plant {id: $plantId})-[r:ANTAGONIST_OF]-(b:Plant {id: $antagonistId})
+                 DELETE r`,
+        { plantId: neo4jInt(plantId), antagonistId: neo4jInt(antagonistId) },
+      );
+    } catch (error) {
+      logger.error("Failed to remove antagonist in Neo4j", { plantId, antagonistId, error });
+    } finally {
+      await session.close();
+    }
+  }
+
   async addAntagonist(plantId: number, antagonistId: number): Promise<void> {
     const driver = getDriver();
     const session = driver.session();
