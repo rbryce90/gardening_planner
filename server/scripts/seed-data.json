@@ -1,0 +1,3368 @@
+{
+  "plants": [
+    {
+      "name": "Tomato",
+      "category": "vegetable",
+      "growth_form": "vine",
+      "edible_part": "fruit",
+      "family": "Solanaceae"
+    },
+    {
+      "name": "Carrot",
+      "category": "vegetable",
+      "growth_form": "underground",
+      "edible_part": "root",
+      "family": "Apiaceae"
+    },
+    {
+      "name": "Apple",
+      "category": "fruit",
+      "growth_form": "tree",
+      "edible_part": "fruit",
+      "family": "Rosaceae"
+    },
+    {
+      "name": "Strawberry",
+      "category": "fruit",
+      "growth_form": "groundcover",
+      "edible_part": "fruit",
+      "family": "Rosaceae"
+    },
+    {
+      "name": "Basil",
+      "category": "herb",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Lamiaceae"
+    },
+    {
+      "name": "Mint",
+      "category": "herb",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Lamiaceae"
+    },
+    {
+      "name": "Sunflower",
+      "category": "flower",
+      "growth_form": "herbaceous",
+      "edible_part": "seeds",
+      "family": "Asteraceae"
+    },
+    {
+      "name": "Peanut",
+      "category": "nut",
+      "growth_form": "underground",
+      "edible_part": "seeds",
+      "family": "Fabaceae"
+    },
+    {
+      "name": "Potato",
+      "category": "vegetable",
+      "growth_form": "underground",
+      "edible_part": "tuber",
+      "family": "Solanaceae"
+    },
+    {
+      "name": "Corn",
+      "category": "grain",
+      "growth_form": "herbaceous",
+      "edible_part": "seeds",
+      "family": "Poaceae"
+    },
+    {
+      "name": "Cucumber",
+      "category": "vegetable",
+      "growth_form": "vine",
+      "edible_part": "fruit",
+      "family": "Cucurbitaceae"
+    },
+    {
+      "name": "Lettuce",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Asteraceae"
+    },
+    {
+      "name": "Blueberry",
+      "category": "fruit",
+      "growth_form": "bush",
+      "edible_part": "fruit",
+      "family": "Ericaceae"
+    },
+    {
+      "name": "Blackberry",
+      "category": "fruit",
+      "growth_form": "vine",
+      "edible_part": "fruit",
+      "family": "Rosaceae"
+    },
+    {
+      "name": "Garlic",
+      "category": "vegetable",
+      "growth_form": "underground",
+      "edible_part": "bulb",
+      "family": "Amaryllidaceae"
+    },
+    {
+      "name": "Onion",
+      "category": "vegetable",
+      "growth_form": "underground",
+      "edible_part": "bulb",
+      "family": "Amaryllidaceae"
+    },
+    {
+      "name": "Pumpkin",
+      "category": "vegetable",
+      "growth_form": "vine",
+      "edible_part": "fruit",
+      "family": "Cucurbitaceae"
+    },
+    {
+      "name": "Oregano",
+      "category": "herb",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Lamiaceae"
+    },
+    {
+      "name": "Almond",
+      "category": "nut",
+      "growth_form": "tree",
+      "edible_part": "seeds",
+      "family": "Rosaceae"
+    },
+    {
+      "name": "Walnut",
+      "category": "nut",
+      "growth_form": "tree",
+      "edible_part": "seeds",
+      "family": "Juglandaceae"
+    },
+    {
+      "name": "Pepper",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "fruit",
+      "family": "Solanaceae"
+    },
+    {
+      "name": "Broccoli",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "flowers",
+      "family": "Brassicaceae"
+    },
+    {
+      "name": "Cabbage",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Brassicaceae"
+    },
+    {
+      "name": "Cauliflower",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "flowers",
+      "family": "Brassicaceae"
+    },
+    {
+      "name": "Spinach",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Amaranthaceae"
+    },
+    {
+      "name": "Kale",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Brassicaceae"
+    },
+    {
+      "name": "Zucchini",
+      "category": "vegetable",
+      "growth_form": "bush",
+      "edible_part": "fruit",
+      "family": "Cucurbitaceae"
+    },
+    {
+      "name": "Eggplant",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "fruit",
+      "family": "Solanaceae"
+    },
+    {
+      "name": "Beet",
+      "category": "vegetable",
+      "growth_form": "underground",
+      "edible_part": "root",
+      "family": "Amaranthaceae"
+    },
+    {
+      "name": "Radish",
+      "category": "vegetable",
+      "growth_form": "underground",
+      "edible_part": "root",
+      "family": "Brassicaceae"
+    },
+    {
+      "name": "Pea",
+      "category": "vegetable",
+      "growth_form": "vine",
+      "edible_part": "seeds",
+      "family": "Fabaceae"
+    },
+    {
+      "name": "Bean",
+      "category": "vegetable",
+      "growth_form": "vine",
+      "edible_part": "seeds",
+      "family": "Fabaceae"
+    },
+    {
+      "name": "Asparagus",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "stems",
+      "family": "Asparagaceae"
+    },
+    {
+      "name": "Celery",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "stems",
+      "family": "Apiaceae"
+    },
+    {
+      "name": "Brussels Sprout",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Brassicaceae"
+    },
+    {
+      "name": "Turnip",
+      "category": "vegetable",
+      "growth_form": "underground",
+      "edible_part": "root",
+      "family": "Brassicaceae"
+    },
+    {
+      "name": "Sweet Potato",
+      "category": "vegetable",
+      "growth_form": "vine",
+      "edible_part": "tuber",
+      "family": "Convolvulaceae"
+    },
+    {
+      "name": "Artichoke",
+      "category": "vegetable",
+      "growth_form": "herbaceous",
+      "edible_part": "flowers",
+      "family": "Asteraceae"
+    },
+    {
+      "name": "Raspberry",
+      "category": "fruit",
+      "growth_form": "bush",
+      "edible_part": "fruit",
+      "family": "Rosaceae"
+    },
+    {
+      "name": "Grape",
+      "category": "fruit",
+      "growth_form": "vine",
+      "edible_part": "fruit",
+      "family": "Vitaceae"
+    },
+    {
+      "name": "Watermelon",
+      "category": "fruit",
+      "growth_form": "vine",
+      "edible_part": "fruit",
+      "family": "Cucurbitaceae"
+    },
+    {
+      "name": "Cantaloupe",
+      "category": "fruit",
+      "growth_form": "vine",
+      "edible_part": "fruit",
+      "family": "Cucurbitaceae"
+    },
+    {
+      "name": "Peach",
+      "category": "fruit",
+      "growth_form": "tree",
+      "edible_part": "fruit",
+      "family": "Rosaceae"
+    },
+    {
+      "name": "Cherry",
+      "category": "fruit",
+      "growth_form": "tree",
+      "edible_part": "fruit",
+      "family": "Rosaceae"
+    },
+    {
+      "name": "Pear",
+      "category": "fruit",
+      "growth_form": "tree",
+      "edible_part": "fruit",
+      "family": "Rosaceae"
+    },
+    {
+      "name": "Fig",
+      "category": "fruit",
+      "growth_form": "tree",
+      "edible_part": "fruit",
+      "family": "Moraceae"
+    },
+    {
+      "name": "Rosemary",
+      "category": "herb",
+      "growth_form": "bush",
+      "edible_part": "leaves",
+      "family": "Lamiaceae"
+    },
+    {
+      "name": "Thyme",
+      "category": "herb",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Lamiaceae"
+    },
+    {
+      "name": "Dill",
+      "category": "herb",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Apiaceae"
+    },
+    {
+      "name": "Cilantro",
+      "category": "herb",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Apiaceae"
+    },
+    {
+      "name": "Parsley",
+      "category": "herb",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Apiaceae"
+    },
+    {
+      "name": "Sage",
+      "category": "herb",
+      "growth_form": "bush",
+      "edible_part": "leaves",
+      "family": "Lamiaceae"
+    },
+    {
+      "name": "Chive",
+      "category": "herb",
+      "growth_form": "herbaceous",
+      "edible_part": "leaves",
+      "family": "Amaryllidaceae"
+    },
+    {
+      "name": "Lavender",
+      "category": "herb",
+      "growth_form": "bush",
+      "edible_part": "flowers",
+      "family": "Lamiaceae"
+    },
+    {
+      "name": "Wheat",
+      "category": "grain",
+      "growth_form": "herbaceous",
+      "edible_part": "seeds",
+      "family": "Poaceae"
+    }
+  ],
+  "zones": [
+    { "name": "Zone 1", "min_temperature": -60, "max_temperature": -50 },
+    { "name": "Zone 2", "min_temperature": -50, "max_temperature": -40 },
+    { "name": "Zone 3", "min_temperature": -40, "max_temperature": -30 },
+    { "name": "Zone 4", "min_temperature": -30, "max_temperature": -20 },
+    { "name": "Zone 5", "min_temperature": -20, "max_temperature": -10 },
+    { "name": "Zone 6", "min_temperature": -10, "max_temperature": 0 },
+    { "name": "Zone 7", "min_temperature": 0, "max_temperature": 10 },
+    { "name": "Zone 8", "min_temperature": 10, "max_temperature": 20 },
+    { "name": "Zone 9", "min_temperature": 20, "max_temperature": 30 },
+    { "name": "Zone 10", "min_temperature": 30, "max_temperature": 40 },
+    { "name": "Zone 11", "min_temperature": 40, "max_temperature": 50 },
+    { "name": "Zone 12", "min_temperature": 50, "max_temperature": 60 },
+    { "name": "Zone 13", "min_temperature": 60, "max_temperature": 70 }
+  ],
+  "plant_types": [
+    {
+      "plant_name": "Tomato",
+      "name": "Cherry Tomato",
+      "scientific_name": "Solanum lycopersicum var. cerasiforme",
+      "description": "Small, sweet, bite-sized tomatoes.",
+      "planting_notes": "Great for snacking, grows well in containers."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Grape Tomato",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Oblong, firm, and sweet, stores well.",
+      "planting_notes": "Ideal for salads, resistant to cracking."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Beefsteak Tomato",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Huge, meaty, juicy tomatoes.",
+      "planting_notes": "Needs support, long growing season."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Brandywine",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Large heirloom with rich, sweet flavor.",
+      "planting_notes": "Prone to disease, needs staking."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Roma Tomato",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Egg-shaped paste tomato with low moisture.",
+      "planting_notes": "Excellent for sauces and canning."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "San Marzano",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Classic Italian paste tomato with deep flavor.",
+      "planting_notes": "Grows well in full sun, needs support."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Green Zebra",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Green-striped heirloom with tangy flavor.",
+      "planting_notes": "Harvest when slightly soft."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Yellow Pear",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Small, yellow pear-shaped fruit with mild taste.",
+      "planting_notes": "Attractive in salads, grows prolifically."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Black Krim",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Dark reddish-purple heirloom with smoky flavor.",
+      "planting_notes": "Prefers heat, benefits from regular watering."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Mortgage Lifter",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Large, sweet beefsteak heirloom variety.",
+      "planting_notes": "Needs staking and spacing."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Sungold",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Bright orange cherry tomato, extremely sweet.",
+      "planting_notes": "Indeterminate, harvest regularly."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Early Girl",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Medium-sized red tomato with early harvest.",
+      "planting_notes": "Good for cooler climates and short seasons."
+    },
+    {
+      "plant_name": "Tomato",
+      "name": "Celebrity",
+      "scientific_name": "Solanum lycopersicum",
+      "description": "Disease-resistant hybrid with balanced flavor.",
+      "planting_notes": "Determinate, good for slicing."
+    },
+    {
+      "plant_name": "Carrot",
+      "name": "Nantes",
+      "scientific_name": "Daucus carota subsp. sativus",
+      "description": "Cylindrical, sweet, and tender carrot with little core.",
+      "planting_notes": "Best in loose, well-drained soil. Thin to 2 inches apart."
+    },
+    {
+      "plant_name": "Carrot",
+      "name": "Danvers",
+      "scientific_name": "Daucus carota subsp. sativus",
+      "description": "Broad-shouldered carrot that tolerates heavy soil.",
+      "planting_notes": "Good for clay soils. Direct sow in early spring."
+    },
+    {
+      "plant_name": "Carrot",
+      "name": "Imperator",
+      "scientific_name": "Daucus carota subsp. sativus",
+      "description": "Long, slender carrot common in grocery stores.",
+      "planting_notes": "Requires deep, loose soil. 70-80 days to maturity."
+    },
+    {
+      "plant_name": "Apple",
+      "name": "Fuji",
+      "scientific_name": "Malus domestica 'Fuji'",
+      "description": "Crisp, sweet apple with a long shelf life.",
+      "planting_notes": "Needs cross-pollinator. Full sun, well-drained soil."
+    },
+    {
+      "plant_name": "Apple",
+      "name": "Gala",
+      "scientific_name": "Malus domestica 'Gala'",
+      "description": "Mild, sweet apple that ripens early.",
+      "planting_notes": "Early harvest variety. Plant with pollinizer."
+    },
+    {
+      "plant_name": "Apple",
+      "name": "Granny Smith",
+      "scientific_name": "Malus domestica 'Granny Smith'",
+      "description": "Tart green apple excellent for baking.",
+      "planting_notes": "Needs long growing season, best in warmer zones."
+    },
+    {
+      "plant_name": "Strawberry",
+      "name": "June-bearing",
+      "scientific_name": "Fragaria x ananassa",
+      "description": "Produces one large crop in early summer.",
+      "planting_notes": "Plant in rows. Remove runners first year for stronger plants."
+    },
+    {
+      "plant_name": "Strawberry",
+      "name": "Everbearing",
+      "scientific_name": "Fragaria x ananassa",
+      "description": "Produces two to three crops throughout season.",
+      "planting_notes": "Remove first-year blossoms through June for better yield."
+    },
+    {
+      "plant_name": "Strawberry",
+      "name": "Day-neutral",
+      "scientific_name": "Fragaria x ananassa",
+      "description": "Produces fruit throughout the season regardless of day length.",
+      "planting_notes": "Excellent for containers, consistent production."
+    },
+    {
+      "plant_name": "Basil",
+      "name": "Sweet Basil",
+      "scientific_name": "Ocimum basilicum",
+      "description": "Classic culinary basil with large, fragrant leaves.",
+      "planting_notes": "Start indoors 6 weeks before last frost, or direct sow after frost."
+    },
+    {
+      "plant_name": "Basil",
+      "name": "Thai Basil",
+      "scientific_name": "Ocimum basilicum var. thyrsiflora",
+      "description": "Spicier basil with anise notes, used in Asian cuisine.",
+      "planting_notes": "More heat tolerant than sweet basil, full sun."
+    },
+    {
+      "plant_name": "Basil",
+      "name": "Purple Basil",
+      "scientific_name": "Ocimum basilicum 'Purpurascens'",
+      "description": "Ornamental basil with deep purple leaves and mild flavor.",
+      "planting_notes": "Decorative and edible, pinch flowers for continued leaf production."
+    },
+    {
+      "plant_name": "Potato",
+      "name": "Russet",
+      "scientific_name": "Solanum tuberosum 'Russet Burbank'",
+      "description": "Large, starchy potato ideal for baking and frying.",
+      "planting_notes": "Plant seed potatoes 4 inches deep, 12 inches apart, hill soil as plants grow."
+    },
+    {
+      "plant_name": "Potato",
+      "name": "Yukon Gold",
+      "scientific_name": "Solanum tuberosum 'Yukon Gold'",
+      "description": "Yellow-fleshed, buttery flavor, all-purpose potato.",
+      "planting_notes": "Earlier maturing than Russet. Good for roasting and boiling."
+    },
+    {
+      "plant_name": "Potato",
+      "name": "Red Pontiac",
+      "scientific_name": "Solanum tuberosum 'Red Pontiac'",
+      "description": "Red-skinned, white-fleshed potato with waxy texture.",
+      "planting_notes": "Good for boiling and salads. Stores well in cool conditions."
+    },
+    {
+      "plant_name": "Corn",
+      "name": "Sweet Corn",
+      "scientific_name": "Zea mays var. saccharata",
+      "description": "High sugar content, eaten fresh off the cob.",
+      "planting_notes": "Plant in blocks not rows for wind pollination. Sow after last frost."
+    },
+    {
+      "plant_name": "Corn",
+      "name": "Dent Corn",
+      "scientific_name": "Zea mays var. indentata",
+      "description": "Field corn with dented kernels when dry, used for flour.",
+      "planting_notes": "Grows taller than sweet corn, harvest when fully dry."
+    },
+    {
+      "plant_name": "Corn",
+      "name": "Popcorn",
+      "scientific_name": "Zea mays var. everta",
+      "description": "Small, hard-kerneled corn that pops when heated.",
+      "planting_notes": "Let fully dry on stalk before harvesting. Isolate from sweet corn."
+    },
+    {
+      "plant_name": "Cucumber",
+      "name": "Slicing",
+      "scientific_name": "Cucumis sativus",
+      "description": "Long, smooth-skinned cucumber for fresh eating.",
+      "planting_notes": "Direct sow after frost. Trellis for better fruit shape and airflow."
+    },
+    {
+      "plant_name": "Cucumber",
+      "name": "Pickling",
+      "scientific_name": "Cucumis sativus",
+      "description": "Short, blocky cucumber with thin skin, bred for pickling.",
+      "planting_notes": "Harvest small for best results, check plants daily."
+    },
+    {
+      "plant_name": "Cucumber",
+      "name": "English",
+      "scientific_name": "Cucumis sativus",
+      "description": "Long, seedless, thin-skinned cucumber, often sold wrapped.",
+      "planting_notes": "Best grown in greenhouse or indoors, parthenocarpic variety."
+    },
+    {
+      "plant_name": "Lettuce",
+      "name": "Romaine",
+      "scientific_name": "Lactuca sativa var. longifolia",
+      "description": "Upright, crisp lettuce with elongated heads.",
+      "planting_notes": "Tolerates more heat than other types. Harvest outer leaves first."
+    },
+    {
+      "plant_name": "Lettuce",
+      "name": "Butterhead",
+      "scientific_name": "Lactuca sativa var. capitata",
+      "description": "Soft, tender leaves with buttery texture and mild flavor.",
+      "planting_notes": "Bolt-resistant variety. Harvest whole head or individual leaves."
+    },
+    {
+      "plant_name": "Lettuce",
+      "name": "Iceberg",
+      "scientific_name": "Lactuca sativa var. capitata",
+      "description": "Dense, crunchy heads with mild flavor, good shelf life.",
+      "planting_notes": "Needs cool temperatures to head properly. Start indoors in summer."
+    },
+    {
+      "plant_name": "Garlic",
+      "name": "Softneck",
+      "scientific_name": "Allium sativum var. sativum",
+      "description": "Mild, long-storing garlic commonly found in stores.",
+      "planting_notes": "Plant cloves in fall 1-2 inches deep. Harvest when lower leaves brown."
+    },
+    {
+      "plant_name": "Garlic",
+      "name": "Hardneck",
+      "scientific_name": "Allium sativum var. ophioscorodon",
+      "description": "Stronger flavor with visible scape, fewer cloves per bulb.",
+      "planting_notes": "Remove scapes in summer to direct energy to bulb."
+    },
+    {
+      "plant_name": "Garlic",
+      "name": "Elephant Garlic",
+      "scientific_name": "Allium ampeloprasum",
+      "description": "Very large, mild-flavored cloves, technically a leek relative.",
+      "planting_notes": "Plant 4 inches deep, space 12 inches apart. Milder than true garlic."
+    },
+    {
+      "plant_name": "Onion",
+      "name": "Yellow Onion",
+      "scientific_name": "Allium cepa",
+      "description": "All-purpose onion with strong flavor that mellows when cooked.",
+      "planting_notes": "Start from sets or transplants. Long-day variety for northern zones."
+    },
+    {
+      "plant_name": "Onion",
+      "name": "Red Onion",
+      "scientific_name": "Allium cepa",
+      "description": "Mild, sweet onion often eaten raw, colorful in salads.",
+      "planting_notes": "Best fresh, does not store as well as yellow. Good for grilling."
+    },
+    {
+      "plant_name": "Onion",
+      "name": "White Onion",
+      "scientific_name": "Allium cepa",
+      "description": "Sharp, pungent onion common in Mexican cuisine.",
+      "planting_notes": "Similar care to yellow onion. Harvest when tops fall over."
+    },
+    {
+      "plant_name": "Pepper",
+      "name": "Bell Pepper",
+      "scientific_name": "Capsicum annuum",
+      "description": "Sweet, blocky pepper available in green, red, yellow, and orange.",
+      "planting_notes": "Start indoors 8-10 weeks before last frost. Needs warm soil to thrive."
+    },
+    {
+      "plant_name": "Pepper",
+      "name": "Jalapeno",
+      "scientific_name": "Capsicum annuum 'Jalapeno'",
+      "description": "Medium-heat pepper popular in salsas and Mexican cuisine.",
+      "planting_notes": "Harvest green or red. Hotter when allowed to ripen fully."
+    },
+    {
+      "plant_name": "Pepper",
+      "name": "Habanero",
+      "scientific_name": "Capsicum chinense 'Habanero'",
+      "description": "Very hot pepper with fruity, citrus-like flavor.",
+      "planting_notes": "Needs long warm season. Start indoors 10-12 weeks early."
+    },
+    {
+      "plant_name": "Broccoli",
+      "name": "Calabrese",
+      "scientific_name": "Brassica oleracea var. italica",
+      "description": "Classic green broccoli with large central head and side shoots.",
+      "planting_notes": "Cool-season crop. Start indoors 6-8 weeks before last frost."
+    },
+    {
+      "plant_name": "Broccoli",
+      "name": "Sprouting Broccoli",
+      "scientific_name": "Brassica oleracea var. italica",
+      "description": "Produces many small florets over a long harvest period.",
+      "planting_notes": "Overwinters in mild climates. Harvest side shoots regularly."
+    },
+    {
+      "plant_name": "Broccoli",
+      "name": "Romanesco",
+      "scientific_name": "Brassica oleracea var. botrytis",
+      "description": "Striking fractal-patterned lime-green heads with nutty flavor.",
+      "planting_notes": "Needs consistent cool temps. More challenging than standard broccoli."
+    },
+    {
+      "plant_name": "Cabbage",
+      "name": "Green Cabbage",
+      "scientific_name": "Brassica oleracea var. capitata",
+      "description": "Dense round heads with mild flavor, staple in many cuisines.",
+      "planting_notes": "Start indoors 6-8 weeks before last frost. Space 18-24 inches apart."
+    },
+    {
+      "plant_name": "Cabbage",
+      "name": "Red Cabbage",
+      "scientific_name": "Brassica oleracea var. capitata f. rubra",
+      "description": "Purple-red cabbage with slightly peppery flavor, rich in anthocyanins.",
+      "planting_notes": "Same care as green cabbage. Color deepens in acidic soil."
+    },
+    {
+      "plant_name": "Cabbage",
+      "name": "Napa Cabbage",
+      "scientific_name": "Brassica rapa subsp. pekinensis",
+      "description": "Elongated Chinese cabbage with mild, sweet flavor.",
+      "planting_notes": "Best as fall crop. Bolts quickly in warm weather."
+    },
+    {
+      "plant_name": "Cauliflower",
+      "name": "Snowball",
+      "scientific_name": "Brassica oleracea var. botrytis",
+      "description": "Classic white cauliflower with tight, compact curds.",
+      "planting_notes": "Blanch heads by tying leaves over curd. Needs consistent moisture."
+    },
+    {
+      "plant_name": "Cauliflower",
+      "name": "Purple Cauliflower",
+      "scientific_name": "Brassica oleracea var. botrytis",
+      "description": "Vibrant purple curds that turn green when cooked, high in antioxidants.",
+      "planting_notes": "No blanching needed. Slightly more cold-tolerant than white varieties."
+    },
+    {
+      "plant_name": "Cauliflower",
+      "name": "Cheddar Cauliflower",
+      "scientific_name": "Brassica oleracea var. botrytis",
+      "description": "Orange-colored curds with mild flavor, high in beta-carotene.",
+      "planting_notes": "Same culture as white cauliflower. Color intensifies with cooking."
+    },
+    {
+      "plant_name": "Spinach",
+      "name": "Savoy Spinach",
+      "scientific_name": "Spinacia oleracea",
+      "description": "Crinkly, dark green leaves with rich flavor.",
+      "planting_notes": "Direct sow in early spring or fall. Bolts in heat."
+    },
+    {
+      "plant_name": "Spinach",
+      "name": "Flat-leaf Spinach",
+      "scientific_name": "Spinacia oleracea",
+      "description": "Smooth, spade-shaped leaves, easier to clean than savoy.",
+      "planting_notes": "Good for baby greens. Succession plant every 2-3 weeks."
+    },
+    {
+      "plant_name": "Spinach",
+      "name": "Semi-savoy Spinach",
+      "scientific_name": "Spinacia oleracea",
+      "description": "Moderately crinkled leaves combining traits of savoy and flat-leaf.",
+      "planting_notes": "More bolt-resistant than savoy. Good disease resistance."
+    },
+    {
+      "plant_name": "Kale",
+      "name": "Curly Kale",
+      "scientific_name": "Brassica oleracea var. sabellica",
+      "description": "Ruffled, dark green leaves with slightly bitter, peppery taste.",
+      "planting_notes": "Frost improves flavor. Harvest outer leaves first."
+    },
+    {
+      "plant_name": "Kale",
+      "name": "Lacinato Kale",
+      "scientific_name": "Brassica oleracea var. palmifolia",
+      "description": "Dark blue-green, bumpy leaves also known as Tuscan or dinosaur kale.",
+      "planting_notes": "Sweeter than curly kale. Excellent for soups and sauteing."
+    },
+    {
+      "plant_name": "Kale",
+      "name": "Red Russian Kale",
+      "scientific_name": "Brassica napus var. pabularia",
+      "description": "Flat, fringed leaves with purple veins and sweet flavor.",
+      "planting_notes": "Very cold hardy. Tender enough for raw salads."
+    },
+    {
+      "plant_name": "Zucchini",
+      "name": "Black Beauty",
+      "scientific_name": "Cucurbita pepo",
+      "description": "Dark green, classic zucchini with prolific production.",
+      "planting_notes": "Direct sow after frost. Harvest at 6-8 inches for best flavor."
+    },
+    {
+      "plant_name": "Zucchini",
+      "name": "Golden Zucchini",
+      "scientific_name": "Cucurbita pepo",
+      "description": "Bright yellow zucchini with mild, slightly sweet flavor.",
+      "planting_notes": "Same care as green varieties. Easy to spot among foliage."
+    },
+    {
+      "plant_name": "Zucchini",
+      "name": "Costata Romanesco",
+      "scientific_name": "Cucurbita pepo",
+      "description": "Italian heirloom with prominent ribs and nutty flavor.",
+      "planting_notes": "Best harvested small. Outstanding flavor when sliced and grilled."
+    },
+    {
+      "plant_name": "Eggplant",
+      "name": "Black Beauty Eggplant",
+      "scientific_name": "Solanum melongena",
+      "description": "Classic large, dark purple globe eggplant.",
+      "planting_notes": "Start indoors 8-10 weeks before last frost. Needs warm soil above 70F."
+    },
+    {
+      "plant_name": "Eggplant",
+      "name": "Japanese Eggplant",
+      "scientific_name": "Solanum melongena",
+      "description": "Long, slender, dark purple eggplant with tender skin.",
+      "planting_notes": "Thinner skin means less bitterness. Harvest frequently for continued production."
+    },
+    {
+      "plant_name": "Eggplant",
+      "name": "Rosa Bianca",
+      "scientific_name": "Solanum melongena",
+      "description": "Italian heirloom with lavender and white skin, creamy flesh.",
+      "planting_notes": "Mild, non-bitter. Needs long warm season for best results."
+    },
+    {
+      "plant_name": "Beet",
+      "name": "Detroit Dark Red",
+      "scientific_name": "Beta vulgaris",
+      "description": "Classic round, deep red beet with sweet flavor.",
+      "planting_notes": "Direct sow in spring or fall. Thin to 3-4 inches apart."
+    },
+    {
+      "plant_name": "Beet",
+      "name": "Golden Beet",
+      "scientific_name": "Beta vulgaris",
+      "description": "Yellow-orange beet that does not bleed color, milder than red.",
+      "planting_notes": "Same culture as red beets. Does not stain like red varieties."
+    },
+    {
+      "plant_name": "Beet",
+      "name": "Chioggia",
+      "scientific_name": "Beta vulgaris",
+      "description": "Italian heirloom with red and white striped interior.",
+      "planting_notes": "Best eaten young for pronounced stripes. Sweet and mild."
+    },
+    {
+      "plant_name": "Radish",
+      "name": "Cherry Belle",
+      "scientific_name": "Raphanus sativus",
+      "description": "Classic round, red radish with crisp white flesh.",
+      "planting_notes": "Ready in 22 days. Direct sow every 2 weeks for continuous harvest."
+    },
+    {
+      "plant_name": "Radish",
+      "name": "French Breakfast",
+      "scientific_name": "Raphanus sativus",
+      "description": "Elongated red radish with white tip and mild flavor.",
+      "planting_notes": "Quick growing, best in cool weather. Goes hot in heat."
+    },
+    {
+      "plant_name": "Radish",
+      "name": "Daikon",
+      "scientific_name": "Raphanus sativus var. longipinnatus",
+      "description": "Large white Asian radish used in stir-fries and pickling.",
+      "planting_notes": "Best as fall crop. Needs deep, loose soil for long roots."
+    },
+    {
+      "plant_name": "Pea",
+      "name": "Sugar Snap Pea",
+      "scientific_name": "Pisum sativum var. macrocarpon",
+      "description": "Sweet, edible-podded pea with thick, crunchy walls.",
+      "planting_notes": "Direct sow in early spring as soon as soil is workable. Provide trellis."
+    },
+    {
+      "plant_name": "Pea",
+      "name": "Snow Pea",
+      "scientific_name": "Pisum sativum var. saccharatum",
+      "description": "Flat, edible-podded pea used in stir-fries.",
+      "planting_notes": "Cool-season crop. Sow 4-6 weeks before last frost."
+    },
+    {
+      "plant_name": "Pea",
+      "name": "Garden Pea",
+      "scientific_name": "Pisum sativum",
+      "description": "Traditional shelling pea with sweet, round seeds inside tough pod.",
+      "planting_notes": "Shell before eating. Provide support for vines."
+    },
+    {
+      "plant_name": "Bean",
+      "name": "Bush Bean",
+      "scientific_name": "Phaseolus vulgaris",
+      "description": "Compact green bean that does not require support.",
+      "planting_notes": "Direct sow after last frost. Harvest every 2-3 days for continued production."
+    },
+    {
+      "plant_name": "Bean",
+      "name": "Pole Bean",
+      "scientific_name": "Phaseolus vulgaris",
+      "description": "Climbing green bean that produces over a long season.",
+      "planting_notes": "Needs trellis or poles. Higher yield than bush beans over the season."
+    },
+    {
+      "plant_name": "Bean",
+      "name": "Lima Bean",
+      "scientific_name": "Phaseolus lunatus",
+      "description": "Large, flat, buttery bean also known as butter bean.",
+      "planting_notes": "Needs warm soil above 65F. Long growing season required."
+    },
+    {
+      "plant_name": "Asparagus",
+      "name": "Jersey Giant",
+      "scientific_name": "Asparagus officinalis 'Jersey Giant'",
+      "description": "All-male hybrid producing thick, tender spears.",
+      "planting_notes": "Plant crowns 6-8 inches deep. Do not harvest first 2 years."
+    },
+    {
+      "plant_name": "Asparagus",
+      "name": "Purple Passion",
+      "scientific_name": "Asparagus officinalis 'Purple Passion'",
+      "description": "Sweet, tender purple spears that turn green when cooked.",
+      "planting_notes": "Sweeter than green varieties. Same long-term care requirements."
+    },
+    {
+      "plant_name": "Celery",
+      "name": "Pascal Celery",
+      "scientific_name": "Apium graveolens var. dulce",
+      "description": "Classic green celery with thick, crunchy stalks.",
+      "planting_notes": "Start indoors 10-12 weeks early. Needs consistent moisture and rich soil."
+    },
+    {
+      "plant_name": "Celery",
+      "name": "Golden Self-Blanching",
+      "scientific_name": "Apium graveolens var. dulce",
+      "description": "Yellow-green stalks that self-blanch, milder flavor.",
+      "planting_notes": "Easier than green celery. Less bitter without manual blanching."
+    },
+    {
+      "plant_name": "Brussels Sprout",
+      "name": "Long Island Improved",
+      "scientific_name": "Brassica oleracea var. gemmifera",
+      "description": "Compact stalks covered in tight, round sprouts.",
+      "planting_notes": "Start indoors in spring for fall harvest. Frost improves sweetness."
+    },
+    {
+      "plant_name": "Brussels Sprout",
+      "name": "Red Rubine",
+      "scientific_name": "Brassica oleracea var. gemmifera",
+      "description": "Purple-red Brussels sprouts with nutty flavor.",
+      "planting_notes": "Same culture as green varieties. Color holds when lightly cooked."
+    },
+    {
+      "plant_name": "Turnip",
+      "name": "Purple Top White Globe",
+      "scientific_name": "Brassica rapa subsp. rapa",
+      "description": "Classic turnip with purple crown and white base, mild when young.",
+      "planting_notes": "Direct sow spring or fall. Harvest at 2-3 inches for mildest flavor."
+    },
+    {
+      "plant_name": "Turnip",
+      "name": "Tokyo Cross",
+      "scientific_name": "Brassica rapa subsp. rapa",
+      "description": "Small, white, fast-maturing turnip with sweet flavor.",
+      "planting_notes": "Ready in 35 days. Excellent for succession planting."
+    },
+    {
+      "plant_name": "Sweet Potato",
+      "name": "Beauregard",
+      "scientific_name": "Ipomoea batatas 'Beauregard'",
+      "description": "Orange-fleshed sweet potato, most popular variety in the US.",
+      "planting_notes": "Plant slips after soil reaches 65F. Needs 90-120 days of warm weather."
+    },
+    {
+      "plant_name": "Sweet Potato",
+      "name": "Japanese Sweet Potato",
+      "scientific_name": "Ipomoea batatas",
+      "description": "Purple skin with white, dry, sweet flesh popular in Asian cuisine.",
+      "planting_notes": "Same culture as orange varieties. Slightly longer growing season."
+    },
+    {
+      "plant_name": "Artichoke",
+      "name": "Green Globe",
+      "scientific_name": "Cynara cardunculus var. scolymus",
+      "description": "Classic large artichoke with meaty, tender heart.",
+      "planting_notes": "Perennial in zones 7-11. Start indoors in colder zones for annual harvest."
+    },
+    {
+      "plant_name": "Artichoke",
+      "name": "Imperial Star",
+      "scientific_name": "Cynara cardunculus var. scolymus",
+      "description": "Bred specifically for annual production in cold climates.",
+      "planting_notes": "Needs vernalization. Start indoors 8-10 weeks before transplanting."
+    },
+    {
+      "plant_name": "Raspberry",
+      "name": "Heritage Raspberry",
+      "scientific_name": "Rubus idaeus 'Heritage'",
+      "description": "Everbearing red raspberry producing fruit in summer and fall.",
+      "planting_notes": "Plant bare root in spring. Produces on both first and second year canes."
+    },
+    {
+      "plant_name": "Raspberry",
+      "name": "Autumn Bliss",
+      "scientific_name": "Rubus idaeus 'Autumn Bliss'",
+      "description": "Primocane-fruiting red raspberry with large, flavorful berries.",
+      "planting_notes": "Produces on first-year canes. Can mow canes to ground in winter."
+    },
+    {
+      "plant_name": "Raspberry",
+      "name": "Black Raspberry",
+      "scientific_name": "Rubus occidentalis",
+      "description": "Dark purple-black berries with intense, complex flavor.",
+      "planting_notes": "Tip-roots to spread. Train on trellis, prune in late winter."
+    },
+    {
+      "plant_name": "Grape",
+      "name": "Concord",
+      "scientific_name": "Vitis labrusca 'Concord'",
+      "description": "Classic American grape for juice, jelly, and eating fresh.",
+      "planting_notes": "Cold hardy to Zone 4. Needs strong trellis. Prune heavily in late winter."
+    },
+    {
+      "plant_name": "Grape",
+      "name": "Thompson Seedless",
+      "scientific_name": "Vitis vinifera 'Thompson Seedless'",
+      "description": "Green, seedless table grape also used for raisins.",
+      "planting_notes": "Best in hot, dry climates zones 7-9. Needs full sun and good airflow."
+    },
+    {
+      "plant_name": "Grape",
+      "name": "Muscadine",
+      "scientific_name": "Vitis rotundifolia",
+      "description": "Thick-skinned Southern grape with musky, sweet flavor.",
+      "planting_notes": "Best in zones 7-9. Needs separate male and female vines for most varieties."
+    },
+    {
+      "plant_name": "Watermelon",
+      "name": "Crimson Sweet",
+      "scientific_name": "Citrullus lanatus",
+      "description": "Classic oblong watermelon with dark and light green stripes.",
+      "planting_notes": "Direct sow after frost in warm soil. Needs 80-90 days and lots of space."
+    },
+    {
+      "plant_name": "Watermelon",
+      "name": "Sugar Baby",
+      "scientific_name": "Citrullus lanatus",
+      "description": "Small, round icebox watermelon perfect for small gardens.",
+      "planting_notes": "Compact vines, matures in 75 days. Good for northern gardens."
+    },
+    {
+      "plant_name": "Watermelon",
+      "name": "Charleston Gray",
+      "scientific_name": "Citrullus lanatus",
+      "description": "Large, oblong watermelon with gray-green rind and red flesh.",
+      "planting_notes": "Disease resistant. Needs long, hot growing season."
+    },
+    {
+      "plant_name": "Cantaloupe",
+      "name": "Hales Best",
+      "scientific_name": "Cucumis melo var. cantalupensis",
+      "description": "Classic muskmelon with netted rind and sweet orange flesh.",
+      "planting_notes": "Direct sow after frost. Ripe when stem slips easily from fruit."
+    },
+    {
+      "plant_name": "Cantaloupe",
+      "name": "Ambrosia",
+      "scientific_name": "Cucumis melo var. cantalupensis",
+      "description": "Exceptionally sweet melon with thick, juicy, salmon-colored flesh.",
+      "planting_notes": "Needs warm soil above 65F. Excellent disease resistance."
+    },
+    {
+      "plant_name": "Peach",
+      "name": "Elberta",
+      "scientific_name": "Prunus persica 'Elberta'",
+      "description": "Large, yellow freestone peach with classic flavor.",
+      "planting_notes": "Self-fertile. Needs 800 chill hours. Prune annually for best production."
+    },
+    {
+      "plant_name": "Peach",
+      "name": "Redhaven",
+      "scientific_name": "Prunus persica 'Redhaven'",
+      "description": "Medium freestone peach, firm and excellent for canning.",
+      "planting_notes": "Cold hardy, good for Zone 5-8. Thin fruit for larger peaches."
+    },
+    {
+      "plant_name": "Peach",
+      "name": "Belle of Georgia",
+      "scientific_name": "Prunus persica 'Belle of Georgia'",
+      "description": "White-fleshed freestone peach with sweet, delicate flavor.",
+      "planting_notes": "Good disease resistance. Needs 850 chill hours."
+    },
+    {
+      "plant_name": "Cherry",
+      "name": "Bing Cherry",
+      "scientific_name": "Prunus avium 'Bing'",
+      "description": "Large, dark red sweet cherry, the most popular variety.",
+      "planting_notes": "Needs cross-pollinator. Full sun, well-drained soil. Zone 5-8."
+    },
+    {
+      "plant_name": "Cherry",
+      "name": "Montmorency",
+      "scientific_name": "Prunus cerasus 'Montmorency'",
+      "description": "Classic tart/sour cherry for pies, preserves, and juice.",
+      "planting_notes": "Self-fertile. Cold hardy to Zone 4. Easier than sweet cherries."
+    },
+    {
+      "plant_name": "Cherry",
+      "name": "Rainier",
+      "scientific_name": "Prunus avium 'Rainier'",
+      "description": "Yellow-red sweet cherry with exceptionally sweet, delicate flavor.",
+      "planting_notes": "Needs pollinator. Susceptible to rain cracking. Zones 5-8."
+    },
+    {
+      "plant_name": "Pear",
+      "name": "Bartlett",
+      "scientific_name": "Pyrus communis 'Bartlett'",
+      "description": "Classic yellow pear with sweet, aromatic flavor.",
+      "planting_notes": "Needs cross-pollinator. Pick before fully ripe, ripen off tree."
+    },
+    {
+      "plant_name": "Pear",
+      "name": "Anjou",
+      "scientific_name": "Pyrus communis 'Anjou'",
+      "description": "Green pear with firm, juicy flesh and mild flavor.",
+      "planting_notes": "Long storage life. Needs cold period after harvest to ripen properly."
+    },
+    {
+      "plant_name": "Pear",
+      "name": "Asian Pear",
+      "scientific_name": "Pyrus pyrifolia",
+      "description": "Round, crisp pear with apple-like texture, eaten fresh.",
+      "planting_notes": "Ripens on tree unlike European pears. Thin fruit for larger size."
+    },
+    {
+      "plant_name": "Fig",
+      "name": "Brown Turkey",
+      "scientific_name": "Ficus carica 'Brown Turkey'",
+      "description": "Hardy fig with brownish-purple skin and sweet, pink flesh.",
+      "planting_notes": "Cold hardy to Zone 7. Can grow in containers in colder zones."
+    },
+    {
+      "plant_name": "Fig",
+      "name": "Black Mission",
+      "scientific_name": "Ficus carica 'Black Mission'",
+      "description": "Dark purple-black fig with rich, sweet flavor.",
+      "planting_notes": "Best in zones 8-10. Produces two crops per year in warm climates."
+    },
+    {
+      "plant_name": "Fig",
+      "name": "Celeste",
+      "scientific_name": "Ficus carica 'Celeste'",
+      "description": "Small, sweet fig with violet skin, also called Sugar Fig.",
+      "planting_notes": "Most cold-hardy fig variety. Closed eye resists insects and spoilage."
+    },
+    {
+      "plant_name": "Rosemary",
+      "name": "Tuscan Blue",
+      "scientific_name": "Salvia rosmarinus 'Tuscan Blue'",
+      "description": "Upright rosemary with intense flavor and blue flowers.",
+      "planting_notes": "Perennial in zones 8-10. Grow in containers in colder zones."
+    },
+    {
+      "plant_name": "Rosemary",
+      "name": "Prostrate Rosemary",
+      "scientific_name": "Salvia rosmarinus 'Prostratus'",
+      "description": "Trailing rosemary ideal for ground cover or hanging baskets.",
+      "planting_notes": "Zones 8-10. Excellent drainage required, drought tolerant once established."
+    },
+    {
+      "plant_name": "Rosemary",
+      "name": "Arp Rosemary",
+      "scientific_name": "Salvia rosmarinus 'Arp'",
+      "description": "Most cold-hardy rosemary, surviving to Zone 6.",
+      "planting_notes": "Hardy to Zone 6 with protection. Lighter flavor than Tuscan Blue."
+    },
+    {
+      "plant_name": "Thyme",
+      "name": "Common Thyme",
+      "scientific_name": "Thymus vulgaris",
+      "description": "Classic culinary thyme with strong, earthy flavor.",
+      "planting_notes": "Full sun, well-drained soil. Perennial in zones 5-9."
+    },
+    {
+      "plant_name": "Thyme",
+      "name": "Lemon Thyme",
+      "scientific_name": "Thymus citriodorus",
+      "description": "Citrus-scented thyme excellent with fish and poultry.",
+      "planting_notes": "Same care as common thyme. Slightly less cold hardy."
+    },
+    {
+      "plant_name": "Thyme",
+      "name": "Creeping Thyme",
+      "scientific_name": "Thymus serpyllum",
+      "description": "Low-growing thyme used as ground cover between stepping stones.",
+      "planting_notes": "Tolerates light foot traffic. Excellent pollinator plant."
+    },
+    {
+      "plant_name": "Dill",
+      "name": "Bouquet Dill",
+      "scientific_name": "Anethum graveolens 'Bouquet'",
+      "description": "Compact dill with large seed heads, good for pickling.",
+      "planting_notes": "Direct sow after frost. Self-seeds readily. Attracts beneficial insects."
+    },
+    {
+      "plant_name": "Dill",
+      "name": "Fernleaf Dill",
+      "scientific_name": "Anethum graveolens 'Fernleaf'",
+      "description": "Dwarf dill ideal for containers, slow to bolt.",
+      "planting_notes": "18 inches tall. Great for windowsill herb gardens."
+    },
+    {
+      "plant_name": "Cilantro",
+      "name": "Santo Cilantro",
+      "scientific_name": "Coriandrum sativum 'Santo'",
+      "description": "Slow-bolting cilantro with large, flavorful leaves.",
+      "planting_notes": "Direct sow in cool weather. Succession plant every 3 weeks."
+    },
+    {
+      "plant_name": "Cilantro",
+      "name": "Calypso Cilantro",
+      "scientific_name": "Coriandrum sativum 'Calypso'",
+      "description": "Very slow-bolting variety, longest leaf production of any cilantro.",
+      "planting_notes": "Best for warm-climate gardeners. Direct sow, do not transplant."
+    },
+    {
+      "plant_name": "Parsley",
+      "name": "Italian Flat-leaf Parsley",
+      "scientific_name": "Petroselinum crispum var. neapolitanum",
+      "description": "Flat leaves with stronger flavor than curly, preferred for cooking.",
+      "planting_notes": "Biennial. Slow to germinate, soak seeds overnight. Start indoors or direct sow."
+    },
+    {
+      "plant_name": "Parsley",
+      "name": "Curly Parsley",
+      "scientific_name": "Petroselinum crispum",
+      "description": "Tightly curled leaves, milder flavor, often used as garnish.",
+      "planting_notes": "Same culture as flat-leaf. More cold tolerant."
+    },
+    {
+      "plant_name": "Sage",
+      "name": "Common Sage",
+      "scientific_name": "Salvia officinalis",
+      "description": "Classic gray-green culinary sage with strong, savory flavor.",
+      "planting_notes": "Perennial in zones 5-8. Well-drained soil essential. Woody after 3-4 years."
+    },
+    {
+      "plant_name": "Sage",
+      "name": "Purple Sage",
+      "scientific_name": "Salvia officinalis 'Purpurascens'",
+      "description": "Ornamental sage with purple-tinged leaves and same culinary use.",
+      "planting_notes": "Slightly less hardy than green sage. Beautiful in herb gardens."
+    },
+    {
+      "plant_name": "Chive",
+      "name": "Common Chive",
+      "scientific_name": "Allium schoenoprasum",
+      "description": "Mild onion-flavored herb with hollow, grass-like leaves.",
+      "planting_notes": "Perennial in zones 3-9. Divide clumps every 3 years."
+    },
+    {
+      "plant_name": "Chive",
+      "name": "Garlic Chive",
+      "scientific_name": "Allium tuberosum",
+      "description": "Flat-leaved chive with mild garlic flavor and white flowers.",
+      "planting_notes": "Perennial. Remove seed heads to prevent aggressive self-seeding."
+    },
+    {
+      "plant_name": "Lavender",
+      "name": "English Lavender",
+      "scientific_name": "Lavandula angustifolia",
+      "description": "Classic fragrant lavender with purple flower spikes.",
+      "planting_notes": "Full sun, excellent drainage. Hardy to Zone 5. Prune after flowering."
+    },
+    {
+      "plant_name": "Lavender",
+      "name": "French Lavender",
+      "scientific_name": "Lavandula dentata",
+      "description": "Serrated leaves with fragrant flower heads topped by bracts.",
+      "planting_notes": "Zones 8-11. Blooms nearly year-round in mild climates."
+    },
+    {
+      "plant_name": "Lavender",
+      "name": "Grosso Lavender",
+      "scientific_name": "Lavandula x intermedia 'Grosso'",
+      "description": "Lavandin hybrid prized for essential oil production and strong scent.",
+      "planting_notes": "Zones 5-9. Larger than English lavender. Excellent for dried arrangements."
+    },
+    {
+      "plant_name": "Wheat",
+      "name": "Hard Red Winter Wheat",
+      "scientific_name": "Triticum aestivum",
+      "description": "High-protein wheat used for bread flour, planted in fall.",
+      "planting_notes": "Sow in fall for late spring harvest. Needs vernalization period."
+    },
+    {
+      "plant_name": "Wheat",
+      "name": "Hard Red Spring Wheat",
+      "scientific_name": "Triticum aestivum",
+      "description": "Spring-planted bread wheat with high protein content.",
+      "planting_notes": "Sow as early as soil can be worked. 90-120 days to harvest."
+    },
+    {
+      "plant_name": "Mint",
+      "name": "Peppermint",
+      "scientific_name": "Mentha x piperita",
+      "description": "Strong, cooling mint used in teas and desserts.",
+      "planting_notes": "Very aggressive spreader. Grow in containers to control."
+    },
+    {
+      "plant_name": "Mint",
+      "name": "Spearmint",
+      "scientific_name": "Mentha spicata",
+      "description": "Milder, sweeter mint used in cooking and drinks.",
+      "planting_notes": "Spreads vigorously by runners. Partial shade is fine."
+    },
+    {
+      "plant_name": "Sunflower",
+      "name": "Mammoth Sunflower",
+      "scientific_name": "Helianthus annuus 'Mammoth'",
+      "description": "Giant sunflower reaching 10-12 feet with large seed heads.",
+      "planting_notes": "Direct sow after frost. Stake in windy areas. Full sun."
+    },
+    {
+      "plant_name": "Sunflower",
+      "name": "Dwarf Sunflower",
+      "scientific_name": "Helianthus annuus 'Teddy Bear'",
+      "description": "Compact 2-3 foot sunflower with fluffy double blooms.",
+      "planting_notes": "Great for containers and borders. Direct sow after frost."
+    },
+    {
+      "plant_name": "Pumpkin",
+      "name": "Jack O'Lantern",
+      "scientific_name": "Cucurbita pepo",
+      "description": "Classic carving pumpkin with smooth, orange skin.",
+      "planting_notes": "Direct sow after frost. Needs 100+ days and lots of space."
+    },
+    {
+      "plant_name": "Pumpkin",
+      "name": "Sugar Pie Pumpkin",
+      "scientific_name": "Cucurbita pepo",
+      "description": "Small, sweet pumpkin ideal for pies and baking.",
+      "planting_notes": "Better flavor than large pumpkins. 100 days to maturity."
+    },
+    {
+      "plant_name": "Blueberry",
+      "name": "Highbush Blueberry",
+      "scientific_name": "Vaccinium corymbosum",
+      "description": "Most common cultivated blueberry, 4-6 foot bushes.",
+      "planting_notes": "Needs acidic soil pH 4.5-5.5. Plant two varieties for cross-pollination."
+    },
+    {
+      "plant_name": "Blueberry",
+      "name": "Rabbiteye Blueberry",
+      "scientific_name": "Vaccinium virgatum",
+      "description": "Southern blueberry tolerating heat and drought better than highbush.",
+      "planting_notes": "Best for zones 7-9. Needs cross-pollination. Less chill hours needed."
+    },
+    {
+      "plant_name": "Blackberry",
+      "name": "Triple Crown",
+      "scientific_name": "Rubus fruticosus 'Triple Crown'",
+      "description": "Thornless, semi-erect blackberry with large, sweet berries.",
+      "planting_notes": "Thornless canes. Needs trellis support. Productive in zones 5-9."
+    },
+    {
+      "plant_name": "Blackberry",
+      "name": "Navaho",
+      "scientific_name": "Rubus fruticosus 'Navaho'",
+      "description": "Thornless, upright blackberry with firm, sweet fruit.",
+      "planting_notes": "Self-supporting canes, no trellis needed. Zones 6-10."
+    },
+    {
+      "plant_name": "Oregano",
+      "name": "Greek Oregano",
+      "scientific_name": "Origanum vulgare subsp. hirtum",
+      "description": "Intensely flavored oregano, the true culinary variety.",
+      "planting_notes": "Full sun, lean soil. More flavorful when slightly stressed."
+    },
+    {
+      "plant_name": "Oregano",
+      "name": "Italian Oregano",
+      "scientific_name": "Origanum x majoricum",
+      "description": "Milder hybrid of oregano and marjoram with sweet undertones.",
+      "planting_notes": "Less cold hardy than Greek. Good in containers."
+    },
+    {
+      "plant_name": "Peanut",
+      "name": "Virginia Peanut",
+      "scientific_name": "Arachis hypogaea",
+      "description": "Large-kerneled peanut, the type commonly roasted and sold in shells.",
+      "planting_notes": "Needs 130-150 warm days. Plant after soil reaches 65F."
+    },
+    {
+      "plant_name": "Peanut",
+      "name": "Spanish Peanut",
+      "scientific_name": "Arachis hypogaea",
+      "description": "Small, round peanut with reddish skin, used for peanut butter.",
+      "planting_notes": "Shorter season than Virginia type, about 120 days. Compact plants."
+    },
+    {
+      "plant_name": "Almond",
+      "name": "Nonpareil Almond",
+      "scientific_name": "Prunus dulcis 'Nonpareil'",
+      "description": "Most popular almond variety with thin shell and sweet kernel.",
+      "planting_notes": "Needs cross-pollinator. Best in zones 7-9 with dry summers."
+    },
+    {
+      "plant_name": "Almond",
+      "name": "All-In-One Almond",
+      "scientific_name": "Prunus dulcis 'All-In-One'",
+      "description": "Semi-dwarf, self-fertile almond good for home gardens.",
+      "planting_notes": "Self-fertile but produces more with cross-pollination. Zones 6-9."
+    },
+    {
+      "plant_name": "Walnut",
+      "name": "English Walnut",
+      "scientific_name": "Juglans regia",
+      "description": "Thin-shelled walnut with mild flavor, most commonly sold commercially.",
+      "planting_notes": "Large tree, needs space. Produces juglone that inhibits nearby plants."
+    },
+    {
+      "plant_name": "Walnut",
+      "name": "Black Walnut",
+      "scientific_name": "Juglans nigra",
+      "description": "North American native with bold, distinctive flavor and very hard shell.",
+      "planting_notes": "Produces heavy juglone. Keep 50+ feet from sensitive plants."
+    }
+  ],
+  "companions": [
+    { "plant_name": "Basil", "companion_name": "Tomato" },
+    { "plant_name": "Carrot", "companion_name": "Tomato" },
+    { "plant_name": "Corn", "companion_name": "Cucumber" },
+    { "plant_name": "Corn", "companion_name": "Pumpkin" },
+    { "plant_name": "Cucumber", "companion_name": "Lettuce" },
+    { "plant_name": "Garlic", "companion_name": "Strawberry" },
+    { "plant_name": "Garlic", "companion_name": "Tomato" },
+    { "plant_name": "Carrot", "companion_name": "Lettuce" },
+    { "plant_name": "Lettuce", "companion_name": "Strawberry" },
+    { "plant_name": "Mint", "companion_name": "Tomato" },
+    { "plant_name": "Carrot", "companion_name": "Onion" },
+    { "plant_name": "Lettuce", "companion_name": "Onion" },
+    { "plant_name": "Oregano", "companion_name": "Tomato" },
+    { "plant_name": "Cucumber", "companion_name": "Sunflower" },
+    { "plant_name": "Basil", "companion_name": "Cucumber" },
+    { "plant_name": "Basil", "companion_name": "Pepper" },
+    { "plant_name": "Tomato", "companion_name": "Pepper" },
+    { "plant_name": "Tomato", "companion_name": "Celery" },
+    { "plant_name": "Tomato", "companion_name": "Parsley" },
+    { "plant_name": "Bean", "companion_name": "Corn" },
+    { "plant_name": "Bean", "companion_name": "Cucumber" },
+    { "plant_name": "Bean", "companion_name": "Potato" },
+    { "plant_name": "Bean", "companion_name": "Celery" },
+    { "plant_name": "Bean", "companion_name": "Beet" },
+    { "plant_name": "Pea", "companion_name": "Carrot" },
+    { "plant_name": "Pea", "companion_name": "Radish" },
+    { "plant_name": "Pea", "companion_name": "Turnip" },
+    { "plant_name": "Pea", "companion_name": "Corn" },
+    { "plant_name": "Carrot", "companion_name": "Rosemary" },
+    { "plant_name": "Carrot", "companion_name": "Sage" },
+    { "plant_name": "Carrot", "companion_name": "Chive" },
+    { "plant_name": "Cabbage", "companion_name": "Dill" },
+    { "plant_name": "Cabbage", "companion_name": "Celery" },
+    { "plant_name": "Cabbage", "companion_name": "Thyme" },
+    { "plant_name": "Cabbage", "companion_name": "Onion" },
+    { "plant_name": "Cucumber", "companion_name": "Dill" },
+    { "plant_name": "Cucumber", "companion_name": "Pea" },
+    { "plant_name": "Lettuce", "companion_name": "Radish" },
+    { "plant_name": "Lettuce", "companion_name": "Chive" },
+    { "plant_name": "Spinach", "companion_name": "Strawberry" },
+    { "plant_name": "Spinach", "companion_name": "Pea" },
+    { "plant_name": "Spinach", "companion_name": "Radish" },
+    { "plant_name": "Eggplant", "companion_name": "Bean" },
+    { "plant_name": "Eggplant", "companion_name": "Pepper" },
+    { "plant_name": "Eggplant", "companion_name": "Thyme" },
+    { "plant_name": "Rosemary", "companion_name": "Bean" },
+    { "plant_name": "Rosemary", "companion_name": "Cabbage" },
+    { "plant_name": "Rosemary", "companion_name": "Sage" },
+    { "plant_name": "Garlic", "companion_name": "Raspberry" },
+    { "plant_name": "Garlic", "companion_name": "Apple" },
+    { "plant_name": "Dill", "companion_name": "Lettuce" },
+    { "plant_name": "Dill", "companion_name": "Onion" },
+    { "plant_name": "Thyme", "companion_name": "Strawberry" },
+    { "plant_name": "Chive", "companion_name": "Apple" },
+    { "plant_name": "Parsley", "companion_name": "Asparagus" },
+    { "plant_name": "Sage", "companion_name": "Bean" },
+    { "plant_name": "Lavender", "companion_name": "Rosemary" },
+    { "plant_name": "Lavender", "companion_name": "Thyme" },
+    { "plant_name": "Lavender", "companion_name": "Sage" },
+    { "plant_name": "Lavender", "companion_name": "Oregano" },
+    { "plant_name": "Tomato", "companion_name": "Asparagus" }
+  ],
+  "antagonists": [
+    { "plant_name": "Mint", "antagonist_name": "Oregano" },
+    { "plant_name": "Basil", "antagonist_name": "Garlic" },
+    { "plant_name": "Basil", "antagonist_name": "Onion" },
+    { "plant_name": "Potato", "antagonist_name": "Tomato" },
+    { "plant_name": "Tomato", "antagonist_name": "Walnut" },
+    { "plant_name": "Potato", "antagonist_name": "Walnut" },
+    { "plant_name": "Blueberry", "antagonist_name": "Walnut" },
+    { "plant_name": "Corn", "antagonist_name": "Tomato" },
+    { "plant_name": "Cucumber", "antagonist_name": "Potato" },
+    { "plant_name": "Potato", "antagonist_name": "Pumpkin" },
+    { "plant_name": "Tomato", "antagonist_name": "Cabbage" },
+    { "plant_name": "Bean", "antagonist_name": "Onion" },
+    { "plant_name": "Bean", "antagonist_name": "Garlic" },
+    { "plant_name": "Bean", "antagonist_name": "Chive" },
+    { "plant_name": "Pea", "antagonist_name": "Onion" },
+    { "plant_name": "Pea", "antagonist_name": "Garlic" },
+    { "plant_name": "Cabbage", "antagonist_name": "Strawberry" },
+    { "plant_name": "Cabbage", "antagonist_name": "Grape" },
+    { "plant_name": "Dill", "antagonist_name": "Carrot" },
+    { "plant_name": "Cucumber", "antagonist_name": "Sage" },
+    { "plant_name": "Pepper", "antagonist_name": "Bean" },
+    { "plant_name": "Asparagus", "antagonist_name": "Garlic" },
+    { "plant_name": "Asparagus", "antagonist_name": "Onion" },
+    { "plant_name": "Beet", "antagonist_name": "Bean" },
+    { "plant_name": "Broccoli", "antagonist_name": "Strawberry" },
+    { "plant_name": "Broccoli", "antagonist_name": "Tomato" },
+    { "plant_name": "Cauliflower", "antagonist_name": "Strawberry" },
+    { "plant_name": "Cauliflower", "antagonist_name": "Tomato" },
+    { "plant_name": "Walnut", "antagonist_name": "Apple" },
+    { "plant_name": "Walnut", "antagonist_name": "Blackberry" },
+    { "plant_name": "Walnut", "antagonist_name": "Pepper" },
+    { "plant_name": "Radish", "antagonist_name": "Grape" }
+  ],
+  "planting_seasons": [
+    {
+      "plant_type_name": "Cherry Tomato",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "start indoors",
+      "notes": "Short season, start early indoors 6-8 weeks before last frost."
+    },
+    {
+      "plant_type_name": "Cherry Tomato",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors 6-8 weeks before last frost date."
+    },
+    {
+      "plant_type_name": "Cherry Tomato",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Transplant after last frost, typically mid-April."
+    },
+    {
+      "plant_type_name": "Cherry Tomato",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Earlier start possible, frost risk low by March."
+    },
+    {
+      "plant_type_name": "Cherry Tomato",
+      "zone_name": "Zone 9",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Very early season possible. Also try fall planting in August."
+    },
+    {
+      "plant_type_name": "Roma Tomato",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start 6-8 weeks before last frost. Good paste tomato for Zone 6 summers."
+    },
+    {
+      "plant_type_name": "Roma Tomato",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Transplant after last frost. Determinate, no staking needed."
+    },
+    {
+      "plant_type_name": "Roma Tomato",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Can direct sow in March in Zone 8."
+    },
+    {
+      "plant_type_name": "Nantes",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "September",
+      "method": "direct sow",
+      "notes": "Successive plantings every 3 weeks for continuous harvest."
+    },
+    {
+      "plant_type_name": "Nantes",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Spring and fall crops possible. Successive planting every 3 weeks."
+    },
+    {
+      "plant_type_name": "Nantes",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Spring and fall crops. Excellent in Zone 7 cool springs."
+    },
+    {
+      "plant_type_name": "Nantes",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "November",
+      "method": "direct sow",
+      "notes": "Long growing window. Fall crop often best quality."
+    },
+    {
+      "plant_type_name": "Danvers",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "August",
+      "method": "direct sow",
+      "notes": "Tolerates heavier soil. Thin to 2 inches for best roots."
+    },
+    {
+      "plant_type_name": "Danvers",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "September",
+      "method": "direct sow",
+      "notes": "Can do spring and fall plantings in Zone 7."
+    },
+    {
+      "plant_type_name": "Sweet Basil",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "August",
+      "method": "direct sow",
+      "notes": "Wait until soil is consistently warm, above 60F."
+    },
+    {
+      "plant_type_name": "Sweet Basil",
+      "zone_name": "Zone 6",
+      "start_month": "May",
+      "end_month": "August",
+      "method": "direct sow",
+      "notes": "After all frost danger passes. Or start indoors 4-6 weeks early."
+    },
+    {
+      "plant_type_name": "Sweet Basil",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "September",
+      "method": "direct sow",
+      "notes": "After all frost danger. Longer season allows multiple successions."
+    },
+    {
+      "plant_type_name": "Sweet Basil",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Very long basil season. Pinch flowers to extend harvest."
+    },
+    {
+      "plant_type_name": "Sweet Basil",
+      "zone_name": "Zone 9",
+      "start_month": "March",
+      "end_month": "November",
+      "method": "direct sow",
+      "notes": "Excellent basil climate. Watch for bolting in peak summer heat."
+    },
+    {
+      "plant_type_name": "Russet",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Plant seed potatoes 4 inches deep after last frost. Hill soil as plants grow."
+    },
+    {
+      "plant_type_name": "Russet",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Can plant early March if soil is workable and not frozen."
+    },
+    {
+      "plant_type_name": "Russet",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Early start in Zone 7. Can do fall crop in August."
+    },
+    {
+      "plant_type_name": "Yukon Gold",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Earlier maturing than Russet. Good for spring planting."
+    },
+    {
+      "plant_type_name": "Yukon Gold",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Plant 2-4 weeks before last frost. Great early season potato."
+    },
+    {
+      "plant_type_name": "Sweet Corn",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Sow after last frost when soil reaches 60F. Plant in blocks for pollination."
+    },
+    {
+      "plant_type_name": "Sweet Corn",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "April start if soil is warm. Succession plant every 2 weeks."
+    },
+    {
+      "plant_type_name": "Sweet Corn",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Good climate for corn. Plant in blocks minimum 4x4 for pollination."
+    },
+    {
+      "plant_type_name": "Sweet Corn",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Early season possible. Can also plant fall crop in August."
+    },
+    {
+      "plant_type_name": "Slicing",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Direct sow after last frost. Trellis for best results."
+    },
+    {
+      "plant_type_name": "Slicing",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Start after frost risk passes. Keep evenly watered to prevent bitter fruit."
+    },
+    {
+      "plant_type_name": "Slicing",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Warm Zone 7 summers are excellent for cucumbers."
+    },
+    {
+      "plant_type_name": "Slicing",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Early start possible. Second planting in July for fall harvest."
+    },
+    {
+      "plant_type_name": "Romaine",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Start indoors 4-6 weeks before last frost. Tolerates light frost."
+    },
+    {
+      "plant_type_name": "Romaine",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Spring and fall crops. Bolts in summer heat."
+    },
+    {
+      "plant_type_name": "Romaine",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Early spring and fall. Avoid summer planting, bolt-resistant variety still needs cool temps."
+    },
+    {
+      "plant_type_name": "Romaine",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Fall and winter crops also excellent in Zone 8."
+    },
+    {
+      "plant_type_name": "Softneck",
+      "zone_name": "Zone 5",
+      "start_month": "September",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Plant cloves 1-2 inches deep in fall for spring harvest."
+    },
+    {
+      "plant_type_name": "Softneck",
+      "zone_name": "Zone 6",
+      "start_month": "October",
+      "end_month": "November",
+      "method": "direct sow",
+      "notes": "Fall planting after first frost for best vernalization."
+    },
+    {
+      "plant_type_name": "Softneck",
+      "zone_name": "Zone 7",
+      "start_month": "October",
+      "end_month": "November",
+      "method": "direct sow",
+      "notes": "Plant in fall, harvest June-July. Long-storing variety."
+    },
+    {
+      "plant_type_name": "Hardneck",
+      "zone_name": "Zone 5",
+      "start_month": "September",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Needs cold vernalization period. Remove scapes in summer."
+    },
+    {
+      "plant_type_name": "Yellow Onion",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Start indoors 10-12 weeks before last frost. Long-day variety."
+    },
+    {
+      "plant_type_name": "Yellow Onion",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Transplant 4-6 weeks before last frost. From sets is easiest."
+    },
+    {
+      "plant_type_name": "Yellow Onion",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Early start in Zone 7. Intermediate-day varieties may work better."
+    },
+    {
+      "plant_type_name": "June-bearing",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Plant bare root or crowns in spring. Remove runners first year."
+    },
+    {
+      "plant_type_name": "June-bearing",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Spring planting for first harvest following year."
+    },
+    {
+      "plant_type_name": "June-bearing",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Can also plant in fall in Zone 7 for spring crop."
+    },
+    {
+      "plant_type_name": "Bell Pepper",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors 8-10 weeks before last frost. Transplant after soil warms to 65F."
+    },
+    {
+      "plant_type_name": "Bell Pepper",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors early March. Transplant mid-May after frost danger passes."
+    },
+    {
+      "plant_type_name": "Bell Pepper",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Transplant after last frost in April. Warm soil is essential."
+    },
+    {
+      "plant_type_name": "Bell Pepper",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "start indoors",
+      "notes": "Long growing season allows early start. Can also direct sow in April."
+    },
+    {
+      "plant_type_name": "Jalapeno",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors 8-10 weeks before last frost. Needs warm soil to transplant."
+    },
+    {
+      "plant_type_name": "Jalapeno",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Transplant after frost. Harvest green or let ripen to red for more heat."
+    },
+    {
+      "plant_type_name": "Jalapeno",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Good pepper climate. Consistent warmth produces best yields."
+    },
+    {
+      "plant_type_name": "Jalapeno",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "start indoors",
+      "notes": "Very long season. Multiple harvests through fall."
+    },
+    {
+      "plant_type_name": "Habanero",
+      "zone_name": "Zone 6",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Start very early, needs 100+ days. Transplant after soil is thoroughly warm."
+    },
+    {
+      "plant_type_name": "Habanero",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Long warm season ideal for habaneros. Start indoors 10-12 weeks early."
+    },
+    {
+      "plant_type_name": "Habanero",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "start indoors",
+      "notes": "Excellent habanero climate. Can produce well into November."
+    },
+    {
+      "plant_type_name": "Calabrese",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors 6-8 weeks before last frost. Cool-season crop."
+    },
+    {
+      "plant_type_name": "Calabrese",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Spring and fall crops. Transplant 2-3 weeks before last frost."
+    },
+    {
+      "plant_type_name": "Calabrese",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Early spring or late summer for fall harvest."
+    },
+    {
+      "plant_type_name": "Calabrese",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Best as winter crop in Zone 8. Heat causes bolting."
+    },
+    {
+      "plant_type_name": "Green Cabbage",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors 6-8 weeks before last frost. Transplant 2 weeks before last frost."
+    },
+    {
+      "plant_type_name": "Green Cabbage",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Spring crop transplanted early. Also good as fall crop started in July."
+    },
+    {
+      "plant_type_name": "Green Cabbage",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Early spring crop. Start fall crop in August."
+    },
+    {
+      "plant_type_name": "Green Cabbage",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Winter crop in Zone 8. Too hot for summer growing."
+    },
+    {
+      "plant_type_name": "Snowball",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors 6-8 weeks before last frost. Demanding crop, needs consistent care."
+    },
+    {
+      "plant_type_name": "Snowball",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Spring or fall crop. Fall is often more successful."
+    },
+    {
+      "plant_type_name": "Snowball",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Early spring or fall. Blanch curds by tying leaves over head."
+    },
+    {
+      "plant_type_name": "Snowball",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Winter crop. Needs cool, consistent temperatures for good curds."
+    },
+    {
+      "plant_type_name": "Savoy Spinach",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Sow as soon as soil is workable. Frost tolerant. Bolts in heat."
+    },
+    {
+      "plant_type_name": "Savoy Spinach",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Spring and fall crops. Succession sow every 2 weeks."
+    },
+    {
+      "plant_type_name": "Savoy Spinach",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Early spring or fall planting. Summer is too hot."
+    },
+    {
+      "plant_type_name": "Savoy Spinach",
+      "zone_name": "Zone 8",
+      "start_month": "October",
+      "end_month": "February",
+      "method": "direct sow",
+      "notes": "Fall and winter crop in Zone 8. Excellent cool-season green."
+    },
+    {
+      "plant_type_name": "Curly Kale",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Direct sow 4-6 weeks before last frost. Very cold hardy."
+    },
+    {
+      "plant_type_name": "Curly Kale",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Spring and fall crops. Frost improves sweetness."
+    },
+    {
+      "plant_type_name": "Curly Kale",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Nearly year-round in Zone 7. Plant fall crop in August."
+    },
+    {
+      "plant_type_name": "Curly Kale",
+      "zone_name": "Zone 8",
+      "start_month": "September",
+      "end_month": "February",
+      "method": "direct sow",
+      "notes": "Fall and winter crop. Too hot in summer."
+    },
+    {
+      "plant_type_name": "Black Beauty",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Direct sow after all frost danger. Harvest at 6-8 inches."
+    },
+    {
+      "plant_type_name": "Black Beauty",
+      "zone_name": "Zone 6",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "After frost. Prolific producer, check daily in peak season."
+    },
+    {
+      "plant_type_name": "Black Beauty",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Earlier start in Zone 7. Very productive through summer."
+    },
+    {
+      "plant_type_name": "Black Beauty",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Long season. Second planting in July for fall harvest."
+    },
+    {
+      "plant_type_name": "Black Beauty Eggplant",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors 8-10 weeks before last frost. Needs very warm soil."
+    },
+    {
+      "plant_type_name": "Black Beauty Eggplant",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Transplant after soil reaches 70F. Use black plastic mulch to warm soil."
+    },
+    {
+      "plant_type_name": "Black Beauty Eggplant",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Good eggplant climate. Transplant after last frost."
+    },
+    {
+      "plant_type_name": "Black Beauty Eggplant",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "start indoors",
+      "notes": "Long warm season ideal for eggplant. Multiple harvests."
+    },
+    {
+      "plant_type_name": "Detroit Dark Red",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "July",
+      "method": "direct sow",
+      "notes": "Direct sow 2-3 weeks before last frost. Succession plant monthly."
+    },
+    {
+      "plant_type_name": "Detroit Dark Red",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "August",
+      "method": "direct sow",
+      "notes": "Spring through summer sowings. Fall crop matures before hard frost."
+    },
+    {
+      "plant_type_name": "Detroit Dark Red",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "September",
+      "method": "direct sow",
+      "notes": "Long growing window. Good spring and fall crop."
+    },
+    {
+      "plant_type_name": "Detroit Dark Red",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Nearly year-round in Zone 8. Beets prefer cooler weather."
+    },
+    {
+      "plant_type_name": "Cherry Belle",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "September",
+      "method": "direct sow",
+      "notes": "Sow every 2 weeks for continuous harvest. Ready in 22 days."
+    },
+    {
+      "plant_type_name": "Cherry Belle",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Very fast crop. Succession plant every 10-14 days."
+    },
+    {
+      "plant_type_name": "Cherry Belle",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "November",
+      "method": "direct sow",
+      "notes": "Nearly year-round crop. Goes hot and pithy in summer heat."
+    },
+    {
+      "plant_type_name": "Cherry Belle",
+      "zone_name": "Zone 8",
+      "start_month": "October",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Fall through spring crop. Skip summer, too hot."
+    },
+    {
+      "plant_type_name": "Sugar Snap Pea",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Sow as soon as soil is workable. Tolerates frost. Provide trellis."
+    },
+    {
+      "plant_type_name": "Sugar Snap Pea",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Early spring crop. Sow 4-6 weeks before last frost."
+    },
+    {
+      "plant_type_name": "Sugar Snap Pea",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "direct sow",
+      "notes": "Early start in Zone 7. Also plant fall crop in September."
+    },
+    {
+      "plant_type_name": "Sugar Snap Pea",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "direct sow",
+      "notes": "Winter/spring crop. Too hot for summer peas."
+    },
+    {
+      "plant_type_name": "Bush Bean",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "July",
+      "method": "direct sow",
+      "notes": "Sow after last frost when soil reaches 60F. Succession plant every 2 weeks."
+    },
+    {
+      "plant_type_name": "Bush Bean",
+      "zone_name": "Zone 6",
+      "start_month": "May",
+      "end_month": "July",
+      "method": "direct sow",
+      "notes": "After frost. Quick crop, 50-60 days to harvest."
+    },
+    {
+      "plant_type_name": "Bush Bean",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "August",
+      "method": "direct sow",
+      "notes": "Long season allows multiple succession plantings."
+    },
+    {
+      "plant_type_name": "Bush Bean",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "September",
+      "method": "direct sow",
+      "notes": "Very long bean season. Skip hottest weeks in midsummer."
+    },
+    {
+      "plant_type_name": "Jersey Giant",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Plant crowns 6-8 inches deep. Do not harvest for first 2 years."
+    },
+    {
+      "plant_type_name": "Jersey Giant",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant crowns in early spring. Perennial, produces for 15-20 years."
+    },
+    {
+      "plant_type_name": "Jersey Giant",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Early spring planting. Harvest season starts earlier in Zone 7."
+    },
+    {
+      "plant_type_name": "Jersey Giant",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Very early start. May struggle in extreme summer heat."
+    },
+    {
+      "plant_type_name": "Pascal Celery",
+      "zone_name": "Zone 5",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Start indoors 10-12 weeks before last frost. Needs consistent moisture."
+    },
+    {
+      "plant_type_name": "Pascal Celery",
+      "zone_name": "Zone 6",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Long growing season crop. Transplant after frost, keep well watered."
+    },
+    {
+      "plant_type_name": "Pascal Celery",
+      "zone_name": "Zone 7",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "start indoors",
+      "notes": "Start early indoors. Celery needs 120+ days of cool weather."
+    },
+    {
+      "plant_type_name": "Pascal Celery",
+      "zone_name": "Zone 8",
+      "start_month": "August",
+      "end_month": "October",
+      "method": "start indoors",
+      "notes": "Fall crop in Zone 8. Summer is too hot for celery."
+    },
+    {
+      "plant_type_name": "Long Island Improved",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors for fall harvest. Needs 90-100 days. Frost improves flavor."
+    },
+    {
+      "plant_type_name": "Long Island Improved",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "start indoors",
+      "notes": "Start indoors in spring, transplant for fall harvest."
+    },
+    {
+      "plant_type_name": "Long Island Improved",
+      "zone_name": "Zone 7",
+      "start_month": "June",
+      "end_month": "August",
+      "method": "transplant",
+      "notes": "Direct sow or transplant for fall/winter harvest."
+    },
+    {
+      "plant_type_name": "Long Island Improved",
+      "zone_name": "Zone 8",
+      "start_month": "July",
+      "end_month": "September",
+      "method": "transplant",
+      "notes": "Late summer start for winter harvest."
+    },
+    {
+      "plant_type_name": "Purple Top White Globe",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "August",
+      "method": "direct sow",
+      "notes": "Spring or late summer sowing. Fast crop, 45-65 days."
+    },
+    {
+      "plant_type_name": "Purple Top White Globe",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "September",
+      "method": "direct sow",
+      "notes": "Spring and fall crops. Harvest young for mildest flavor."
+    },
+    {
+      "plant_type_name": "Purple Top White Globe",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Long growing window. Best in cool weather."
+    },
+    {
+      "plant_type_name": "Purple Top White Globe",
+      "zone_name": "Zone 8",
+      "start_month": "September",
+      "end_month": "March",
+      "method": "direct sow",
+      "notes": "Fall through spring crop. Skip summer heat."
+    },
+    {
+      "plant_type_name": "Beauregard",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Plant slips after soil reaches 65F. Marginal zone, use black plastic mulch."
+    },
+    {
+      "plant_type_name": "Beauregard",
+      "zone_name": "Zone 6",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Plant slips after last frost. Needs 90-120 warm days."
+    },
+    {
+      "plant_type_name": "Beauregard",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Good sweet potato climate. Plant slips when soil is warm."
+    },
+    {
+      "plant_type_name": "Beauregard",
+      "zone_name": "Zone 8",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Excellent sweet potato zone. Long warm season."
+    },
+    {
+      "plant_type_name": "Green Globe",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Perennial in Zone 7. Plant divisions or transplants in spring."
+    },
+    {
+      "plant_type_name": "Green Globe",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Perennial. Produces for 4-5 years from one planting."
+    },
+    {
+      "plant_type_name": "Imperial Star",
+      "zone_name": "Zone 5",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Annual production. Start indoors, needs vernalization period."
+    },
+    {
+      "plant_type_name": "Imperial Star",
+      "zone_name": "Zone 6",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "start indoors",
+      "notes": "Bred for annual harvest in cold climates. Start early indoors."
+    },
+    {
+      "plant_type_name": "Heritage Raspberry",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant bare root in early spring. Summer and fall crops."
+    },
+    {
+      "plant_type_name": "Heritage Raspberry",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Spring planting. Everbearing, produces July and September."
+    },
+    {
+      "plant_type_name": "Heritage Raspberry",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Early spring planting. Good production in Zone 7."
+    },
+    {
+      "plant_type_name": "Heritage Raspberry",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Plant early. May struggle in extreme summer heat."
+    },
+    {
+      "plant_type_name": "Concord",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant bare root vines in spring. Needs strong trellis."
+    },
+    {
+      "plant_type_name": "Concord",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Spring planting. Prune heavily in late winter for best production."
+    },
+    {
+      "plant_type_name": "Concord",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Good grape climate. Harvest late summer to early fall."
+    },
+    {
+      "plant_type_name": "Crimson Sweet",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Start indoors 3-4 weeks early. Transplant after soil is warm."
+    },
+    {
+      "plant_type_name": "Crimson Sweet",
+      "zone_name": "Zone 6",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Direct sow after frost in warm soil. Needs 80-90 days."
+    },
+    {
+      "plant_type_name": "Crimson Sweet",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Good watermelon climate. Needs full sun and space."
+    },
+    {
+      "plant_type_name": "Crimson Sweet",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Excellent watermelon zone. Long, hot summers ideal."
+    },
+    {
+      "plant_type_name": "Hales Best",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Start indoors 3-4 weeks early. Short season, may need plastic mulch."
+    },
+    {
+      "plant_type_name": "Hales Best",
+      "zone_name": "Zone 6",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Direct sow after frost. Ripe when stem slips from fruit."
+    },
+    {
+      "plant_type_name": "Hales Best",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Good melon climate. Consistent water until fruit sets."
+    },
+    {
+      "plant_type_name": "Hales Best",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Excellent cantaloupe zone. Reduce water as fruit ripens."
+    },
+    {
+      "plant_type_name": "Elberta",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant bare root in early spring while dormant. Needs 800 chill hours."
+    },
+    {
+      "plant_type_name": "Elberta",
+      "zone_name": "Zone 6",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Spring planting of bare root trees. Prune annually."
+    },
+    {
+      "plant_type_name": "Elberta",
+      "zone_name": "Zone 7",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Plant dormant trees in late winter. Fruit in mid-summer."
+    },
+    {
+      "plant_type_name": "Elberta",
+      "zone_name": "Zone 8",
+      "start_month": "December",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "May not get enough chill hours in warm Zone 8 areas."
+    },
+    {
+      "plant_type_name": "Bing Cherry",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant bare root in spring. Needs cross-pollinator variety nearby."
+    },
+    {
+      "plant_type_name": "Bing Cherry",
+      "zone_name": "Zone 6",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Spring planting. Full sun, well-drained soil essential."
+    },
+    {
+      "plant_type_name": "Bing Cherry",
+      "zone_name": "Zone 7",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Late winter planting. Protect blooms from late frost."
+    },
+    {
+      "plant_type_name": "Bing Cherry",
+      "zone_name": "Zone 8",
+      "start_month": "December",
+      "end_month": "January",
+      "method": "transplant",
+      "notes": "Marginal zone for sweet cherries. May lack sufficient chill hours."
+    },
+    {
+      "plant_type_name": "Bartlett",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant bare root in spring. Needs cross-pollinator."
+    },
+    {
+      "plant_type_name": "Bartlett",
+      "zone_name": "Zone 6",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Spring planting. Pick before fully ripe, ripen indoors."
+    },
+    {
+      "plant_type_name": "Bartlett",
+      "zone_name": "Zone 7",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Late winter planting. Good pear climate."
+    },
+    {
+      "plant_type_name": "Bartlett",
+      "zone_name": "Zone 8",
+      "start_month": "December",
+      "end_month": "January",
+      "method": "transplant",
+      "notes": "Early planting. May need low-chill variety in warmest areas."
+    },
+    {
+      "plant_type_name": "Brown Turkey",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant in spring after frost. Can be grown against south-facing wall."
+    },
+    {
+      "plant_type_name": "Brown Turkey",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Excellent fig climate. Two crops per year possible."
+    },
+    {
+      "plant_type_name": "Tuscan Blue",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Perennial in Zone 8. Plant in spring after frost risk passes."
+    },
+    {
+      "plant_type_name": "Arp Rosemary",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Most cold-hardy rosemary. Mulch heavily in winter."
+    },
+    {
+      "plant_type_name": "Arp Rosemary",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Perennial with winter protection. Well-drained soil essential."
+    },
+    {
+      "plant_type_name": "Arp Rosemary",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Evergreen perennial. Drought tolerant once established."
+    },
+    {
+      "plant_type_name": "Common Thyme",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Plant after frost. Perennial, returns each spring."
+    },
+    {
+      "plant_type_name": "Common Thyme",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Spring planting. Well-drained soil in full sun."
+    },
+    {
+      "plant_type_name": "Common Thyme",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Nearly evergreen in Zone 7. Drought tolerant once established."
+    },
+    {
+      "plant_type_name": "Common Thyme",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Evergreen perennial. Can become woody, replace every 3-4 years."
+    },
+    {
+      "plant_type_name": "Bouquet Dill",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Direct sow after frost. Self-seeds readily for next year."
+    },
+    {
+      "plant_type_name": "Bouquet Dill",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Sow succession every 3 weeks. Bolts in heat."
+    },
+    {
+      "plant_type_name": "Bouquet Dill",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Early spring sowing. Also good for fall planting."
+    },
+    {
+      "plant_type_name": "Bouquet Dill",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Early sowing. Bolts quickly in warm weather."
+    },
+    {
+      "plant_type_name": "Santo Cilantro",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Direct sow after frost. Succession plant every 3 weeks."
+    },
+    {
+      "plant_type_name": "Santo Cilantro",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Cool-season herb. Bolts in summer heat, replant in fall."
+    },
+    {
+      "plant_type_name": "Santo Cilantro",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Spring and fall crops. Slow-bolting variety helps extend harvest."
+    },
+    {
+      "plant_type_name": "Santo Cilantro",
+      "zone_name": "Zone 8",
+      "start_month": "October",
+      "end_month": "March",
+      "method": "direct sow",
+      "notes": "Fall through spring crop. Summer is too hot."
+    },
+    {
+      "plant_type_name": "Italian Flat-leaf Parsley",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Slow to germinate, soak seeds overnight. Biennial herb."
+    },
+    {
+      "plant_type_name": "Italian Flat-leaf Parsley",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Direct sow or start indoors. Hardy biennial."
+    },
+    {
+      "plant_type_name": "Italian Flat-leaf Parsley",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Early start. Overwinters in Zone 7."
+    },
+    {
+      "plant_type_name": "Italian Flat-leaf Parsley",
+      "zone_name": "Zone 8",
+      "start_month": "September",
+      "end_month": "March",
+      "method": "direct sow",
+      "notes": "Fall planting for winter harvest. Grows well in cool weather."
+    },
+    {
+      "plant_type_name": "Common Sage",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Plant after frost. Perennial, well-drained soil essential."
+    },
+    {
+      "plant_type_name": "Common Sage",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Spring planting. Becomes woody after 3-4 years, replace."
+    },
+    {
+      "plant_type_name": "Common Sage",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Nearly evergreen in Zone 7. Excellent drainage required."
+    },
+    {
+      "plant_type_name": "Common Sage",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Evergreen perennial. May struggle in humid heat."
+    },
+    {
+      "plant_type_name": "Common Chive",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Sow as soon as soil is workable. Perennial, returns each year."
+    },
+    {
+      "plant_type_name": "Common Chive",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Early spring sowing or divide existing clumps."
+    },
+    {
+      "plant_type_name": "Common Chive",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Very easy to grow. Divide clumps every 3 years."
+    },
+    {
+      "plant_type_name": "Common Chive",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "March",
+      "method": "direct sow",
+      "notes": "Nearly evergreen in Zone 8. Attractive purple flowers."
+    },
+    {
+      "plant_type_name": "English Lavender",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Plant after frost. Excellent drainage critical. Mulch in winter."
+    },
+    {
+      "plant_type_name": "English Lavender",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Spring planting. Avoid wet feet, amend clay soil with gravel."
+    },
+    {
+      "plant_type_name": "English Lavender",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Excellent lavender climate. Prune after flowering."
+    },
+    {
+      "plant_type_name": "English Lavender",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Thrives in Zone 8. Full sun, lean soil preferred."
+    },
+    {
+      "plant_type_name": "Hard Red Winter Wheat",
+      "zone_name": "Zone 5",
+      "start_month": "September",
+      "end_month": "October",
+      "method": "direct sow",
+      "notes": "Fall planting. Overwinters and harvests in late June."
+    },
+    {
+      "plant_type_name": "Hard Red Winter Wheat",
+      "zone_name": "Zone 6",
+      "start_month": "September",
+      "end_month": "November",
+      "method": "direct sow",
+      "notes": "Fall sowing. Vernalization occurs over winter."
+    },
+    {
+      "plant_type_name": "Hard Red Winter Wheat",
+      "zone_name": "Zone 7",
+      "start_month": "October",
+      "end_month": "November",
+      "method": "direct sow",
+      "notes": "Later fall sowing in warmer zones. Harvest late May to June."
+    },
+    {
+      "plant_type_name": "Hard Red Winter Wheat",
+      "zone_name": "Zone 8",
+      "start_month": "October",
+      "end_month": "December",
+      "method": "direct sow",
+      "notes": "Fall through early winter sowing. May need supplemental chill."
+    },
+    {
+      "plant_type_name": "Hard Red Spring Wheat",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Sow as early as soil can be worked. 90-120 days to harvest."
+    },
+    {
+      "plant_type_name": "Hard Red Spring Wheat",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "direct sow",
+      "notes": "Early spring sowing. Harvest in mid to late summer."
+    },
+    {
+      "plant_type_name": "Peppermint",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Plant divisions or transplants. GROW IN CONTAINERS to prevent spreading."
+    },
+    {
+      "plant_type_name": "Peppermint",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Very aggressive. Use buried containers or raised beds with barriers."
+    },
+    {
+      "plant_type_name": "Peppermint",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Nearly evergreen in Zone 7. Contain aggressively."
+    },
+    {
+      "plant_type_name": "Peppermint",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Year-round in Zone 8. Partial shade preferred in hot climates."
+    },
+    {
+      "plant_type_name": "Mammoth Sunflower",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Direct sow after last frost. Full sun, well-drained soil."
+    },
+    {
+      "plant_type_name": "Mammoth Sunflower",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "After frost. Stake in windy areas. 70-80 days to bloom."
+    },
+    {
+      "plant_type_name": "Mammoth Sunflower",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Good sunflower climate. Seeds mature in fall."
+    },
+    {
+      "plant_type_name": "Mammoth Sunflower",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Early start possible. Full sun essential."
+    },
+    {
+      "plant_type_name": "Jack O'Lantern",
+      "zone_name": "Zone 5",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Sow after frost. Needs 100+ days and lots of space."
+    },
+    {
+      "plant_type_name": "Jack O'Lantern",
+      "zone_name": "Zone 6",
+      "start_month": "May",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Late May sowing for October harvest."
+    },
+    {
+      "plant_type_name": "Jack O'Lantern",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "direct sow",
+      "notes": "Good pumpkin climate. Give plenty of space."
+    },
+    {
+      "plant_type_name": "Jack O'Lantern",
+      "zone_name": "Zone 8",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Early sowing. Powdery mildew common in humid areas."
+    },
+    {
+      "plant_type_name": "Highbush Blueberry",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant bare root in spring. Acidic soil pH 4.5-5.5 essential."
+    },
+    {
+      "plant_type_name": "Highbush Blueberry",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Spring planting. Amend soil with sulfur if pH is too high."
+    },
+    {
+      "plant_type_name": "Highbush Blueberry",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Good blueberry climate. Mulch with pine needles for acidity."
+    },
+    {
+      "plant_type_name": "Highbush Blueberry",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Choose low-chill varieties for Zone 8."
+    },
+    {
+      "plant_type_name": "Triple Crown",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant bare root in spring. Thornless, needs trellis support."
+    },
+    {
+      "plant_type_name": "Triple Crown",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Spring planting. Produces on second-year canes."
+    },
+    {
+      "plant_type_name": "Triple Crown",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Good blackberry climate. Harvest mid to late summer."
+    },
+    {
+      "plant_type_name": "Triple Crown",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Early planting. May need afternoon shade in hottest areas."
+    },
+    {
+      "plant_type_name": "Greek Oregano",
+      "zone_name": "Zone 5",
+      "start_month": "April",
+      "end_month": "June",
+      "method": "transplant",
+      "notes": "Plant after frost. Perennial, more flavorful in lean soil."
+    },
+    {
+      "plant_type_name": "Greek Oregano",
+      "zone_name": "Zone 6",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Spring planting. Full sun, well-drained soil."
+    },
+    {
+      "plant_type_name": "Greek Oregano",
+      "zone_name": "Zone 7",
+      "start_month": "March",
+      "end_month": "May",
+      "method": "transplant",
+      "notes": "Nearly evergreen in Zone 7. Harvest before flowering for best flavor."
+    },
+    {
+      "plant_type_name": "Greek Oregano",
+      "zone_name": "Zone 8",
+      "start_month": "February",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Evergreen perennial. Drought tolerant once established."
+    },
+    {
+      "plant_type_name": "Virginia Peanut",
+      "zone_name": "Zone 7",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Plant after soil reaches 65F. Needs 130-150 warm days."
+    },
+    {
+      "plant_type_name": "Virginia Peanut",
+      "zone_name": "Zone 8",
+      "start_month": "April",
+      "end_month": "May",
+      "method": "direct sow",
+      "notes": "Good peanut climate. Long warm season supports full maturity."
+    },
+    {
+      "plant_type_name": "Nonpareil Almond",
+      "zone_name": "Zone 7",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Plant bare root while dormant. Late frost can damage blooms."
+    },
+    {
+      "plant_type_name": "Nonpareil Almond",
+      "zone_name": "Zone 8",
+      "start_month": "December",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Best almond climate. Needs cross-pollinator."
+    },
+    {
+      "plant_type_name": "English Walnut",
+      "zone_name": "Zone 5",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Plant bare root in spring. Large tree, plan for space and juglone zone."
+    },
+    {
+      "plant_type_name": "English Walnut",
+      "zone_name": "Zone 6",
+      "start_month": "March",
+      "end_month": "April",
+      "method": "transplant",
+      "notes": "Spring planting. Keep 50+ feet from sensitive plants."
+    },
+    {
+      "plant_type_name": "English Walnut",
+      "zone_name": "Zone 7",
+      "start_month": "February",
+      "end_month": "March",
+      "method": "transplant",
+      "notes": "Good walnut climate. Produces after 4-5 years."
+    },
+    {
+      "plant_type_name": "English Walnut",
+      "zone_name": "Zone 8",
+      "start_month": "January",
+      "end_month": "February",
+      "method": "transplant",
+      "notes": "Early planting. Some varieties need more chill hours."
+    }
+  ]
+}

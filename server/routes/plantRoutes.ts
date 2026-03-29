@@ -1,160 +1,148 @@
-import { Router, Request, Response } from "express";
-import { getPlants, getPlantById, createPlant, deletePlant, updatePlant, getPlantTypesByPlantIdWithCompanionsAndAtagonists, getPlantByName, addCompanion, createAntagonist } from "../controllers/plantController";
-import { Plant, PlantType } from "../types/plant";
+import { Controller, Route, Tags, Get, Post, Put, Delete, Body, Path, Security } from "tsoa";
+import {
+  getPlants,
+  getPlantById,
+  createPlant,
+  deletePlant,
+  updatePlant,
+  getPlantTypesByPlantIdWithCompanionsAndAtagonists,
+  getPlantByName,
+  addCompanion,
+  createAntagonist,
+  getAllCompanions,
+  getAllAntagonists,
+  createPlantType,
+} from "../controllers/plantController.ts";
+import type {
+  PlantResponse,
+  PlantCreateRequest,
+  PlantDetailResponse,
+  PlantTypeCreateRequest,
+  PlantTypeResponse,
+  CompanionPair,
+  AntagonistPair,
+  MessageResponse,
+} from "../types/models.ts";
 
-const plantRouter = Router();
+@Route("v1/api/plants")
+@Tags("Plants")
+export class PlantController extends Controller {
+  @Get("/")
+  public async getPlants(): Promise<PlantResponse[]> {
+    return (await getPlants()) as PlantResponse[];
+  }
 
-// Get all plants
-plantRouter.get("/", async (req, res) => {
-    try {
-        const plants = await getPlants();
-        res.status(200).json(plants);
-    } catch (err) {
-        console.error("Error fetching plants:", err);
-        res.status(500).json({ error: err });
+  @Get("/companions")
+  public async getAllCompanions(): Promise<CompanionPair[]> {
+    return await getAllCompanions();
+  }
+
+  @Get("/antagonists")
+  public async getAllAntagonists(): Promise<AntagonistPair[]> {
+    return (await getAllAntagonists()) as AntagonistPair[];
+  }
+
+  @Get("/{id}")
+  public async getPlantById(@Path() id: number): Promise<PlantResponse> {
+    const plant = await getPlantById(String(id));
+    if (!plant) {
+      this.setStatus(404);
+      return { name: "", category: "", growthForm: "" };
     }
-});
+    return plant as PlantResponse;
+  }
 
-// Get plant by ID
-plantRouter.get("/:id", async (req, res) => {
-    const id = req.params.id;
-    if (!id) {
-        res.status(400).json({ error: "Invalid plant ID" });
-        return;
+  @Get("/{name}/types")
+  public async getPlantTypes(@Path() name: string): Promise<PlantDetailResponse> {
+    const plant = await getPlantByName(name);
+    if (!plant || !plant.id) {
+      this.setStatus(404);
+      return { name: "", category: "", growthForm: "", types: [], companions: [], antagonists: [] };
     }
-    try {
-        const plant = await getPlantById(id);
-        if (plant) {
-            res.status(200).json(plant);
-        } else {
-            res.status(404).json({ error: "Plant not found" });
-        }
-    } catch (err) {
-        console.error("Error fetching plant:", err);
-        res.status(500).json({ error: err });
+    const typesAndCompanions = await getPlantTypesByPlantIdWithCompanionsAndAtagonists(
+      String(plant.id),
+    );
+    return {
+      ...plant,
+      ...typesAndCompanions,
+    } as PlantDetailResponse;
+  }
+
+  @Security("admin")
+  @Post("/")
+  public async createPlant(@Body() body: PlantCreateRequest): Promise<PlantResponse> {
+    if (!body.name || !body.category || !body.growthForm) {
+      this.setStatus(400);
+      return { name: "", category: "", growthForm: "" };
     }
-});
+    const id = await createPlant(body as any);
+    this.setStatus(201);
+    return { id, ...body };
+  }
 
-// Get plant by ID with its associated plant types
-plantRouter.get("/:name/details", async (req, res) => {
-    const name = req.params.name;
-
-    if (!name) {
-        res.status(400).json({ error: "Invalid plant name" });
-        return;
+  @Security("admin")
+  @Put("/{id}")
+  public async updatePlant(
+    @Path() id: number,
+    @Body() body: PlantCreateRequest,
+  ): Promise<PlantResponse> {
+    if (!body.name || !body.category || !body.growthForm) {
+      this.setStatus(400);
+      return { name: "", category: "", growthForm: "" };
     }
+    await updatePlant(String(id), body as any);
+    return { id, ...body };
+  }
 
-    try {
-        const plant: Plant | null = await getPlantByName(name);
-        if (!plant || !plant.id) {
-            res.status(404).json({ error: "Plant not found" });
-            return;
-        }
-
-        const typesAndCompanions: PlantType[] = await getPlantTypesByPlantIdWithCompanionsAndAtagonists(plant.id);
-
-        res.status(200).json({
-            ...plant,
-            ...typesAndCompanions
-        });
-    } catch (err) {
-        console.error("Error fetching plant and plant types:", err);
-        res.status(500).json({ error: err });
+  @Security("admin")
+  @Delete("/{id}")
+  public async deletePlant(@Path() id: number): Promise<void> {
+    const deleted = await deletePlant(String(id));
+    if (deleted) {
+      this.setStatus(204);
+    } else {
+      this.setStatus(404);
     }
-});
+  }
 
-// Create a new plant
-plantRouter.post("/", async (req, res) => {
-    try {
-        const plant: Plant = req.body;
-
-        // Validate the required fields
-        if (!plant.name || !plant.category || !plant.growthForm) {
-            res.status(400).json({ error: "Invalid plant data" });
-            return;
-        }
-
-        const id = await createPlant(plant);
-        res.status(201).json({ id: plant });
-    } catch (err) {
-        console.error("Error creating plant:", err);
-        res.status(500).json({ error: err });
+  @Security("admin")
+  @Post("/{id}/types")
+  public async createPlantType(
+    @Path() id: number,
+    @Body() body: PlantTypeCreateRequest,
+  ): Promise<PlantTypeResponse> {
+    if (!body.name) {
+      this.setStatus(400);
+      return { name: "" };
     }
-});
+    const result = await createPlantType(String(id), body);
+    this.setStatus(201);
+    return result;
+  }
 
-// Update a plant by ID
-plantRouter.put("/:id", async (req, res) => {
-    const id = req.params.id;
-    if (!id) {
-        res.status(400).json({ error: "Invalid plant ID" });
-        return;
-    }
-    const plant = req.body;
-    if (!plant.name || !plant.category || !plant.growthForm) {
-        res.status(400).json({ error: "Invalid plant data" });
-        return;
-    }
-    try {
-        const updatedPlant = await updatePlant(id, plant);
-        res.status(200).json({ id: updatedPlant });
-    } catch (err) {
-        console.error("Error updating plant:", err);
-        res.status(500).json({ error: err });
-    }
-});
+  @Security("admin")
+  @Post("/{id}/companion/{companionId}")
+  public async addCompanion(
+    @Path() id: number,
+    @Path() companionId: number,
+  ): Promise<MessageResponse> {
+    const firstPlant = Math.min(id, companionId).toString();
+    const secondPlant = Math.max(id, companionId).toString();
+    await addCompanion(firstPlant, secondPlant);
+    this.setStatus(201);
+    return { message: "Companion added successfully." };
+  }
 
-// Delete a plant by ID
-plantRouter.delete("/:id", async (req, res) => {
-    const id = req.params.id;
-    if (!id) {
-        res.status(400).json({ error: "Invalid plant ID" });
-        return;
-    }
-    try {
-        const deleted = await deletePlant(id);
-        if (deleted) {
-            res.status(204).send(); // No Content
-        } else {
-            res.status(404).json({ error: "Plant not found" });
-        }
-    } catch (err) {
-        console.error("Error deleting plant:", err);
-        res.status(500).json({ error: err });
-    }
-});
-
-// Add a companion to a plant
-plantRouter.post("/:id/companion/:companionId", async (req, res) => {
-    try {
-        const { id, companionId } = req.params as { id: string; companionId: string };
-
-        const firstPlant = Math.min(Number(id), Number(companionId)).toString();
-        const secondPlant = Math.max(Number(id), Number(companionId)).toString();
-
-        // Call the controller function
-        await addCompanion(firstPlant, secondPlant);
-        res.status(201).json({ message: "Companion added successfully." });
-    } catch (err) {
-        console.error("Error adding companion:", err);
-        res.status(500).json({ error: err || "Internal server error" });
-    }
-});
-
-// Add an antagonist to a plant
-plantRouter.post("/:id/antagonist/:antagonistId", async (req, res) => {
-    try {
-        const { id, antagonistId } = req.params as { id: string; antagonistId: string };
-
-        const firstPlant = Math.min(Number(id), Number(antagonistId)).toString();
-        const secondPlant = Math.max(Number(id), Number(antagonistId)).toString();
-
-        // Call the controller function
-        await createAntagonist(firstPlant, secondPlant);
-        res.status(201).json({ message: "Antagonist added successfully." });
-    } catch (err) {
-        console.error("Error adding antagonist:", err);
-        res.status(500).json({ error: err || "Internal server error" });
-    }
-});
-
-export default plantRouter;
+  @Security("admin")
+  @Post("/{id}/antagonist/{antagonistId}")
+  public async addAntagonist(
+    @Path() id: number,
+    @Path() antagonistId: number,
+  ): Promise<MessageResponse> {
+    const firstPlant = Math.min(id, antagonistId).toString();
+    const secondPlant = Math.max(id, antagonistId).toString();
+    await createAntagonist(firstPlant, secondPlant);
+    this.setStatus(201);
+    return { message: "Antagonist added successfully." };
+  }
+}

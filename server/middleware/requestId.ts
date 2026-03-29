@@ -1,10 +1,10 @@
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { Request, Response, NextFunction } from "express";
 
-const requestIdMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    const requestId = uuid.v4();
+const requestIdMiddleware = (req: Request, _res: Response, next: NextFunction) => {
+    const requestId = uuidv4();
     req.requestId = requestId;
-    await next();
+    next();
 };
 
 export default requestIdMiddleware;

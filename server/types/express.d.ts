@@ -1,9 +1,10 @@
-import 'express';
+import "express";
 
 declare global {
-    namespace Express {
-        interface Request {
-            requestId?: string; // Add your custom property here
-        }
+  namespace Express {
+    interface Request {
+      requestId?: string;
+      user?: { userId: number; email: string; isAdmin: boolean };
     }
+  }
 }
