@@ -26,7 +26,7 @@ export default function EditPlantDialog({ open, plant, onClose, onSave }) {
                     fullWidth
                     value={localPlant.name || ''}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    sx={{ marginBottom: 2 }}
+                    sx={{ mb: 2 }}
                 />
                 <TextField
                     label="Category"
@@ -34,7 +34,7 @@ export default function EditPlantDialog({ open, plant, onClose, onSave }) {
                     fullWidth
                     value={localPlant.category || ''}
                     onChange={(e) => handleInputChange('category', e.target.value)}
-                    sx={{ marginBottom: 2 }}
+                    sx={{ mb: 2 }}
                 />
                 <TextField
                     label="Growth Form"
@@ -42,7 +42,7 @@ export default function EditPlantDialog({ open, plant, onClose, onSave }) {
                     fullWidth
                     value={localPlant.growthForm || ''}
                     onChange={(e) => handleInputChange('growthForm', e.target.value)}
-                    sx={{ marginBottom: 2 }}
+                    sx={{ mb: 2 }}
                 />
                 <TextField
                     label="Edible Part"
@@ -50,7 +50,7 @@ export default function EditPlantDialog({ open, plant, onClose, onSave }) {
                     fullWidth
                     value={localPlant.ediblePart || ''}
                     onChange={(e) => handleInputChange('ediblePart', e.target.value)}
-                    sx={{ marginBottom: 2 }}
+                    sx={{ mb: 2 }}
                 />
             </DialogContent>
             <DialogActions>

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import Box from "@mui/material/Box";
 import GardenCell from "./GardenCell";
 
-export default function GardenGrid({ garden, cells, companions, antagonists, onCellClick }) {
+export default function GardenGrid({ garden, cells, companions, antagonists, onCellClick, onCellRightClick }) {
+  const [isDragging, setIsDragging] = useState(false);
+
   const cellGrid = {};
   (cells || []).forEach((c) => {
     cellGrid[`${c.row},${c.col}`] = c;
@@ -38,6 +40,7 @@ export default function GardenGrid({ garden, cells, companions, antagonists, onC
       if (nr < 0 || nr >= garden.rows || nc < 0 || nc >= garden.cols) continue;
       const neighbor = cellGrid[`${nr},${nc}`];
       if (!neighbor) continue;
+      if (cell.plantId === neighbor.plantId) { hasCompanion = true; continue; }
       const key = pairKey(cell.plantId, neighbor.plantId);
       if (antagonistSet.has(key)) return "antagonist";
       if (companionSet.has(key)) hasCompanion = true;
@@ -46,12 +49,36 @@ export default function GardenGrid({ garden, cells, companions, antagonists, onC
     return hasCompanion ? "companion" : "neutral";
   };
 
+  const handleMouseDown = useCallback((row, col, cell) => {
+    setIsDragging(true);
+    onCellClick(row, col, cell);
+  }, [onCellClick]);
+
+  const handleMouseEnter = useCallback((row, col, cell) => {
+    if (isDragging) {
+      onCellClick(row, col, cell);
+    }
+  }, [isDragging, onCellClick]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleContextMenu = useCallback((e, row, col) => {
+    e.preventDefault();
+    if (onCellRightClick) onCellRightClick(row, col);
+  }, [onCellRightClick]);
+
   return (
     <Box
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
       sx={{
         display: "grid",
-        gridTemplateColumns: `repeat(${garden.cols}, 64px)`,
+        gridTemplateColumns: `repeat(${garden.cols}, minmax(48px, 1fr))`,
+        maxWidth: garden.cols * 80,
         gap: 0.5,
+        userSelect: "none",
       }}
     >
       {Array.from({ length: garden.rows }, (_, row) =>
@@ -63,7 +90,9 @@ export default function GardenGrid({ garden, cells, companions, antagonists, onC
               key={`${row}-${col}`}
               cell={cell}
               status={status}
-              onClick={() => onCellClick(row, col, cell)}
+              onMouseDown={() => handleMouseDown(row, col, cell)}
+              onMouseEnter={() => handleMouseEnter(row, col, cell)}
+              onContextMenu={(e) => handleContextMenu(e, row, col)}
             />
           );
         })

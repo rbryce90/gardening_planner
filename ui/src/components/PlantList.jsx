@@ -11,7 +11,11 @@ export default function PlantList({ title, plants, fallbackMessage, onAddPlant, 
             <Grid container spacing={3}>
                 {plants.map((plant) => (
                     <Grid item xs={12} sm={6} md={4} key={plant.name || plant.id}>
-                        <Card sx={{ height: '100%' }}>
+                        <Card sx={{
+                            height: '100%',
+                            transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+                            '&:hover': { transform: 'translateY(-4px)', boxShadow: 6 },
+                        }}>
                             <CardContent>
                                 <Typography variant="h6" gutterBottom>
                                     {plant.name}
@@ -31,7 +35,7 @@ export default function PlantList({ title, plants, fallbackMessage, onAddPlant, 
                                 display: 'flex',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor: '#f5f5f5',
+                                bgcolor: 'action.hover',
                                 cursor: 'pointer',
                             }}
                             onClick={onAddPlant}

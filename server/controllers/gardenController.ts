@@ -1,5 +1,5 @@
 import { gardenRepository } from "../repositories/gardenRepository.ts";
-import { Garden, GardenCell } from "../types/garden.d.ts";
+import type { Garden, GardenCell } from "../types/garden.d.ts";
 
 export const getGardens = async (userId: number): Promise<Garden[]> => {
     return await gardenRepository.getGardens(userId);

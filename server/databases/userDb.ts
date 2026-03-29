@@ -4,15 +4,15 @@ import logger from "../utils/logger.ts";
 let dbInstance: DatabaseSync | null = null;
 
 const initializeDatabase = (): DatabaseSync => {
-    if (dbInstance) {
-        return dbInstance;
-    }
+  if (dbInstance) {
+    return dbInstance;
+  }
 
-    const db = new DatabaseSync("plants.db");
+  const db = new DatabaseSync("plants.db");
 
-    db.exec("PRAGMA foreign_keys = ON;");
+  db.exec("PRAGMA foreign_keys = ON;");
 
-    db.exec(`
+  db.exec(`
         CREATE TABLE IF NOT EXISTS users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           email TEXT NOT NULL UNIQUE,
@@ -23,22 +23,28 @@ const initializeDatabase = (): DatabaseSync => {
         );
       `);
 
-    try {
-        db.exec("ALTER TABLE users ADD COLUMN zone_id INTEGER REFERENCES zones(id)");
-    } catch {
-        // column already exists — safe to ignore
-    }
+  try {
+    db.exec("ALTER TABLE users ADD COLUMN zone_id INTEGER REFERENCES zones(id)");
+  } catch {
+    // column already exists — safe to ignore
+  }
 
-    logger.info("User database initialized.");
-    dbInstance = db;
-    return db;
+  try {
+    db.exec("ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0");
+  } catch {
+    // column already exists — safe to ignore
+  }
+
+  logger.info("User database initialized.");
+  dbInstance = db;
+  return db;
 };
 
 export function getDatabase(): DatabaseSync {
-    if (!dbInstance) {
-        initializeDatabase();
-    }
-    return dbInstance!;
+  if (!dbInstance) {
+    initializeDatabase();
+  }
+  return dbInstance!;
 }
 
 export default initializeDatabase;

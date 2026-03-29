@@ -1,13 +1,12 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
 import logger from "./utils/logger.ts";
 import requestLogger from "./middleware/requestLogger.ts";
 import requestIdMiddleware from "./middleware/requestId.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
-import plantRouter from "./routes/plantRoutes.ts";
-import authRouter from "./routes/authRoutes.ts";
-import gardenRouter from "./routes/gardenRoutes.ts";
-import zoneRouter, { calendarRouter } from "./routes/zoneRoutes.ts";
+import { RegisterRoutes } from "./generated/routes.ts";
+import { getDriver, closeDriver } from "./databases/neo4jDb.ts";
 
 const app = express();
 const PORT = 8000;
@@ -17,14 +16,43 @@ app.use(cookieParser());
 app.use(requestIdMiddleware);
 app.use(requestLogger);
 
-app.use("/api/plants", plantRouter);
-app.use("/api/auth", authRouter);
-app.use("/api/gardens", gardenRouter);
-app.use("/api/zones", zoneRouter);
-app.use("/api/planting-calendar", calendarRouter);
+// Swagger docs
+try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const swaggerDocument = require("./generated/swagger.json");
+  app.use("/v1/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+} catch {
+  logger.warn("Swagger spec not found — run 'npm run generate' to create it");
+}
+
+// TSOA generated routes
+RegisterRoutes(app);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-    logger.info(`Server listening on port ${PORT}`);
+// Initialize Neo4j connection
+try {
+  getDriver();
+  logger.info("Neo4j connection established");
+} catch (error) {
+  logger.warn("Neo4j connection failed — graph features will be unavailable", { error });
+}
+
+const server = app.listen(PORT, () => {
+  logger.info(`Server listening on port ${PORT}`);
 });
+
+// Graceful shutdown
+const shutdown = async () => {
+  logger.info("Shutting down...");
+  await closeDriver();
+  server.close(() => {
+    process.exit(0);
+  });
+};
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
+
+// Keep Deno process alive — Express via npm doesn't hold the event loop open
+setInterval(() => { }, 1 << 30);

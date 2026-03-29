@@ -1,34 +1,22 @@
-import { Router } from "express";
+import { Controller, Route, Tags, Get, Path, Security, Request } from "tsoa";
+import * as express from "express";
 import { getZones, getPlantingCalendar } from "../controllers/zoneController.ts";
-import { authMiddleware } from "../middleware/auth.ts";
+import type { ZoneResponse, PlantingSeasonResponse } from "../types/models.ts";
 
-const zoneRouter = Router();
-
-// GET /api/zones — public, no auth required
-zoneRouter.get("/", async (_req, res, next) => {
-    try {
-        const zones = await getZones();
-        res.status(200).json(zones);
-    } catch (err) {
-        next(err);
+@Route("v1/api")
+@Tags("Zones")
+export class ZoneController extends Controller {
+    @Get("/zones")
+    public async getZones(): Promise<ZoneResponse[]> {
+        return await getZones() as ZoneResponse[];
     }
-});
 
-export const calendarRouter = Router();
-
-// GET /api/planting-calendar/:zoneId — auth required
-calendarRouter.get("/:zoneId", authMiddleware, async (req, res, next) => {
-    const zoneId = parseInt(req.params.zoneId, 10);
-    if (isNaN(zoneId)) {
-        res.status(400).json({ message: "Invalid zone ID" });
-        return;
+    @Get("/planting-calendar/{zoneId}")
+    @Security("jwt")
+    public async getPlantingCalendar(
+        @Path() zoneId: number,
+        @Request() req: express.Request
+    ): Promise<PlantingSeasonResponse[]> {
+        return await getPlantingCalendar(zoneId) as PlantingSeasonResponse[];
     }
-    try {
-        const calendar = await getPlantingCalendar(zoneId);
-        res.status(200).json(calendar);
-    } catch (err) {
-        next(err);
-    }
-});
-
-export default zoneRouter;
+}

@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { authMiddleware } from "../middleware/auth.ts";
+import { Controller, Route, Tags, Get, Post, Put, Delete, Body, Path, Request, Security } from "tsoa";
+import * as express from "express";
 import {
     getGardens,
     createGarden,
@@ -9,138 +9,114 @@ import {
     clearCell,
     deleteGarden,
 } from "../controllers/gardenController.ts";
+import type {
+    GardenResponse,
+    GardenDetailResponse,
+    GardenCreateRequest,
+    CellUpdateRequest,
+    MessageResponse,
+} from "../types/models.ts";
 
-const gardenRouter = Router();
-
-gardenRouter.use(authMiddleware);
-
-gardenRouter.get("/", async (req, res, next) => {
-    try {
-        const gardens = await getGardens(req.user!.userId);
-        res.status(200).json(gardens);
-    } catch (err) {
-        next(err);
+@Route("v1/api/gardens")
+@Tags("Gardens")
+@Security("jwt")
+export class GardenController extends Controller {
+    @Get("/")
+    public async getGardens(
+        @Request() req: express.Request
+    ): Promise<GardenResponse[]> {
+        return await getGardens(req.user!.userId) as GardenResponse[];
     }
-});
 
-gardenRouter.post("/", async (req, res, next) => {
-    try {
-        const { name, rows, cols } = req.body;
+    @Post("/")
+    public async createGarden(
+        @Body() body: GardenCreateRequest,
+        @Request() req: express.Request
+    ): Promise<GardenResponse> {
+        const { name, rows, cols } = body;
         if (!name || typeof name !== "string" || name.trim() === "") {
-            res.status(400).json({ message: "name is required" });
-            return;
+            this.setStatus(400);
+            return { id: 0, userId: 0, name: "", rows: 0, cols: 0 };
         }
         if (typeof rows !== "number" || rows < 1 || rows > 20) {
-            res.status(400).json({ message: "rows must be a number between 1 and 20" });
-            return;
+            this.setStatus(400);
+            return { id: 0, userId: 0, name: "", rows: 0, cols: 0 };
         }
         if (typeof cols !== "number" || cols < 1 || cols > 20) {
-            res.status(400).json({ message: "cols must be a number between 1 and 20" });
-            return;
+            this.setStatus(400);
+            return { id: 0, userId: 0, name: "", rows: 0, cols: 0 };
         }
         const garden = await createGarden(req.user!.userId, name.trim(), rows, cols);
-        res.status(201).json(garden);
-    } catch (err) {
-        next(err);
+        this.setStatus(201);
+        return garden as GardenResponse;
     }
-});
 
-gardenRouter.get("/:id", async (req, res, next) => {
-    try {
-        const gardenId = parseInt(req.params.id, 10);
-        if (isNaN(gardenId)) {
-            res.status(400).json({ message: "Invalid garden ID" });
-            return;
-        }
-        const garden = await getGardenById(gardenId, req.user!.userId);
+    @Get("/{id}")
+    public async getGarden(
+        @Path() id: number,
+        @Request() req: express.Request
+    ): Promise<GardenDetailResponse> {
+        const garden = await getGardenById(id, req.user!.userId);
         if (!garden) {
-            res.status(404).json({ message: "Garden not found" });
-            return;
+            this.setStatus(404);
+            return { id: 0, userId: 0, name: "", rows: 0, cols: 0, cells: [] };
         }
-        const cells = await getGardenCells(gardenId);
-        res.status(200).json({ ...garden, cells });
-    } catch (err) {
-        next(err);
+        const cells = await getGardenCells(id);
+        return { ...garden, cells } as GardenDetailResponse;
     }
-});
 
-gardenRouter.put("/:id/cells/:row/:col", async (req, res, next) => {
-    try {
-        const gardenId = parseInt(req.params.id, 10);
-        const row = parseInt(req.params.row, 10);
-        const col = parseInt(req.params.col, 10);
-        const { plantId } = req.body;
-
-        if (isNaN(gardenId) || isNaN(row) || isNaN(col)) {
-            res.status(400).json({ message: "Invalid garden ID, row, or col" });
-            return;
-        }
-        if (typeof plantId !== "number") {
-            res.status(400).json({ message: "plantId is required and must be a number" });
-            return;
-        }
-
-        const garden = await getGardenById(gardenId, req.user!.userId);
+    @Put("/{id}/cells/{row}/{col}")
+    public async upsertCell(
+        @Path() id: number,
+        @Path() row: number,
+        @Path() col: number,
+        @Body() body: CellUpdateRequest,
+        @Request() req: express.Request
+    ): Promise<MessageResponse> {
+        const garden = await getGardenById(id, req.user!.userId);
         if (!garden) {
-            res.status(404).json({ message: "Garden not found" });
-            return;
+            this.setStatus(404);
+            return { message: "Garden not found" };
         }
         if (row < 0 || row >= garden.rows || col < 0 || col >= garden.cols) {
-            res.status(400).json({ message: "Cell coordinates out of bounds" });
-            return;
+            this.setStatus(400);
+            return { message: "Cell coordinates out of bounds" };
         }
-
-        await upsertCell(gardenId, row, col, plantId);
-        res.status(200).json({ message: "Cell updated" });
-    } catch (err) {
-        next(err);
+        await upsertCell(id, row, col, body.plantId);
+        return { message: "Cell updated" };
     }
-});
 
-gardenRouter.delete("/:id/cells/:row/:col", async (req, res, next) => {
-    try {
-        const gardenId = parseInt(req.params.id, 10);
-        const row = parseInt(req.params.row, 10);
-        const col = parseInt(req.params.col, 10);
-
-        if (isNaN(gardenId) || isNaN(row) || isNaN(col)) {
-            res.status(400).json({ message: "Invalid garden ID, row, or col" });
-            return;
-        }
-
-        const garden = await getGardenById(gardenId, req.user!.userId);
+    @Delete("/{id}/cells/{row}/{col}")
+    public async clearCell(
+        @Path() id: number,
+        @Path() row: number,
+        @Path() col: number,
+        @Request() req: express.Request
+    ): Promise<MessageResponse> {
+        const garden = await getGardenById(id, req.user!.userId);
         if (!garden) {
-            res.status(404).json({ message: "Garden not found" });
-            return;
+            this.setStatus(404);
+            return { message: "Garden not found" };
         }
-
-        const deleted = await clearCell(gardenId, row, col);
+        const deleted = await clearCell(id, row, col);
         if (deleted) {
-            res.status(200).json({ message: "Cell cleared" });
+            return { message: "Cell cleared" };
         } else {
-            res.status(404).json({ message: "Cell was empty" });
+            this.setStatus(404);
+            return { message: "Cell was empty" };
         }
-    } catch (err) {
-        next(err);
     }
-});
 
-gardenRouter.delete("/:id", async (req, res, next) => {
-    try {
-        const gardenId = parseInt(req.params.id, 10);
-        if (isNaN(gardenId)) {
-            res.status(400).json({ message: "Invalid garden ID" });
-            return;
-        }
-        const deleted = await deleteGarden(gardenId, req.user!.userId);
+    @Delete("/{id}")
+    public async deleteGarden(
+        @Path() id: number,
+        @Request() req: express.Request
+    ): Promise<void> {
+        const deleted = await deleteGarden(id, req.user!.userId);
         if (deleted) {
-            res.status(204).send();
+            this.setStatus(204);
         } else {
-            res.status(404).json({ message: "Garden not found" });
+            this.setStatus(404);
         }
-    } catch (err) {
-        next(err);
     }
-});
-
-export default gardenRouter;
+}

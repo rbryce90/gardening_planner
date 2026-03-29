@@ -1,5 +1,5 @@
 import { getDatabase } from "../databases/gardenDb.ts";
-import { Garden, GardenCell } from "../types/garden.d.ts";
+import type { Garden, GardenCell } from "../types/garden.d.ts";
 
 export class GardenRepository {
     async getGardens(userId: number): Promise<Garden[]> {

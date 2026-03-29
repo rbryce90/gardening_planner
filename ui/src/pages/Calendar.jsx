@@ -12,9 +12,9 @@ import {
   TableHead,
   TableRow,
   Paper,
-  CircularProgress,
   Alert,
   Box,
+  Skeleton,
 } from "@mui/material";
 import { getMe } from "../services/authService";
 import { getPlantingCalendar } from "../services/zoneService";
@@ -58,7 +58,7 @@ export default function Calendar() {
         if (err.response?.status === 401) {
           navigate("/login");
         } else {
-          setError(err.response?.data?.message || "Failed to load calendar");
+          setError(`Failed to load calendar: ${err.response?.data?.message || err.message} (${err.response?.status || "network error"})`);
           setLoading(false);
         }
       });
@@ -66,9 +66,17 @@ export default function Calendar() {
 
   if (loading) {
     return (
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 8 }}>
-        <CircularProgress />
-      </Box>
+      <Container maxWidth="lg" sx={{ mt: 8 }}>
+        <Skeleton variant="text" width={250} height={48} sx={{ mb: 2 }} />
+        <Box sx={{ display: "flex", gap: 1, mb: 3 }}>
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <Skeleton key={i} variant="rectangular" width={80} height={36} sx={{ borderRadius: 1 }} />
+          ))}
+        </Box>
+        {[1, 2, 3, 4].map((i) => (
+          <Skeleton key={i} variant="text" height={32} sx={{ mb: 1 }} />
+        ))}
+      </Container>
     );
   }
 
@@ -83,7 +91,7 @@ export default function Calendar() {
   if (!user?.zoneId) {
     return (
       <Container maxWidth="lg" sx={{ mt: 8 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
           Planting Calendar
         </Typography>
         <Alert severity="info">
@@ -101,7 +109,7 @@ export default function Calendar() {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 8 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
         Planting Calendar
       </Typography>
       <Tabs

@@ -1,5 +1,5 @@
 import { getDatabase } from "../databases/plantDb.ts";
-import { Zone, PlantingSeason } from "../types/zone.d.ts";
+import type { Zone, PlantingSeason } from "../types/zone.d.ts";
 
 export class ZoneRepository {
     async getZones(): Promise<Zone[]> {

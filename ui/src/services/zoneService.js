@@ -1,10 +1,10 @@
-import axios from "axios";
+import api from "./api";
 
 export const getZones = () =>
-  axios.get("/api/zones");
+  api.get("/api/zones");
 
 export const updateUserZone = (zoneId) =>
-  axios.put("/api/auth/zone", { zoneId }, { withCredentials: true });
+  api.put("/api/auth/zone", { zoneId });
 
 export const getPlantingCalendar = (zoneId) =>
-  axios.get(`/api/planting-calendar/${zoneId}`, { withCredentials: true });
+  api.get(`/api/planting-calendar/${zoneId}`);

@@ -1,5 +1,5 @@
 import { getDatabase } from "../databases/plantDb.ts";
-import { Plant } from "../types/plant.d.ts";
+import type { Plant } from "../types/plant.d.ts";
 import { v4 } from "uuid";
 
 export class PlantRepository {
