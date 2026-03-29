@@ -4,7 +4,7 @@ A full-stack garden design tool for planning bed layouts, placing plants on a vi
 
 ## What It Does
 
-Users create grid-based garden bed layouts and place plants into individual cells. The grid provides real-time visual feedback: cells highlight green when neighboring plants are companions and red when they are antagonists. Each plant's detail page includes an interactive force-directed graph showing 2 hops of relationship data from Neo4j. The app also includes a zone-based seasonal planting calendar so users can see what to plant and when based on their USDA hardiness zone.
+Users create grid-based garden bed layouts and place plants into individual cells. The grid provides real-time visual feedback: cells highlight green when neighboring plants are companions and red when they are antagonists. Each plant's detail page includes an interactive force-directed graph showing 1 hop of relationship data from Neo4j. The app also includes a zone-based seasonal planting calendar so users can see what to plant and when based on their USDA hardiness zone.
 
 ## Screenshots
 
@@ -20,9 +20,13 @@ Users create grid-based garden bed layouts and place plants into individual cell
 
 ![Plant Detail](screenshots/04-plant-detail.png)
 
-### Garden Designer
+### Garden Picker
 
-![Garden](screenshots/05-garden.png)
+![Garden Picker](screenshots/05a-garden-picker.png)
+
+### Garden Bed Builder
+
+![Garden](screenshots/05b-garden.png)
 
 ### Planting Calendar
 
@@ -82,7 +86,7 @@ TSOA Routes --> Controllers --> Repositories --> SQLite (tabular data)
 - **Middleware** provides cross-cutting concerns: JWT authentication, admin authorization, request ID injection, request logging, and centralized error handling.
 - **Authentication** uses two security schemes: `jwt` (any logged-in user) and `admin` (admin users only). Admin status is stored in the database and embedded in the JWT.
 
-**Why two databases?** SQLite is ideal for tabular data (users, gardens, grid cells). Neo4j is purpose-built for traversing relationships — finding all plants within 2 hops, or plants compatible with every plant in a garden, are queries that are trivial in Cypher and painful in SQL. See [docs/neo4j-guide.md](docs/neo4j-guide.md) for a detailed comparison.
+**Why two databases?** SQLite is ideal for tabular data (users, gardens, grid cells). Neo4j is purpose-built for traversing relationships — finding all plants within 1 hop, or plants compatible with every plant in a garden, are queries that are trivial in Cypher and painful in SQL. See [docs/neo4j-guide.md](docs/neo4j-guide.md) for a detailed comparison.
 
 The frontend uses a centralized Axios instance (`services/api.js`) with `baseURL: "/v1"` for versioned API calls. Pages own their data via local `useState` and pass props down to presentational components. Plant relationship graphs are rendered using `react-force-graph-2d` as interactive force-directed visualizations.
 
