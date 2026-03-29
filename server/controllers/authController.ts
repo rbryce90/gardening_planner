@@ -5,7 +5,7 @@ import { SignJWT, jwtVerify } from "jose";
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-in-production";
 const secret = new TextEncoder().encode(JWT_SECRET);
 
-const ADMIN_EMAILS = ["brycerbond@gmail.com", "jenn@gmail.com"];
+const ADMIN_EMAILS = ["admin@demo.com"];
 
 export async function signToken(userId: number, email: string, isAdmin: boolean): Promise<string> {
   return await new SignJWT({ userId, email, isAdmin })

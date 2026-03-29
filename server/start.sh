@@ -10,6 +10,9 @@ npx tsoa spec-and-routes
 echo "Seeding SQLite..."
 npx tsx --experimental-sqlite scripts/seed.ts
 
+echo "Seeding demo users..."
+npx tsx --experimental-sqlite scripts/seedUsers.ts
+
 echo "Syncing plant data to Neo4j..."
 npx tsx --experimental-sqlite scripts/etlToNeo4j.ts || echo "Neo4j sync skipped (Neo4j may not be ready)"
 

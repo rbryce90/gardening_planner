@@ -104,7 +104,7 @@ cd gardening_planner
 podman-compose up -d --build
 ```
 
-That's it. The server container automatically installs dependencies, generates TSOA routes, seeds SQLite with plant data, syncs to Neo4j, and starts the app. First startup takes ~60 seconds while everything initializes. Watch progress with `podman-compose logs -f server`.
+That's it. The server container automatically installs dependencies, generates TSOA routes, seeds plant data, creates demo user accounts, syncs to Neo4j, and starts the app. First startup takes ~60 seconds while everything initializes. Watch progress with `podman-compose logs -f server`.
 
 | Service       | URL                               |
 | ------------- | --------------------------------- |
@@ -112,6 +112,15 @@ That's it. The server container automatically installs dependencies, generates T
 | Server API    | http://localhost:8000             |
 | Swagger Docs  | http://localhost:8000/v1/api/docs |
 | Neo4j Browser | http://localhost:7474             |
+
+### Demo Accounts
+
+Two accounts are created automatically on first startup:
+
+| Email            | Password   | Role  | Access                                        |
+| ---------------- | ---------- | ----- | --------------------------------------------- |
+| `admin@demo.com` | `demo1234` | Admin | Full access — create, edit, delete plant data |
+| `user@demo.com`  | `demo1234` | User  | Read-only plant data, manage own gardens      |
 
 ### Option 2: Run locally (Neo4j in container)
 
@@ -134,15 +143,16 @@ npm install
 npm run dev
 # UI runs on http://localhost:5173
 
-# Seed databases (from server/ directory)
+# Seed databases and create demo users (from server/ directory)
 npx tsx --experimental-sqlite scripts/seed.ts
+npm run seed:users
 npm run etl:neo4j
 ```
 
 ### First-time setup after seeding
 
 1. Open http://localhost:5173
-2. Click **Register** and create an account
+2. Log in with `admin@demo.com` / `demo1234` (or `user@demo.com` for read-only access)
 3. Click **Settings** in the nav bar to set your USDA hardiness zone
 4. Browse **Plants** to see the plant database and relationship graphs
 5. Go to **My Gardens** to create a garden layout and place plants
@@ -150,19 +160,7 @@ npm run etl:neo4j
 
 ### Admin access
 
-Plant data (create, edit, delete) is restricted to admin users. To grant admin access, add your email to the `ADMIN_EMAILS` array in `server/controllers/authController.ts` and re-register, or run:
-
-```bash
-cd server
-node --experimental-sqlite -e "
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync('plants.db');
-  db.prepare(\"UPDATE users SET is_admin = 1 WHERE email = 'your@email.com'\").run();
-  db.close();
-"
-```
-
-Then log out and log back in to get a fresh JWT with admin privileges.
+Plant data (create, edit, delete) is restricted to admin users. The `admin@demo.com` account has admin privileges out of the box. To grant admin to a new account, add the email to the `ADMIN_EMAILS` array in `server/controllers/authController.ts` and register with that email.
 
 ## API Endpoints
 
@@ -226,6 +224,7 @@ All endpoints are prefixed with `/v1`. Full OpenAPI spec available at `/v1/api/d
 | `npm run generate`     | `server/` | Regenerate TSOA routes and OpenAPI spec  |
 | `npm run etl:neo4j`    | `server/` | Sync SQLite plant data to Neo4j          |
 | `npm run seed:neo4j`   | `server/` | Seed Neo4j from seed-data.json           |
+| `npm run seed:users`   | `server/` | Create demo user accounts                |
 | `npm run dev`          | `ui/`     | Start Vite dev server (port 5173)        |
 | `npm run build`        | `ui/`     | Production build                         |
 | `npm run format`       | root      | Format all source files with Prettier    |
