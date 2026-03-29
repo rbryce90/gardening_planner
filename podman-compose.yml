@@ -38,5 +38,17 @@ services:
     depends_on:
       - server
 
+  redis:
+    image: docker.io/redis:7-alpine
+    network_mode: host
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
 volumes:
   neo4j_data:
+  redis_data:
