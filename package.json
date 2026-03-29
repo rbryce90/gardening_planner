@@ -8,7 +8,8 @@
   },
   "scripts": {
     "format": "prettier --write 'server/**/*.ts' 'ui/src/**/*.{js,jsx,ts,tsx}'",
-    "format:check": "prettier --check 'server/**/*.ts' 'ui/src/**/*.{js,jsx,ts,tsx}'"
+    "format:check": "prettier --check 'server/**/*.ts' 'ui/src/**/*.{js,jsx,ts,tsx}'",
+    "test:e2e": "node tests/e2e.test.mjs"
   },
   "keywords": [],
   "author": "",

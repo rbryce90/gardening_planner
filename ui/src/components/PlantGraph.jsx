@@ -29,8 +29,8 @@ export default function PlantGraph({ plantId, compact = false }) {
           nodes: nodes.map((n, i) => ({
             ...n,
             id: n.id,
-            x: Math.cos((2 * Math.PI * i) / nodes.length) * 300,
-            y: Math.sin((2 * Math.PI * i) / nodes.length) * 300,
+            x: Math.cos((2 * Math.PI * i) / nodes.length) * 20,
+            y: Math.sin((2 * Math.PI * i) / nodes.length) * 20,
           })),
           links: edges.map((e) => ({
             source: e.source,
@@ -61,9 +61,9 @@ export default function PlantGraph({ plantId, compact = false }) {
     if (graphData && graphRef.current) {
       const fg = graphRef.current;
       fg.d3Force("charge")
-        .strength(compact ? -150 : -250)
-        .distanceMax(compact ? 300 : 500);
-      fg.d3Force("link").distance(compact ? 50 : 80);
+        .strength(compact ? -60 : -100)
+        .distanceMax(compact ? 200 : 400);
+      fg.d3Force("link").distance(compact ? 35 : 50);
       fg.d3ReheatSimulation();
 
       // Prevent ForceGraph2D from capturing wheel events so page scrolls normally
@@ -76,7 +76,7 @@ export default function PlantGraph({ plantId, compact = false }) {
         return () => canvas.removeEventListener("wheel", blockZoom, { capture: true });
       }
 
-      setTimeout(() => fg.zoomToFit(400, 60), 1200);
+      setTimeout(() => fg.zoomToFit(800, 60), 2000);
     }
   }, [graphData]);
 
@@ -190,9 +190,10 @@ export default function PlantGraph({ plantId, compact = false }) {
           linkCanvasObject={linkCanvasObject}
           enableZoom={false}
           onNodeClick={handleNodeClick}
-          cooldownTicks={150}
-          d3AlphaDecay={0.02}
-          d3VelocityDecay={0.3}
+          cooldownTicks={500}
+          d3AlphaDecay={0.005}
+          d3VelocityDecay={0.4}
+          warmupTicks={0}
           dagLevelDistance={80}
           nodeLabel=""
         />

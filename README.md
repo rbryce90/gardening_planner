@@ -96,6 +96,7 @@ The frontend uses a centralized Axios instance (`services/api.js`) with `baseURL
 
 - **Podman** and **podman-compose** (or Docker and docker-compose)
 - **Node.js 22+** if running locally (required for `node:sqlite`)
+- **Redis** if running the ETL pipeline locally
 
 ### Option 1: Run everything in containers (recommended)
 
@@ -104,11 +105,20 @@ The frontend uses a centralized Axios instance (`services/api.js`) with `baseURL
 git clone https://github.com/rbryce90/gardening_planner.git
 cd gardening_planner
 
-# Start all services (Neo4j, server, UI)
+# Start all services (Neo4j, Redis, server, UI)
 podman-compose up -d --build
 ```
 
-That's it. The server container automatically installs dependencies, generates TSOA routes, seeds plant data, creates demo user accounts, syncs to Neo4j, and starts the app. First startup takes ~60 seconds while everything initializes. Watch progress with `podman-compose logs -f server`.
+That's it. The server container automatically:
+
+1. Installs dependencies
+2. Generates TSOA routes and OpenAPI spec
+3. Seeds the SQLite database (76 plants, 13 zones, 153 plant types, companion/antagonist relationships)
+4. Creates demo user accounts
+5. Syncs plant data to Neo4j for graph queries
+6. Starts the Express server
+
+First startup takes ~60 seconds. Watch progress with `podman-compose logs -f server`.
 
 | Service       | URL                               |
 | ------------- | --------------------------------- |
@@ -116,6 +126,7 @@ That's it. The server container automatically installs dependencies, generates T
 | Server API    | http://localhost:8000             |
 | Swagger Docs  | http://localhost:8000/v1/api/docs |
 | Neo4j Browser | http://localhost:7474             |
+| Health Check  | http://localhost:8000/health      |
 
 ### Demo Accounts
 
@@ -132,12 +143,17 @@ Two accounts are created automatically on first startup:
 # Start only Neo4j
 podman-compose up neo4j -d
 
-# Create server/.env (see server/.env.example)
+# Create server/.env
 cp server/.env.example server/.env
+# Edit server/.env and set a real JWT_SECRET (required)
 
 # Install dependencies and start the server
 cd server
 npm install
+npx tsoa spec-and-routes
+npx tsx --experimental-sqlite scripts/seed.ts
+npx tsx --experimental-sqlite scripts/seedUsers.ts
+npx tsx --experimental-sqlite scripts/etlToNeo4j.ts
 npm run dev
 # Server runs on http://localhost:8000
 
@@ -146,18 +162,41 @@ cd ui
 npm install
 npm run dev
 # UI runs on http://localhost:5173
-
-# Seed databases and create demo users (from server/ directory)
-npx tsx --experimental-sqlite scripts/seed.ts
-npm run seed:users
-npm run etl:neo4j
 ```
+
+### Loading additional planting season data (ETL pipeline)
+
+The seed script includes basic planting season data, but for a fuller planting calendar (400+ entries across 11 zones), run the companion ETL pipeline:
+
+```bash
+# Clone the ETL repo alongside the planner
+git clone https://github.com/rbryce90/gardening-etl.git
+cd gardening-etl
+
+# Install dependencies
+npm install
+
+# Make sure Redis is running (the planner's podman-compose includes Redis,
+# or start one manually)
+podman run -d --name redis --network host docker.io/redis:7-alpine
+
+# Run the pipeline (requires Node 22+)
+nvm use 22
+npx tsx --experimental-sqlite src/pipeline.ts
+```
+
+The pipeline does two things:
+
+1. **Scrapes** the Old Farmer's Almanac for companion/antagonist plant relationships
+2. **Fetches** structured plant data from GitHub and generates zone-specific planting seasons
+
+Data is written directly to the planner's `server/plants.db`. After running, restart the planner server to pick up the new data.
 
 ### First-time setup after seeding
 
 1. Open http://localhost:5173
 2. Log in with `admin@demo.com` / `demo1234` (or `user@demo.com` for read-only access)
-3. Click **Settings** in the nav bar to set your USDA hardiness zone
+3. Click **Settings** to set your USDA hardiness zone
 4. Browse **Plants** to see the plant database and relationship graphs
 5. Go to **My Gardens** to create a garden layout and place plants
 6. Check the **Planting Calendar** for zone-specific planting schedules
@@ -166,18 +205,31 @@ npm run etl:neo4j
 
 Plant data (create, edit, delete) is restricted to admin users. The `admin@demo.com` account has admin privileges out of the box. To grant admin to a new account, add the email to the `ADMIN_EMAILS` array in `server/controllers/authController.ts` and register with that email.
 
+### Environment variables
+
+The server requires a `.env` file (see `server/.env.example`):
+
+| Variable         | Required | Default                 | Description                           |
+| ---------------- | -------- | ----------------------- | ------------------------------------- |
+| `JWT_SECRET`     | Yes      | —                       | Secret key for signing JWTs           |
+| `NEO4J_URI`      | No       | `bolt://localhost:7687` | Neo4j connection URI                  |
+| `NEO4J_USER`     | No       | `neo4j`                 | Neo4j username                        |
+| `NEO4J_PASSWORD` | No       | `password`              | Neo4j password                        |
+| `NODE_ENV`       | No       | `development`           | Set to `production` for HTTPS cookies |
+
 ## API Endpoints
 
 All endpoints are prefixed with `/v1`. Full OpenAPI spec available at `/v1/api/docs`.
 
 ### Auth (`/v1/api/auth`)
 
-| Method | Path                 | Description                   | Auth |
-| ------ | -------------------- | ----------------------------- | ---- |
-| POST   | `/v1/api/auth`       | Register a new user           | No   |
-| POST   | `/v1/api/auth/login` | Log in and receive JWT cookie | No   |
-| GET    | `/v1/api/auth/me`    | Get current user profile      | JWT  |
-| PUT    | `/v1/api/auth/zone`  | Update user hardiness zone    | JWT  |
+| Method | Path                    | Description                   | Auth |
+| ------ | ----------------------- | ----------------------------- | ---- |
+| POST   | `/v1/api/auth`          | Register a new user           | No   |
+| POST   | `/v1/api/auth/login`    | Log in and receive JWT cookie | No   |
+| GET    | `/v1/api/auth/me`       | Get current user profile      | JWT  |
+| PUT    | `/v1/api/auth/zone`     | Update user hardiness zone    | JWT  |
+| PUT    | `/v1/api/auth/password` | Change password               | JWT  |
 
 ### Gardens (`/v1/api/gardens`)
 
@@ -203,7 +255,10 @@ All endpoints are prefixed with `/v1`. Full OpenAPI spec available at `/v1/api/d
 | PUT    | `/v1/api/plants/:id`                          | Update a plant                         | Admin |
 | DELETE | `/v1/api/plants/:id`                          | Delete a plant                         | Admin |
 | POST   | `/v1/api/plants/:id/companion/:companionId`   | Add companion relationship             | Admin |
+| DELETE | `/v1/api/plants/:id/companion/:companionId`   | Remove companion relationship          | Admin |
 | POST   | `/v1/api/plants/:id/antagonist/:antagonistId` | Add antagonist relationship            | Admin |
+| DELETE | `/v1/api/plants/:id/antagonist/:antagonistId` | Remove antagonist relationship         | Admin |
+| DELETE | `/v1/api/plants/:plantId/types/:typeId`       | Delete a plant type                    | Admin |
 
 ### Zones & Calendar
 

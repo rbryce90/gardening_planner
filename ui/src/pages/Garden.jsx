@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import {
@@ -44,7 +44,6 @@ import {
   getAllAntagonists,
 } from "../services/gardenService";
 import GardenGrid from "../components/GardenGrid";
-import PlantPickerDialog from "../components/PlantPickerDialog";
 import PlantGraph from "../components/PlantGraph";
 import Notification from "../components/Notification";
 
@@ -61,15 +60,15 @@ export default function Garden() {
   const [newGardenName, setNewGardenName] = useState("");
   const [newRows, setNewRows] = useState(4);
   const [newCols, setNewCols] = useState(4);
-  const [pickerOpen, setPickerOpen] = useState(false);
-  const [pickerCell, setPickerCell] = useState(null);
-  // Paint mode: select a plant, then click cells to paint it
   const [paintPlant, setPaintPlant] = useState(null);
+  const [eraseMode, setEraseMode] = useState(false);
+  const [selectedCell, setSelectedCell] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [plantSearch, setPlantSearch] = useState("");
   const [pendingDeleteGarden, setPendingDeleteGarden] = useState(null);
+  const hoverTimerRef = useRef(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -158,8 +157,18 @@ export default function Garden() {
   };
 
   const handleCellClick = (row, col, cell) => {
-    if (paintPlant) {
-      // Paint mode: place the plant and show its graph
+    setSelectedCell({ row, col });
+
+    if (eraseMode) {
+      setSelectedGarden((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          cells: (prev.cells || []).filter((c) => !(c.row === row && c.col === col)),
+        };
+      });
+      clearCell(selectedGarden.id, row, col).catch(() => {});
+    } else if (paintPlant) {
       setSelectedGarden((prev) => {
         if (!prev) return prev;
         const existing = (prev.cells || []).filter((c) => !(c.row === row && c.col === col));
@@ -172,53 +181,21 @@ export default function Garden() {
       upsertCell(selectedGarden.id, row, col, paintPlant.id).catch((err) =>
         setError(`Failed to paint cell: ${err.response?.data?.message || err.message}`),
       );
-    }
-
-    if (cell?.plantId) {
+    } else if (cell?.plantId) {
       setSelectedPlant({ id: cell.plantId, name: cell.plantName });
-    }
-
-    if (!paintPlant) {
-      // Normal mode: open picker
-      setPickerCell({ row, col, cell });
-      setPickerOpen(true);
     }
   };
 
   const handleCellRightClick = (row, col) => {
     if (!selectedGarden) return;
-    setSelectedGarden((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        cells: (prev.cells || []).filter((c) => !(c.row === row && c.col === col)),
-      };
-    });
-    clearCell(selectedGarden.id, row, col).catch(() => {});
+    setPaintPlant(null);
+    setEraseMode(true);
   };
 
-  const handlePlantSelect = (plant) => {
-    if (!selectedGarden || !pickerCell) return;
-    const { row, col } = pickerCell;
-    const action = plant
-      ? upsertCell(selectedGarden.id, row, col, plant.id)
-      : clearCell(selectedGarden.id, row, col);
-    action
-      .then(() => getGarden(selectedGarden.id))
-      .then((res) => {
-        setSelectedGarden(res.data);
-        setPickerOpen(false);
-        setPickerCell(null);
-      })
-      .catch((err) =>
-        setError(`Failed to update cell: ${err.response?.data?.message || err.message}`),
-      );
-  };
-
-  // Get neighbor plant IDs for a cell to sort the picker
+  // Get neighbor plant IDs for the selected cell to sort the plant list
   const getNeighborPlantIds = () => {
-    if (!pickerCell || !selectedGarden) return [];
-    const { row, col } = pickerCell;
+    if (!selectedCell || !selectedGarden) return [];
+    const { row, col } = selectedCell;
     const cellGrid = {};
     (selectedGarden.cells || []).forEach((c) => {
       cellGrid[`${c.row},${c.col}`] = c;
@@ -234,6 +211,29 @@ export default function Garden() {
       if (n) ids.push(n.plantId);
     }
     return ids;
+  };
+
+  const pairKey = (a, b) => `${Math.min(a, b)}-${Math.max(a, b)}`;
+  const companionSet = new Set(
+    companions.map(({ plantId, companionId }) => pairKey(plantId, companionId)),
+  );
+  const antagonistSet = new Set(
+    antagonists.map(({ plantId, antagonistId }) => pairKey(plantId, antagonistId)),
+  );
+  const neighborIds = getNeighborPlantIds();
+  const hasNeighbors = neighborIds.length > 0;
+
+  const categorizePlant = (plant) => {
+    let relation = "neutral";
+    for (const nId of neighborIds) {
+      const key = pairKey(plant.id, nId);
+      if (antagonistSet.has(key)) {
+        relation = "antagonist";
+        break;
+      }
+      if (companionSet.has(key)) relation = "companion";
+    }
+    return { ...plant, relation };
   };
 
   if (loading) {
@@ -293,53 +293,125 @@ export default function Garden() {
         ))}
       </List>
 
-      {selectedGarden && (
-        <>
-          <Divider sx={{ my: 2 }} />
-          <Typography variant="subtitle2" gutterBottom>
-            Paint Mode
-          </Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 1 }}>
-            Select a plant, then click cells to place it. Right-click to erase.
-          </Typography>
-          {paintPlant ? (
-            <Chip
-              label={paintPlant.name}
-              onDelete={() => setPaintPlant(null)}
-              color="primary"
-              sx={{ mb: 1, width: "100%" }}
-            />
-          ) : (
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              No plant selected
-            </Typography>
-          )}
-          <TextField
-            size="small"
-            placeholder="Search plants..."
-            fullWidth
-            value={plantSearch}
-            onChange={(e) => setPlantSearch(e.target.value)}
-            sx={{ mb: 1 }}
-          />
-          <Box sx={{ maxHeight: 200, overflow: "auto" }}>
-            <List dense>
-              {plants
-                .filter((p) => p.name.toLowerCase().includes(plantSearch.toLowerCase()))
-                .map((p) => (
-                  <ListItemButton
-                    key={p.id}
-                    selected={paintPlant?.id === p.id}
-                    onClick={() => setPaintPlant(paintPlant?.id === p.id ? null : p)}
-                    sx={{ py: 0.25 }}
-                  >
-                    <ListItemText primary={p.name} slotProps={{ primary: { variant: "body2" } }} />
-                  </ListItemButton>
-                ))}
-            </List>
-          </Box>
-        </>
-      )}
+      {selectedGarden &&
+        (() => {
+          const filtered = plants.filter((p) =>
+            p.name.toLowerCase().includes(plantSearch.toLowerCase()),
+          );
+          const categorized = filtered.map(categorizePlant);
+          const companionPlants = categorized.filter((p) => p.relation === "companion");
+          const neutralPlants = categorized.filter((p) => p.relation === "neutral");
+          const antagonistPlants = categorized.filter((p) => p.relation === "antagonist");
+
+          const renderPlantItem = (p) => (
+            <ListItemButton
+              key={p.id}
+              selected={paintPlant?.id === p.id}
+              onClick={() => {
+                setEraseMode(false);
+                setPaintPlant(paintPlant?.id === p.id ? null : p);
+              }}
+              onMouseEnter={() => {
+                clearTimeout(hoverTimerRef.current);
+                hoverTimerRef.current = setTimeout(() => {
+                  setSelectedPlant({ id: p.id, name: p.name });
+                }, 1000);
+              }}
+              onMouseLeave={() => {
+                clearTimeout(hoverTimerRef.current);
+                if (paintPlant) {
+                  setSelectedPlant({ id: paintPlant.id, name: paintPlant.name });
+                } else {
+                  setSelectedPlant(null);
+                }
+              }}
+              sx={{
+                py: 0.25,
+                borderLeft: "3px solid",
+                borderColor:
+                  p.relation === "companion"
+                    ? "success.main"
+                    : p.relation === "antagonist"
+                      ? "error.main"
+                      : "transparent",
+              }}
+            >
+              <ListItemText primary={p.name} slotProps={{ primary: { variant: "body2" } }} />
+              {hasNeighbors && p.relation === "companion" && (
+                <Typography variant="caption" sx={{ color: "success.main", ml: 1 }}>
+                  companion
+                </Typography>
+              )}
+              {hasNeighbors && p.relation === "antagonist" && (
+                <Typography variant="caption" sx={{ color: "error.main", ml: 1 }}>
+                  conflict
+                </Typography>
+              )}
+            </ListItemButton>
+          );
+
+          return (
+            <>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="subtitle2" gutterBottom>
+                Plants
+              </Typography>
+              <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 1 }}>
+                Select a plant, then click cells to place it. Right-click to erase.
+              </Typography>
+              {eraseMode ? (
+                <Chip
+                  label="Eraser"
+                  onDelete={() => setEraseMode(false)}
+                  color="error"
+                  sx={{ mb: 1, width: "100%" }}
+                />
+              ) : paintPlant ? (
+                <Chip
+                  label={paintPlant.name}
+                  onDelete={() => setPaintPlant(null)}
+                  color="primary"
+                  sx={{ mb: 1, width: "100%" }}
+                />
+              ) : (
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  No plant selected
+                </Typography>
+              )}
+              <TextField
+                size="small"
+                placeholder="Search plants..."
+                fullWidth
+                value={plantSearch}
+                onChange={(e) => setPlantSearch(e.target.value)}
+                sx={{ mb: 1 }}
+              />
+              <Box sx={{ maxHeight: 300, overflow: "auto" }}>
+                <List dense>
+                  {hasNeighbors && companionPlants.length > 0 && (
+                    <>
+                      <Typography variant="caption" color="success.main" sx={{ px: 2, pt: 1 }}>
+                        Good neighbors
+                      </Typography>
+                      {companionPlants.map(renderPlantItem)}
+                      <Divider sx={{ my: 0.5 }} />
+                    </>
+                  )}
+                  {neutralPlants.map(renderPlantItem)}
+                  {hasNeighbors && antagonistPlants.length > 0 && (
+                    <>
+                      <Divider sx={{ my: 0.5 }} />
+                      <Typography variant="caption" color="error.main" sx={{ px: 2, pt: 1 }}>
+                        Conflicts with neighbors
+                      </Typography>
+                      {antagonistPlants.map(renderPlantItem)}
+                    </>
+                  )}
+                </List>
+              </Box>
+            </>
+          );
+        })()}
     </Box>
   );
 
@@ -614,18 +686,6 @@ export default function Garden() {
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* Plant picker dialog (normal mode) */}
-      <PlantPickerDialog
-        open={pickerOpen}
-        onClose={() => setPickerOpen(false)}
-        onSelect={handlePlantSelect}
-        plants={plants}
-        currentPlant={pickerCell?.cell ?? null}
-        companions={companions}
-        antagonists={antagonists}
-        neighborPlantIds={getNeighborPlantIds()}
-      />
 
       <Notification message={successMsg} open={!!successMsg} onClose={() => setSuccessMsg("")} />
     </Box>
