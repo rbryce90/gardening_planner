@@ -3,7 +3,7 @@ import { getDriver } from "../databases/neo4jDb.ts";
 import type { GraphNode, GraphEdge, GraphData, PlantRecommendation } from "../types/graph.d.ts";
 import logger from "../utils/logger.ts";
 
-export class GraphRepository {
+class GraphRepository {
   async getPlantGraph(plantId: number, hops: number): Promise<GraphData> {
     const safeHops = Math.max(1, Math.min(5, Math.floor(hops)));
     const driver = getDriver();

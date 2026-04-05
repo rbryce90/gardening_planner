@@ -1,4 +1,3 @@
-import React from "react";
 import { Card, CardContent, CardActionArea, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import { capitalize } from "../utils/utils";

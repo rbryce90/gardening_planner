@@ -3,6 +3,7 @@ import { getDb } from "../databases/db.ts";
 import initPlantDb from "../databases/plantDb.ts";
 import initUserDb from "../databases/userDb.ts";
 import initGardenDb from "../databases/gardenDb.ts";
+import { runMigrations } from "../databases/migrate.ts";
 
 const db = getDb();
 
@@ -10,6 +11,7 @@ const db = getDb();
 initPlantDb();
 initUserDb();
 initGardenDb();
+runMigrations();
 
 // Insert zones
 const insertZone = db.prepare(

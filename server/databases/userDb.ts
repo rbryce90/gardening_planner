@@ -16,18 +16,6 @@ const initializeDatabase = (): DatabaseSync => {
         );
       `);
 
-  try {
-    db.exec("ALTER TABLE users ADD COLUMN zone_id INTEGER REFERENCES zones(id)");
-  } catch {
-    // column already exists — safe to ignore
-  }
-
-  try {
-    db.exec("ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0");
-  } catch {
-    // column already exists — safe to ignore
-  }
-
   logger.info("User database initialized.");
   return db;
 };

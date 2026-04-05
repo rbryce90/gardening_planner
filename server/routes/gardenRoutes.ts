@@ -13,15 +13,7 @@ import {
 } from "tsoa";
 import * as express from "express";
 import { HttpError } from "../utils/HttpError.ts";
-import {
-  getGardens,
-  createGarden,
-  getGardenById,
-  getGardenCells,
-  upsertCell,
-  clearCell,
-  deleteGarden,
-} from "../controllers/gardenController.ts";
+import { gardenRepository } from "../repositories/gardenRepository.ts";
 import type {
   GardenResponse,
   GardenDetailResponse,
@@ -36,7 +28,7 @@ import type {
 export class GardenController extends Controller {
   @Get("/")
   public async getGardens(@Request() req: express.Request): Promise<GardenResponse[]> {
-    return (await getGardens(req.user!.userId)) as GardenResponse[];
+    return gardenRepository.getGardens(req.user!.userId) as GardenResponse[];
   }
 
   @Post("/")
@@ -54,7 +46,7 @@ export class GardenController extends Controller {
     if (typeof cols !== "number" || cols < 1 || cols > 20) {
       throw new HttpError(400, "Cols must be a number between 1 and 20");
     }
-    const garden = await createGarden(req.user!.userId, name.trim(), rows, cols);
+    const garden = gardenRepository.createGarden(req.user!.userId, name.trim(), rows, cols);
     this.setStatus(201);
     return garden as GardenResponse;
   }
@@ -64,11 +56,11 @@ export class GardenController extends Controller {
     @Path() id: number,
     @Request() req: express.Request,
   ): Promise<GardenDetailResponse> {
-    const garden = await getGardenById(id, req.user!.userId);
+    const garden = gardenRepository.getGardenById(id, req.user!.userId);
     if (!garden) {
       throw new HttpError(404, "Garden not found");
     }
-    const cells = await getGardenCells(id);
+    const cells = gardenRepository.getGardenCells(id);
     return { ...garden, cells } as GardenDetailResponse;
   }
 
@@ -80,14 +72,14 @@ export class GardenController extends Controller {
     @Body() body: CellUpdateRequest,
     @Request() req: express.Request,
   ): Promise<MessageResponse> {
-    const garden = await getGardenById(id, req.user!.userId);
+    const garden = gardenRepository.getGardenById(id, req.user!.userId);
     if (!garden) {
       throw new HttpError(404, "Garden not found");
     }
     if (row < 0 || row >= garden.rows || col < 0 || col >= garden.cols) {
       throw new HttpError(400, "Cell coordinates out of bounds");
     }
-    await upsertCell(id, row, col, body.plantId);
+    gardenRepository.upsertCell(id, row, col, body.plantId);
     return { message: "Cell updated" };
   }
 
@@ -98,11 +90,11 @@ export class GardenController extends Controller {
     @Path() col: number,
     @Request() req: express.Request,
   ): Promise<MessageResponse> {
-    const garden = await getGardenById(id, req.user!.userId);
+    const garden = gardenRepository.getGardenById(id, req.user!.userId);
     if (!garden) {
       throw new HttpError(404, "Garden not found");
     }
-    const deleted = await clearCell(id, row, col);
+    const deleted = gardenRepository.clearCell(id, row, col);
     if (!deleted) {
       throw new HttpError(404, "Cell was empty");
     }
@@ -111,7 +103,7 @@ export class GardenController extends Controller {
 
   @Delete("/{id}")
   public async deleteGarden(@Path() id: number, @Request() req: express.Request): Promise<void> {
-    const deleted = await deleteGarden(id, req.user!.userId);
+    const deleted = gardenRepository.deleteGarden(id, req.user!.userId);
     if (deleted) {
       this.setStatus(204);
     } else {

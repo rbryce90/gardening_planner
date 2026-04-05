@@ -1,8 +1,8 @@
 import { getDatabase } from "../databases/gardenDb.ts";
 import type { Garden, GardenCell } from "../types/garden.d.ts";
 
-export class GardenRepository {
-  async getGardens(userId: number): Promise<Garden[]> {
+class GardenRepository {
+  getGardens(userId: number): Garden[] {
     const db = getDatabase();
     const rows = db
       .prepare(
@@ -19,7 +19,7 @@ export class GardenRepository {
     }));
   }
 
-  async createGarden(userId: number, name: string, rows: number, cols: number): Promise<Garden> {
+  createGarden(userId: number, name: string, rows: number, cols: number): Garden {
     const db = getDatabase();
     const result = db
       .prepare("INSERT INTO gardens (user_id, name, rows, cols) VALUES (?, ?, ?, ?)")
@@ -38,7 +38,7 @@ export class GardenRepository {
     };
   }
 
-  async getGardenById(gardenId: number, userId: number): Promise<Garden | null> {
+  getGardenById(gardenId: number, userId: number): Garden | null {
     const db = getDatabase();
     const row = db
       .prepare(
@@ -56,7 +56,7 @@ export class GardenRepository {
     };
   }
 
-  async getGardenCells(gardenId: number): Promise<GardenCell[]> {
+  getGardenCells(gardenId: number): GardenCell[] {
     const db = getDatabase();
     const rows = db
       .prepare(
@@ -77,14 +77,14 @@ export class GardenRepository {
     }));
   }
 
-  async upsertCell(gardenId: number, row: number, col: number, plantId: number): Promise<void> {
+  upsertCell(gardenId: number, row: number, col: number, plantId: number): void {
     const db = getDatabase();
     db.prepare(
       "INSERT INTO garden_cells (garden_id, row, col, plant_id) VALUES (?, ?, ?, ?) ON CONFLICT(garden_id, row, col) DO UPDATE SET plant_id = excluded.plant_id",
     ).run(gardenId, row, col, plantId);
   }
 
-  async clearCell(gardenId: number, row: number, col: number): Promise<boolean> {
+  clearCell(gardenId: number, row: number, col: number): boolean {
     const db = getDatabase();
     const result = db
       .prepare("DELETE FROM garden_cells WHERE garden_id = ? AND row = ? AND col = ?")
@@ -92,7 +92,7 @@ export class GardenRepository {
     return result.changes > 0;
   }
 
-  async deleteGarden(gardenId: number, userId: number): Promise<boolean> {
+  deleteGarden(gardenId: number, userId: number): boolean {
     const db = getDatabase();
     const result = db
       .prepare("DELETE FROM gardens WHERE id = ? AND user_id = ?")

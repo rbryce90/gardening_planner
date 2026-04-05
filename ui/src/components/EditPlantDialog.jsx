@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogActions,
@@ -15,9 +15,9 @@ import { categoryTypesArray, growthTypesArray, ediblePartsArray } from "../model
 import { capitalize } from "../utils/utils";
 
 export default function EditPlantDialog({ open, plant, onClose, onSave }) {
-  const [localPlant, setLocalPlant] = React.useState(plant);
+  const [localPlant, setLocalPlant] = useState(plant);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLocalPlant(plant); // Update local state when the plant prop changes
   }, [plant]);
 

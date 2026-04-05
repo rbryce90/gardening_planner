@@ -84,7 +84,7 @@ export class AuthController extends Controller {
   @Get("/me")
   @Security("jwt")
   public async getMe(@Request() req: express.Request): Promise<UserResponse> {
-    const user = await userRepository.findById(req.user!.userId);
+    const user = userRepository.findById(req.user!.userId);
     if (!user) {
       throw new HttpError(404, "User not found");
     }
@@ -107,7 +107,7 @@ export class AuthController extends Controller {
     if (typeof body.zoneId !== "number") {
       throw new HttpError(400, "zoneId is required and must be a number");
     }
-    await userRepository.updateZone(req.user!.userId, body.zoneId);
+    userRepository.updateZone(req.user!.userId, body.zoneId);
     return { message: "Zone updated" };
   }
 
@@ -122,7 +122,7 @@ export class AuthController extends Controller {
       throw new HttpError(400, "Email, first name, and last name are required");
     }
     try {
-      await userRepository.updateProfile(req.user!.userId, email, firstName, lastName);
+      userRepository.updateProfile(req.user!.userId, email, firstName, lastName);
     } catch (err) {
       const error = err as Error;
       if (error.message.includes("UNIQUE constraint")) {
@@ -130,7 +130,7 @@ export class AuthController extends Controller {
       }
       throw err;
     }
-    const updated = await userRepository.findById(req.user!.userId);
+    const updated = userRepository.findById(req.user!.userId);
     return {
       id: updated!.id,
       email: updated!.email,

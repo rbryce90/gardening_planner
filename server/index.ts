@@ -11,6 +11,7 @@ import requestIdMiddleware from "./middleware/requestId.ts";
 import { errorHandler } from "./middleware/errorHandler.ts";
 import { RegisterRoutes } from "./generated/routes.ts";
 import { getDriver, closeDriver } from "./databases/neo4jDb.ts";
+import { runMigrations } from "./databases/migrate.ts";
 
 const app = express();
 const PORT = 8000;
@@ -35,6 +36,9 @@ if (process.env.NODE_ENV !== "production") {
     logger.warn("Swagger spec not found — run 'npm run generate' to create it");
   }
 }
+
+// Run database migrations
+runMigrations();
 
 // TSOA generated routes
 RegisterRoutes(app);

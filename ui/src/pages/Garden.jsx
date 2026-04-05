@@ -1,36 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import {
   Box,
   Typography,
   Button,
-  List,
-  ListItemButton,
-  ListItemText,
   CircularProgress,
   Alert,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
-  Divider,
   Chip,
   Drawer,
-  IconButton,
   Fab,
   useMediaQuery,
   Skeleton,
-  Grid,
-  Card,
-  CardContent,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import GridViewIcon from "@mui/icons-material/GridView";
-import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import { getMe } from "../services/authService";
 import {
   getGardens,
@@ -46,64 +34,9 @@ import GardenGrid from "../components/GardenGrid";
 import PlantPickerDialog from "../components/PlantPickerDialog";
 import PlantGraph from "../components/PlantGraph";
 import Notification from "../components/Notification";
-
-function CreateGardenDialog({ open, onClose, onSubmit }) {
-  const [name, setName] = useState("");
-  const [rows, setRows] = useState(4);
-  const [cols, setCols] = useState(4);
-
-  const handleSubmit = () => {
-    onSubmit(name, rows, cols);
-  };
-
-  const handleClose = () => {
-    setName("");
-    setRows(4);
-    setCols(4);
-    onClose();
-  };
-
-  return (
-    <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>New Garden</DialogTitle>
-      <DialogContent>
-        <TextField
-          label="Name"
-          variant="outlined"
-          fullWidth
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          sx={{ mt: 1, mb: 2 }}
-        />
-        <TextField
-          label="Rows"
-          type="number"
-          variant="outlined"
-          fullWidth
-          value={rows}
-          onChange={(e) => setRows(e.target.value)}
-          slotProps={{ htmlInput: { min: 1, max: 20 } }}
-          sx={{ mb: 2 }}
-        />
-        <TextField
-          label="Columns"
-          type="number"
-          variant="outlined"
-          fullWidth
-          value={cols}
-          onChange={(e) => setCols(e.target.value)}
-          slotProps={{ htmlInput: { min: 1, max: 20 } }}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit}>
-          Create
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-}
+import CreateGardenDialog from "../components/CreateGardenDialog";
+import GardenSidebar from "../components/GardenSidebar";
+import GardenPicker from "./GardenPicker";
 
 export default function Garden() {
   const navigate = useNavigate();
@@ -118,7 +51,6 @@ export default function Garden() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerCell, setPickerCell] = useState(null);
-  // Paint mode: select a plant, then click cells to paint it
   const [paintPlant, setPaintPlant] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
@@ -213,7 +145,6 @@ export default function Garden() {
 
   const handleCellClick = (row, col, cell) => {
     if (paintPlant) {
-      // Paint mode: optimistically update local state, fire API in background
       setSelectedGarden((prev) => {
         if (!prev) return prev;
         const existing = (prev.cells || []).filter((c) => !(c.row === row && c.col === col));
@@ -228,10 +159,8 @@ export default function Garden() {
         setError(`Failed to paint cell: ${err.response?.data?.message || err.message}`),
       );
     } else if (cell?.plantId) {
-      // Cell has a plant: show its graph
       setSelectedPlant({ id: cell.plantId, name: cell.plantName });
     } else {
-      // Empty cell: open picker
       setPickerCell({ row, col, cell });
       setPickerOpen(true);
     }
@@ -270,7 +199,6 @@ export default function Garden() {
       );
   };
 
-  // Get neighbor plant IDs for a cell to sort the picker
   const getNeighborPlantIds = () => {
     if (!pickerCell || !selectedGarden) return [];
     const { row, col } = pickerCell;
@@ -316,234 +244,25 @@ export default function Garden() {
     );
   }
 
-  const sidebarContent = (
-    <Box sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        My Gardens
-      </Typography>
-      <Button
-        variant="outlined"
-        fullWidth
-        sx={{ mb: 2 }}
-        onClick={() => {
-          setShowCreateDialog(true);
-          setSidebarOpen(false);
-        }}
-      >
-        New Garden
-      </Button>
-      <Divider sx={{ mb: 1 }} />
-      <List dense>
-        {gardens.map((g) => (
-          <ListItemButton
-            key={g.id}
-            selected={selectedGarden?.id === g.id}
-            onClick={() => {
-              handleSelectGarden(g.id);
-              setSidebarOpen(false);
-            }}
-          >
-            <ListItemText primary={g.name} secondary={`${g.rows}x${g.cols}`} />
-          </ListItemButton>
-        ))}
-      </List>
-
-      {selectedGarden && (
-        <>
-          <Divider sx={{ my: 2 }} />
-          <Button
-            variant="outlined"
-            color="error"
-            fullWidth
-            sx={{ mb: 2 }}
-            onClick={() => setShowDeleteConfirm(true)}
-          >
-            Delete Garden
-          </Button>
-          <Divider sx={{ my: 2 }} />
-          <Typography variant="subtitle2" gutterBottom>
-            Paint Mode
-          </Typography>
-          <Typography variant="caption" color="text.secondary" sx={{ display: "block", mb: 1 }}>
-            Select a plant, then click cells to place it. Right-click to erase.
-          </Typography>
-          {paintPlant ? (
-            <Chip
-              label={paintPlant.name}
-              onDelete={() => setPaintPlant(null)}
-              color="primary"
-              sx={{ mb: 1, width: "100%" }}
-            />
-          ) : (
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              No plant selected
-            </Typography>
-          )}
-          <TextField
-            size="small"
-            label="Search plants"
-            placeholder="Search plants..."
-            fullWidth
-            value={plantSearch}
-            onChange={(e) => setPlantSearch(e.target.value)}
-            sx={{ mb: 1 }}
-          />
-          <Box sx={{ maxHeight: 200, overflow: "auto" }}>
-            <List dense>
-              {plants
-                .filter((p) => p.name.toLowerCase().includes(plantSearch.toLowerCase()))
-                .map((p) => (
-                  <ListItemButton
-                    key={p.id}
-                    selected={paintPlant?.id === p.id}
-                    onClick={() => setPaintPlant(paintPlant?.id === p.id ? null : p)}
-                    sx={{ py: 0.25 }}
-                  >
-                    <ListItemText primary={p.name} slotProps={{ primary: { variant: "body2" } }} />
-                  </ListItemButton>
-                ))}
-            </List>
-          </Box>
-        </>
-      )}
-    </Box>
-  );
-
-  // No garden selected: full-page garden picker
   if (!selectedGarden) {
     return (
-      <Box sx={{ minHeight: "calc(100vh - 64px)", p: 4 }}>
-        {error && (
-          <Alert severity="error" sx={{ mb: 3 }} onClose={() => setError("")}>
-            {error}
-          </Alert>
-        )}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: 1 }}>
-          <LocalFloristIcon sx={{ fontSize: 36, color: "success.main" }} />
-          <Typography variant="h4" sx={{ fontWeight: 600 }}>
-            My Gardens
-          </Typography>
-        </Box>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          {gardens.length > 0
-            ? "Select a garden to start planning."
-            : "Create your first garden to get started."}
-        </Typography>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" },
-            gap: 3,
-          }}
-        >
-          {gardens.map((g) => (
-            <Card
-              key={g.id}
-              tabIndex={0}
-              role="button"
-              aria-label={g.name}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  handleSelectGarden(g.id);
-                }
-              }}
-              sx={{
-                height: 160,
-                cursor: "pointer",
-                background:
-                  "linear-gradient(135deg, rgba(76,175,80,0.08) 0%, rgba(76,175,80,0.02) 100%)",
-                border: "1px solid",
-                borderColor: "divider",
-                borderLeft: "4px solid",
-                borderLeftColor: "success.main",
-                transition: "transform 0.2s, box-shadow 0.2s",
-                "&:hover": { transform: "translateY(-4px)", boxShadow: 6 },
-                "&:focus": {
-                  outline: "2px solid",
-                  outlineColor: "primary.main",
-                  outlineOffset: 2,
-                },
-              }}
-              onClick={() => handleSelectGarden(g.id)}
-            >
-              <CardContent sx={{ textAlign: "center", pt: 4 }}>
-                <GridViewIcon sx={{ fontSize: 32, color: "success.main", mb: 1 }} />
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>
-                  {g.name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {g.rows} x {g.cols} grid
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
-          <Card
-            tabIndex={0}
-            role="button"
-            aria-label="New Garden"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setShowCreateDialog(true);
-              }
-            }}
-            sx={{
-              height: 160,
-              cursor: "pointer",
-              border: "2px dashed",
-              borderColor: "divider",
-              bgcolor: "transparent",
-              transition: "border-color 0.2s, transform 0.2s",
-              "&:hover": { borderColor: "success.main", transform: "translateY(-4px)" },
-              "&:focus": {
-                outline: "2px solid",
-                outlineColor: "primary.main",
-                outlineOffset: 2,
-              },
-            }}
-            onClick={() => setShowCreateDialog(true)}
-          >
-            <CardContent sx={{ textAlign: "center", pt: 4 }}>
-              <AddCircleOutlineIcon sx={{ fontSize: 36, color: "success.main", mb: 1 }} />
-              <Typography variant="h6" color="text.secondary">
-                New Garden
-              </Typography>
-            </CardContent>
-          </Card>
-        </Box>
-
-        <CreateGardenDialog
-          open={showCreateDialog}
-          onClose={() => setShowCreateDialog(false)}
-          onSubmit={handleCreateGarden}
-        />
-
-        <Notification message={successMsg} open={!!successMsg} onClose={() => setSuccessMsg("")} />
-
-        <Box
-          aria-live="polite"
-          aria-atomic="true"
-          sx={{
-            position: "absolute",
-            width: 1,
-            height: 1,
-            overflow: "hidden",
-            clip: "rect(0 0 0 0)",
-            clipPath: "inset(50%)",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {liveAnnouncement}
-        </Box>
-      </Box>
+      <GardenPicker
+        gardens={gardens}
+        error={error}
+        setError={setError}
+        successMsg={successMsg}
+        setSuccessMsg={setSuccessMsg}
+        liveAnnouncement={liveAnnouncement}
+        showCreateDialog={showCreateDialog}
+        setShowCreateDialog={setShowCreateDialog}
+        onSelectGarden={handleSelectGarden}
+        onCreateGarden={handleCreateGarden}
+      />
     );
   }
 
-  // Garden selected: sidebar + grid layout
   return (
     <Box sx={{ display: "flex", height: "calc(100vh - 64px)" }}>
-      {/* Mobile sidebar toggle */}
       {isMobile && (
         <Fab
           size="small"
@@ -556,14 +275,27 @@ export default function Garden() {
         </Fab>
       )}
 
-      {/* Sidebar: drawer on mobile, fixed on desktop */}
       {isMobile ? (
         <Drawer
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
           aria-label="Garden sidebar"
         >
-          <Box sx={{ width: 280 }}>{sidebarContent}</Box>
+          <Box sx={{ width: 280 }}>
+            <GardenSidebar
+              gardens={gardens}
+              selectedGarden={selectedGarden}
+              paintPlant={paintPlant}
+              setPaintPlant={setPaintPlant}
+              plantSearch={plantSearch}
+              setPlantSearch={setPlantSearch}
+              plants={plants}
+              onSelectGarden={handleSelectGarden}
+              onNewGarden={() => setShowCreateDialog(true)}
+              onDeleteGarden={() => setShowDeleteConfirm(true)}
+              onCloseMobile={() => setSidebarOpen(false)}
+            />
+          </Box>
         </Drawer>
       ) : (
         <Box
@@ -574,11 +306,21 @@ export default function Garden() {
             overflow: "auto",
           }}
         >
-          {sidebarContent}
+          <GardenSidebar
+            gardens={gardens}
+            selectedGarden={selectedGarden}
+            paintPlant={paintPlant}
+            setPaintPlant={setPaintPlant}
+            plantSearch={plantSearch}
+            setPlantSearch={setPlantSearch}
+            plants={plants}
+            onSelectGarden={handleSelectGarden}
+            onNewGarden={() => setShowCreateDialog(true)}
+            onDeleteGarden={() => setShowDeleteConfirm(true)}
+          />
         </Box>
       )}
 
-      {/* Right panel */}
       <Box sx={{ flex: 1, p: 2, overflow: "auto" }}>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError("")}>
@@ -621,10 +363,8 @@ export default function Garden() {
         open={showCreateDialog}
         onClose={() => setShowCreateDialog(false)}
         onSubmit={handleCreateGarden}
-        error={error}
       />
 
-      {/* Delete garden confirmation */}
       <Dialog open={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)}>
         <DialogTitle>Delete Garden</DialogTitle>
         <DialogContent>
@@ -641,7 +381,6 @@ export default function Garden() {
         </DialogActions>
       </Dialog>
 
-      {/* Plant picker dialog (normal mode) */}
       <PlantPickerDialog
         open={pickerOpen}
         onClose={() => setPickerOpen(false)}

@@ -1,5 +1,6 @@
 import * as express from "express";
 import { verifyToken } from "./controllers/authController.ts";
+import { HttpError } from "./utils/HttpError.ts";
 
 export async function expressAuthentication(
   request: express.Request,
@@ -8,7 +9,7 @@ export async function expressAuthentication(
 ): Promise<{ userId: number; email: string; isAdmin: boolean }> {
   const token = request.cookies?.token;
   if (!token) {
-    throw Object.assign(new Error("Unauthorized"), { status: 401 });
+    throw new HttpError(401, "Unauthorized");
   }
 
   const decoded = await verifyToken(token);
@@ -19,10 +20,10 @@ export async function expressAuthentication(
 
   if (securityName === "admin") {
     if (!decoded.isAdmin) {
-      throw Object.assign(new Error("Forbidden"), { status: 403 });
+      throw new HttpError(403, "Forbidden");
     }
     return decoded;
   }
 
-  throw Object.assign(new Error("Unknown security scheme"), { status: 401 });
+  throw new HttpError(401, "Unknown security scheme");
 }
