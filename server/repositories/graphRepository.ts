@@ -1,7 +1,6 @@
 import neo4j from "neo4j-driver";
 import { getDriver } from "../databases/neo4jDb.ts";
 import type { GraphNode, GraphEdge, GraphData, PlantRecommendation } from "../types/graph.d.ts";
-import logger from "../utils/logger.ts";
 
 class GraphRepository {
   async getPlantGraph(plantId: number, hops: number): Promise<GraphData> {
@@ -57,9 +56,6 @@ class GraphRepository {
       }
 
       return { nodes, edges };
-    } catch (error) {
-      logger.error("Failed to get plant graph", { plantId, hops, error });
-      throw error;
     } finally {
       await session.close();
     }
@@ -84,9 +80,6 @@ class GraphRepository {
           growthForm: node.properties.growthForm,
         };
       });
-    } catch (error) {
-      logger.error("Failed to get companions", { plantId, error });
-      throw error;
     } finally {
       await session.close();
     }
@@ -111,9 +104,6 @@ class GraphRepository {
           growthForm: node.properties.growthForm,
         };
       });
-    } catch (error) {
-      logger.error("Failed to get antagonists", { plantId, error });
-      throw error;
     } finally {
       await session.close();
     }
@@ -153,9 +143,6 @@ class GraphRepository {
           companionCount: toNumber(record.get("companionCount")),
         };
       });
-    } catch (error) {
-      logger.error("Failed to get plant recommendations", { gardenPlantIds, error });
-      throw error;
     } finally {
       await session.close();
     }
@@ -168,66 +155,52 @@ class GraphRepository {
     growthForm: string,
     family?: string,
   ): Promise<void> {
-    const driver = getDriver();
-    const session = driver.session();
+    const session = getDriver().session();
     try {
       await session.run(
         `MERGE (p:Plant {id: $id})
-                 SET p.name = $name, p.category = $category, p.growthForm = $growthForm, p.family = $family`,
+         SET p.name = $name, p.category = $category, p.growthForm = $growthForm, p.family = $family`,
         { id: neo4jInt(id), name, category, growthForm, family: family || null },
       );
-    } catch (error) {
-      logger.error("Failed to upsert plant in Neo4j", { id, error });
     } finally {
       await session.close();
     }
   }
 
   async deletePlant(plantId: number): Promise<void> {
-    const driver = getDriver();
-    const session = driver.session();
+    const session = getDriver().session();
     try {
       await session.run(`MATCH (p:Plant {id: $plantId}) DETACH DELETE p`, {
         plantId: neo4jInt(plantId),
       });
-    } catch (error) {
-      logger.error("Failed to delete plant from Neo4j", { plantId, error });
     } finally {
       await session.close();
     }
   }
 
   async addCompanion(plantId: number, companionId: number): Promise<void> {
-    const driver = getDriver();
-    const session = driver.session();
+    const session = getDriver().session();
     try {
-      const lowId = Math.min(plantId, companionId);
-      const highId = Math.max(plantId, companionId);
+      const [lowId, highId] = [Math.min(plantId, companionId), Math.max(plantId, companionId)];
       await session.run(
         `MATCH (a:Plant {id: $lowId}), (b:Plant {id: $highId})
-                 MERGE (a)-[:COMPANION_OF]->(b)`,
+         MERGE (a)-[:COMPANION_OF]->(b)`,
         { lowId: neo4jInt(lowId), highId: neo4jInt(highId) },
       );
-    } catch (error) {
-      logger.error("Failed to add companion in Neo4j", { plantId, companionId, error });
     } finally {
       await session.close();
     }
   }
 
   async addAntagonist(plantId: number, antagonistId: number): Promise<void> {
-    const driver = getDriver();
-    const session = driver.session();
+    const session = getDriver().session();
     try {
-      const lowId = Math.min(plantId, antagonistId);
-      const highId = Math.max(plantId, antagonistId);
+      const [lowId, highId] = [Math.min(plantId, antagonistId), Math.max(plantId, antagonistId)];
       await session.run(
         `MATCH (a:Plant {id: $lowId}), (b:Plant {id: $highId})
-                 MERGE (a)-[:ANTAGONIST_OF]->(b)`,
+         MERGE (a)-[:ANTAGONIST_OF]->(b)`,
         { lowId: neo4jInt(lowId), highId: neo4jInt(highId) },
       );
-    } catch (error) {
-      logger.error("Failed to add antagonist in Neo4j", { plantId, antagonistId, error });
     } finally {
       await session.close();
     }
