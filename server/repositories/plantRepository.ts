@@ -100,8 +100,8 @@ class PlantRepository {
 
   deletePlant(id: number): boolean {
     const db = getDatabase();
-    db.prepare("DELETE FROM plants WHERE id = ?").run(id);
-    return true;
+    const result = db.prepare("DELETE FROM plants WHERE id = ?").run(id);
+    return result.changes > 0;
   }
 
   getPlantTypesByPlantId(plantId: number): Omit<PlantType, "plantId">[] {
