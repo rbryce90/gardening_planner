@@ -10,7 +10,8 @@
     "dev": "tsoa spec-and-routes && NODE_OPTIONS='--experimental-sqlite' nodemon --watch './**/*.ts' --ignore './generated/**' --exec 'tsx ./index.ts'",
     "seed:neo4j": "npx tsx --experimental-sqlite scripts/seedNeo4j.ts",
     "etl:neo4j": "npx tsx --experimental-sqlite scripts/etlToNeo4j.ts",
-    "seed:users": "npx tsx --experimental-sqlite scripts/seedUsers.ts"
+    "seed:users": "npx tsx --experimental-sqlite scripts/seedUsers.ts",
+    "test": "npx jest --forceExit --detectOpenHandles"
   },
   "author": "",
   "license": "ISC",
@@ -34,9 +35,12 @@
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.3",
     "@types/swagger-ui-express": "^4.1.8",
+    "jest": "^30.3.0",
     "nodemon": "^3.1.10",
+    "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
     "typescript": "^5.8.3"
