@@ -1,9 +1,21 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, Paper, Skeleton, Stack } from "@mui/material";
+import { Box, Typography, Paper, Skeleton, Stack, styled } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import ForceGraph2D from "react-force-graph-2d";
 import { getPlantGraph } from "../services/graphService";
+
+const VisuallyHidden = styled("div")({
+  position: "absolute",
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  border: 0,
+});
 
 const COMPANION_COLOR = "#4caf50";
 const ANTAGONIST_COLOR = "#f44336";
@@ -228,6 +240,37 @@ export default function PlantGraph({ plantId, compact = false }) {
             </Typography>
           </Stack>
         </Stack>
+        <VisuallyHidden>
+          <table>
+            <caption>Plant relationships</caption>
+            <thead>
+              <tr>
+                <th scope="col">Plant</th>
+                <th scope="col">Related Plant</th>
+                <th scope="col">Relationship</th>
+              </tr>
+            </thead>
+            <tbody>
+              {graphData.links.map((link, i) => {
+                const sourceName =
+                  typeof link.source === "object"
+                    ? link.source.name
+                    : graphData.nodes.find((n) => n.id === link.source)?.name;
+                const targetName =
+                  typeof link.target === "object"
+                    ? link.target.name
+                    : graphData.nodes.find((n) => n.id === link.target)?.name;
+                return (
+                  <tr key={i}>
+                    <td>{sourceName}</td>
+                    <td>{targetName}</td>
+                    <td>{link.type}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </VisuallyHidden>
       </Paper>
     </Box>
   );

@@ -25,7 +25,20 @@ export default class ErrorBoundary extends React.Component {
             <Typography variant="body2" sx={{ mb: 1 }}>
               {this.state.error?.message || "Unknown error"}
             </Typography>
-            <Typography variant="caption" component="pre" sx={{ whiteSpace: "pre-wrap", maxHeight: 200, overflow: "auto", display: "block", mt: 1, p: 1, bgcolor: "action.hover", borderRadius: 1 }}>
+            <Typography
+              variant="caption"
+              component="pre"
+              sx={{
+                whiteSpace: "pre-wrap",
+                maxHeight: 200,
+                overflow: "auto",
+                display: "block",
+                mt: 1,
+                p: 1,
+                bgcolor: "action.hover",
+                borderRadius: 1,
+              }}
+            >
               {this.state.errorInfo?.componentStack || ""}
             </Typography>
           </Alert>

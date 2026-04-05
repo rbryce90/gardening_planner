@@ -1,18 +1,11 @@
 import { DatabaseSync } from "node:sqlite";
+import { getDb } from "./db.ts";
 import logger from "../utils/logger.ts";
 
-let dbInstance: DatabaseSync | null = null;
-
 const initializeDatabase = (): DatabaseSync => {
-    if (dbInstance) {
-        return dbInstance;
-    }
+  const db = getDb();
 
-    const db = new DatabaseSync("plants.db");
-
-    db.exec("PRAGMA foreign_keys = ON;");
-
-    db.exec(`
+  db.exec(`
         CREATE TABLE IF NOT EXISTS gardens (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           user_id INTEGER NOT NULL,
@@ -20,11 +13,11 @@ const initializeDatabase = (): DatabaseSync => {
           rows INTEGER NOT NULL,
           cols INTEGER NOT NULL,
           created_at TEXT DEFAULT (datetime('now')),
-          FOREIGN KEY (user_id) REFERENCES users(id)
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
       `);
 
-    db.exec(`
+  db.exec(`
         CREATE TABLE IF NOT EXISTS garden_cells (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           garden_id INTEGER NOT NULL,
@@ -37,16 +30,16 @@ const initializeDatabase = (): DatabaseSync => {
         );
       `);
 
-    logger.info("Garden database initialized.");
-    dbInstance = db;
-    return db;
+  // Indexes for foreign keys
+  db.exec("CREATE INDEX IF NOT EXISTS idx_gardens_user_id ON gardens(user_id)");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_garden_cells_garden_id ON garden_cells(garden_id)");
+
+  logger.info("Garden database initialized.");
+  return db;
 };
 
 export function getDatabase(): DatabaseSync {
-    if (!dbInstance) {
-        initializeDatabase();
-    }
-    return dbInstance!;
+  return getDb();
 }
 
 export default initializeDatabase;

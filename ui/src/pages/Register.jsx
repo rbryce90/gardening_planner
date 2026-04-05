@@ -8,6 +8,7 @@ import {
   Alert,
   Box,
   Paper,
+  CircularProgress,
 } from "@mui/material";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import { register } from "../services/authService";
@@ -99,7 +100,7 @@ export default function Register() {
               disabled={loading}
               sx={{ mt: 3, py: 1.2 }}
             >
-              Register
+              {loading ? <CircularProgress size={24} color="inherit" /> : "Register"}
             </Button>
           </Box>
           <Box sx={{ mt: 2, textAlign: "center" }}>

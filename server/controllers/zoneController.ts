@@ -1,9 +1,9 @@
 import { zoneRepository } from "../repositories/zoneRepository.ts";
 
 export const getZones = async () => {
-    return await zoneRepository.getZones();
+  return await zoneRepository.getZones();
 };
 
 export const getPlantingCalendar = async (zoneId: number) => {
-    return await zoneRepository.getPlantingCalendar(zoneId);
+  return await zoneRepository.getPlantingCalendar(zoneId);
 };

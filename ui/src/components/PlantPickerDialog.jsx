@@ -105,6 +105,7 @@ export default function PlantPickerDialog({
       <DialogContent>
         <TextField
           size="small"
+          label="Search plants"
           placeholder="Search plants..."
           fullWidth
           autoFocus

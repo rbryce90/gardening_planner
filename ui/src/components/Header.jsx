@@ -24,19 +24,31 @@ import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { getMe, logout } from "../services/authService";
 
+let cachedUser = null;
+let cacheTimestamp = 0;
+const CACHE_TTL = 60_000;
+
 const Header = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(cachedUser);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
+    if (cachedUser && Date.now() - cacheTimestamp < CACHE_TTL) {
+      setUser(cachedUser);
+      return;
+    }
     getMe()
       .then((res) => {
+        cachedUser = res.data;
+        cacheTimestamp = Date.now();
         setUser(res.data);
       })
       .catch(() => {
+        cachedUser = null;
+        cacheTimestamp = 0;
         setUser(null);
       });
   }, [location]);
@@ -45,6 +57,8 @@ const Header = () => {
 
   const handleLogout = async () => {
     await logout();
+    cachedUser = null;
+    cacheTimestamp = 0;
     setUser(null);
     window.location.href = "/login";
   };
@@ -87,7 +101,18 @@ const Header = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{ bgcolor: "background.paper" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box
+            component={RouterLink}
+            to="/"
+            aria-label="Garden Planner home"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              textDecoration: "none",
+              color: "inherit",
+            }}
+          >
             <LocalFloristIcon sx={{ color: "primary.main" }} />
             <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
               Garden Planner
@@ -101,7 +126,11 @@ const Header = () => {
                   {user.firstName}
                 </Typography>
               )}
-              <IconButton color="inherit" onClick={() => setDrawerOpen(true)}>
+              <IconButton
+                color="inherit"
+                aria-label="Open navigation menu"
+                onClick={() => setDrawerOpen(true)}
+              >
                 <MenuIcon />
               </IconButton>
               <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>

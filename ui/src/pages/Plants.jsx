@@ -63,16 +63,13 @@ export default function Plants() {
     );
   }
 
-  if (error) {
-    return (
-      <Box sx={{ p: 4 }}>
-        <Alert severity="error">{error}</Alert>
-      </Box>
-    );
-  }
-
   return (
     <Box sx={{ p: 4 }}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+          {error}
+        </Alert>
+      )}
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
         Plants
       </Typography>

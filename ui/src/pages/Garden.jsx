@@ -40,11 +40,70 @@ import {
   clearCell,
   getAllCompanions,
   getAllAntagonists,
+  deleteGarden,
 } from "../services/gardenService";
 import GardenGrid from "../components/GardenGrid";
 import PlantPickerDialog from "../components/PlantPickerDialog";
 import PlantGraph from "../components/PlantGraph";
 import Notification from "../components/Notification";
+
+function CreateGardenDialog({ open, onClose, onSubmit }) {
+  const [name, setName] = useState("");
+  const [rows, setRows] = useState(4);
+  const [cols, setCols] = useState(4);
+
+  const handleSubmit = () => {
+    onSubmit(name, rows, cols);
+  };
+
+  const handleClose = () => {
+    setName("");
+    setRows(4);
+    setCols(4);
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>New Garden</DialogTitle>
+      <DialogContent>
+        <TextField
+          label="Name"
+          variant="outlined"
+          fullWidth
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          sx={{ mt: 1, mb: 2 }}
+        />
+        <TextField
+          label="Rows"
+          type="number"
+          variant="outlined"
+          fullWidth
+          value={rows}
+          onChange={(e) => setRows(e.target.value)}
+          slotProps={{ htmlInput: { min: 1, max: 20 } }}
+          sx={{ mb: 2 }}
+        />
+        <TextField
+          label="Columns"
+          type="number"
+          variant="outlined"
+          fullWidth
+          value={cols}
+          onChange={(e) => setCols(e.target.value)}
+          slotProps={{ htmlInput: { min: 1, max: 20 } }}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button variant="contained" onClick={handleSubmit}>
+          Create
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 
 export default function Garden() {
   const navigate = useNavigate();
@@ -56,9 +115,7 @@ export default function Garden() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [newGardenName, setNewGardenName] = useState("");
-  const [newRows, setNewRows] = useState(4);
-  const [newCols, setNewCols] = useState(4);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [pickerCell, setPickerCell] = useState(null);
   // Paint mode: select a plant, then click cells to paint it
@@ -106,18 +163,18 @@ export default function Garden() {
       );
   };
 
-  const handleCreateGarden = () => {
-    if (!newGardenName.trim()) {
+  const handleCreateGarden = (name, rows, cols) => {
+    if (!name.trim()) {
       setError("Garden name is required");
       return;
     }
-    const rows = parseInt(newRows, 10);
-    const cols = parseInt(newCols, 10);
-    if (rows < 1 || rows > 20 || cols < 1 || cols > 20) {
+    const r = parseInt(rows, 10);
+    const c = parseInt(cols, 10);
+    if (r < 1 || r > 20 || c < 1 || c > 20) {
       setError("Rows and columns must be between 1 and 20");
       return;
     }
-    createGarden(newGardenName.trim(), rows, cols)
+    createGarden(name.trim(), r, c)
       .then((res) => {
         const created = res.data;
         return getGardens().then((gardensRes) => {
@@ -128,14 +185,28 @@ export default function Garden() {
       .then((gardenRes) => {
         setSelectedGarden(gardenRes.data);
         setShowCreateDialog(false);
-        setNewGardenName("");
-        setNewRows(4);
-        setNewCols(4);
         setError("");
         setSuccessMsg("Garden created");
       })
       .catch((err) =>
         setError(`Failed to create garden: ${err.response?.data?.message || err.message}`),
+      );
+  };
+
+  const handleDeleteGarden = () => {
+    if (!selectedGarden) return;
+    deleteGarden(selectedGarden.id)
+      .then(() => {
+        setShowDeleteConfirm(false);
+        setSelectedGarden(null);
+        return getGardens();
+      })
+      .then((gardensRes) => {
+        setGardens(gardensRes.data);
+        setSuccessMsg("Garden deleted");
+      })
+      .catch((err) =>
+        setError(`Failed to delete garden: ${err.response?.data?.message || err.message}`),
       );
   };
 
@@ -275,6 +346,16 @@ export default function Garden() {
       {selectedGarden && (
         <>
           <Divider sx={{ my: 2 }} />
+          <Button
+            variant="outlined"
+            color="error"
+            fullWidth
+            sx={{ mb: 2 }}
+            onClick={() => setShowDeleteConfirm(true)}
+          >
+            Delete Garden
+          </Button>
+          <Divider sx={{ my: 2 }} />
           <Typography variant="subtitle2" gutterBottom>
             Paint Mode
           </Typography>
@@ -398,45 +479,11 @@ export default function Garden() {
           </Card>
         </Box>
 
-        {/* Create garden dialog */}
-        <Dialog open={showCreateDialog} onClose={() => setShowCreateDialog(false)}>
-          <DialogTitle>New Garden</DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Name"
-              variant="outlined"
-              fullWidth
-              value={newGardenName}
-              onChange={(e) => setNewGardenName(e.target.value)}
-              sx={{ mt: 1, mb: 2 }}
-            />
-            <TextField
-              label="Rows"
-              type="number"
-              variant="outlined"
-              fullWidth
-              value={newRows}
-              onChange={(e) => setNewRows(e.target.value)}
-              slotProps={{ htmlInput: { min: 1, max: 20 } }}
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              label="Columns"
-              type="number"
-              variant="outlined"
-              fullWidth
-              value={newCols}
-              onChange={(e) => setNewCols(e.target.value)}
-              slotProps={{ htmlInput: { min: 1, max: 20 } }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setShowCreateDialog(false)}>Cancel</Button>
-            <Button variant="contained" onClick={handleCreateGarden}>
-              Create
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <CreateGardenDialog
+          open={showCreateDialog}
+          onClose={() => setShowCreateDialog(false)}
+          onSubmit={handleCreateGarden}
+        />
 
         <Notification message={successMsg} open={!!successMsg} onClose={() => setSuccessMsg("")} />
       </Box>
@@ -515,42 +562,26 @@ export default function Garden() {
         )}
       </Box>
 
-      {/* Create garden dialog */}
-      <Dialog open={showCreateDialog} onClose={() => setShowCreateDialog(false)}>
-        <DialogTitle>New Garden</DialogTitle>
+      <CreateGardenDialog
+        open={showCreateDialog}
+        onClose={() => setShowCreateDialog(false)}
+        onSubmit={handleCreateGarden}
+        error={error}
+      />
+
+      {/* Delete garden confirmation */}
+      <Dialog open={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)}>
+        <DialogTitle>Delete Garden</DialogTitle>
         <DialogContent>
-          <TextField
-            label="Name"
-            variant="outlined"
-            fullWidth
-            value={newGardenName}
-            onChange={(e) => setNewGardenName(e.target.value)}
-            sx={{ mt: 1, mb: 2 }}
-          />
-          <TextField
-            label="Rows"
-            type="number"
-            variant="outlined"
-            fullWidth
-            value={newRows}
-            onChange={(e) => setNewRows(e.target.value)}
-            slotProps={{ htmlInput: { min: 1, max: 20 } }}
-            sx={{ mb: 2 }}
-          />
-          <TextField
-            label="Columns"
-            type="number"
-            variant="outlined"
-            fullWidth
-            value={newCols}
-            onChange={(e) => setNewCols(e.target.value)}
-            slotProps={{ htmlInput: { min: 1, max: 20 } }}
-          />
+          <Typography>
+            Are you sure you want to delete &quot;{selectedGarden?.name}&quot;? This action cannot
+            be undone.
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowCreateDialog(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleCreateGarden}>
-            Create
+          <Button onClick={() => setShowDeleteConfirm(false)}>Cancel</Button>
+          <Button variant="contained" color="error" onClick={handleDeleteGarden}>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
