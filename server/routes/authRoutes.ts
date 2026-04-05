@@ -2,6 +2,7 @@ import { Controller, Route, Tags, Post, Get, Put, Body, Request, Security } from
 import * as express from "express";
 import { register, login } from "../controllers/authController.ts";
 import { userRepository } from "../repositories/userRepository.ts";
+import { HttpError } from "../utils/HttpError.ts";
 import type {
   RegisterRequest,
   LoginRequest,
@@ -22,16 +23,13 @@ export class AuthController extends Controller {
   ): Promise<RegisterResponse> {
     const { email, password, firstName, lastName } = body;
     if (!email || !password || !firstName || !lastName) {
-      this.setStatus(400);
-      return { message: "Email, password, first name, and last name are required", userId: 0 };
+      throw new HttpError(400, "Email, password, first name, and last name are required");
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      this.setStatus(400);
-      return { message: "Invalid email format", userId: 0 };
+      throw new HttpError(400, "Invalid email format");
     }
     if (password.length < 8) {
-      this.setStatus(400);
-      return { message: "Password must be at least 8 characters", userId: 0 };
+      throw new HttpError(400, "Password must be at least 8 characters");
     }
     try {
       const result = await register(email, password, firstName, lastName);
@@ -49,8 +47,7 @@ export class AuthController extends Controller {
         error.message.includes("UNIQUE constraint") ||
         error.message.includes("SQLITE_CONSTRAINT")
       ) {
-        this.setStatus(409);
-        return { message: "Email already registered", userId: 0 };
+        throw new HttpError(409, "Email already registered");
       }
       throw err;
     }
@@ -63,12 +60,10 @@ export class AuthController extends Controller {
   ): Promise<MessageResponse> {
     const { email, password } = body;
     if (!email || !password) {
-      this.setStatus(400);
-      return { message: "Email and password are required" };
+      throw new HttpError(400, "Email and password are required");
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      this.setStatus(400);
-      return { message: "Invalid email format" };
+      throw new HttpError(400, "Invalid email format");
     }
     const result = await login(email, password);
     req.res!.cookie("token", result.token, {
@@ -91,8 +86,7 @@ export class AuthController extends Controller {
   public async getMe(@Request() req: express.Request): Promise<UserResponse> {
     const user = await userRepository.findById(req.user!.userId);
     if (!user) {
-      this.setStatus(404);
-      return { id: 0, email: "", firstName: "", lastName: "" };
+      throw new HttpError(404, "User not found");
     }
     return {
       id: user.id,
@@ -111,8 +105,7 @@ export class AuthController extends Controller {
     @Request() req: express.Request,
   ): Promise<MessageResponse> {
     if (typeof body.zoneId !== "number") {
-      this.setStatus(400);
-      return { message: "zoneId is required and must be a number" };
+      throw new HttpError(400, "zoneId is required and must be a number");
     }
     await userRepository.updateZone(req.user!.userId, body.zoneId);
     return { message: "Zone updated" };
@@ -126,16 +119,14 @@ export class AuthController extends Controller {
   ): Promise<UserResponse> {
     const { email, firstName, lastName } = body;
     if (!email || !firstName || !lastName) {
-      this.setStatus(400);
-      return { id: 0, email: "", firstName: "", lastName: "" };
+      throw new HttpError(400, "Email, first name, and last name are required");
     }
     try {
       await userRepository.updateProfile(req.user!.userId, email, firstName, lastName);
     } catch (err) {
       const error = err as Error;
       if (error.message.includes("UNIQUE constraint")) {
-        this.setStatus(409);
-        return { id: 0, email: "", firstName: "", lastName: "" };
+        throw new HttpError(409, "Email already in use");
       }
       throw err;
     }

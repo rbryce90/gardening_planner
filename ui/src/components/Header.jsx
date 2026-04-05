@@ -133,7 +133,12 @@ const Header = () => {
               >
                 <MenuIcon />
               </IconButton>
-              <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+              <Drawer
+                anchor="right"
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                aria-label="Navigation menu"
+              >
                 <Box sx={{ width: 260, pt: 2 }}>
                   <List>
                     {navItems.map((item) => (

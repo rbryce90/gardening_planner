@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import "./index.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Routes, Route, Navigate, Link } from "react-router-dom";
+import { Routes, Route, Navigate, Link, useLocation } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -13,6 +14,31 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Garden from "./pages/Garden";
 import Calendar from "./pages/Calendar";
+
+const routeTitles = {
+  "/plants": "Plants",
+  "/garden": "Garden",
+  "/calendar": "Planting Calendar",
+  "/dashboard": "Settings",
+  "/login": "Log In",
+  "/register": "Register",
+};
+
+function TitleUpdater() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const path = location.pathname;
+    let title = routeTitles[path];
+    if (!title && path.startsWith("/plants/") && path.endsWith("/types")) {
+      const plantName = decodeURIComponent(path.split("/")[2]);
+      title = `${plantName} Types`;
+    }
+    document.title = title ? `${title} - Garden Planner` : "Garden Planner";
+  }, [location.pathname]);
+
+  return null;
+}
 
 function NotFound() {
   return (
@@ -98,6 +124,7 @@ function App() {
     <>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
+        <TitleUpdater />
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>

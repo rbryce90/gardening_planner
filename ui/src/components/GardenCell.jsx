@@ -7,6 +7,7 @@ export default function GardenCell({
   row,
   col,
   status,
+  tabIndex = 0,
   onMouseDown,
   onMouseEnter,
   onContextMenu,
@@ -46,7 +47,7 @@ export default function GardenCell({
 
   return (
     <Box
-      tabIndex={0}
+      tabIndex={tabIndex}
       role="gridcell"
       aria-label={`Row ${row + 1}, Column ${col + 1}${cell?.plantName ? ": " + cell.plantName : ": empty"}`}
       onMouseDown={onMouseDown}

@@ -170,6 +170,7 @@ export default function GardenGrid({
                 row={row}
                 col={col}
                 status={status}
+                tabIndex={row === focusedRow && col === focusedCol ? 0 : -1}
                 onMouseDown={() => handleMouseDown(row, col, cell)}
                 onMouseEnter={() => handleMouseEnter(row, col, cell)}
                 onContextMenu={(e) => handleContextMenu(e, row, col)}
