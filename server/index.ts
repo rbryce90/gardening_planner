@@ -1,5 +1,8 @@
+import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import swaggerUi from "swagger-ui-express";
 import logger from "./utils/logger.ts";
 import requestLogger from "./middleware/requestLogger.ts";
@@ -11,10 +14,14 @@ import { getDriver, closeDriver } from "./databases/neo4jDb.ts";
 const app = express();
 const PORT = 8000;
 
+app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 app.use(requestIdMiddleware);
 app.use(requestLogger);
+
+// Rate limit auth routes
+app.use("/v1/api/auth", rateLimit({ windowMs: 15 * 60 * 1000, max: 20 }));
 
 // Swagger docs
 try {
@@ -53,6 +60,3 @@ const shutdown = async () => {
 
 process.on("SIGTERM", shutdown);
 process.on("SIGINT", shutdown);
-
-// Keep Deno process alive — Express via npm doesn't hold the event loop open
-setInterval(() => { }, 1 << 30);

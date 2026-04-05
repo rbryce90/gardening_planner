@@ -12,6 +12,9 @@ export default function PlantCard({ plant, onEdit, onDelete }) {
 
   return (
     <Card
+      tabIndex={0}
+      role="link"
+      aria-label={plant.name}
       sx={{
         position: "relative",
         width: "100%",
@@ -21,8 +24,19 @@ export default function PlantCard({ plant, onEdit, onDelete }) {
           transform: "translateY(-4px)",
           boxShadow: 6,
         },
+        "&:focus": {
+          outline: "2px solid",
+          outlineColor: "primary.main",
+          outlineOffset: 2,
+        },
       }}
-      onClick={handleCardClick} // Add onClick handler for the card
+      onClick={handleCardClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
     >
       <CardContent>
         <Typography variant="h6" gutterBottom>

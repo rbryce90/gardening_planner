@@ -8,6 +8,7 @@ import {
   Alert,
   Box,
   Paper,
+  CircularProgress,
 } from "@mui/material";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import { login } from "../services/authService";
@@ -81,7 +82,7 @@ export default function Login() {
               disabled={loading}
               sx={{ mt: 3, py: 1.2 }}
             >
-              Log In
+              {loading ? <CircularProgress size={24} color="inherit" /> : "Log In"}
             </Button>
           </Box>
           <Box sx={{ mt: 2, textAlign: "center" }}>

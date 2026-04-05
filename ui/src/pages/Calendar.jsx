@@ -20,8 +20,18 @@ import { getMe } from "../services/authService";
 import { getPlantingCalendar } from "../services/zoneService";
 
 const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 function getActiveEntries(calendarData, monthIndex) {
@@ -58,7 +68,9 @@ export default function Calendar() {
         if (err.response?.status === 401) {
           navigate("/login");
         } else {
-          setError(`Failed to load calendar: ${err.response?.data?.message || err.message} (${err.response?.status || "network error"})`);
+          setError(
+            `Failed to load calendar: ${err.response?.data?.message || err.message} (${err.response?.status || "network error"})`,
+          );
           setLoading(false);
         }
       });
@@ -70,7 +82,13 @@ export default function Calendar() {
         <Skeleton variant="text" width={250} height={48} sx={{ mb: 2 }} />
         <Box sx={{ display: "flex", gap: 1, mb: 3 }}>
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <Skeleton key={i} variant="rectangular" width={80} height={36} sx={{ borderRadius: 1 }} />
+            <Skeleton
+              key={i}
+              variant="rectangular"
+              width={80}
+              height={36}
+              sx={{ borderRadius: 1 }}
+            />
           ))}
         </Box>
         {[1, 2, 3, 4].map((i) => (
@@ -108,7 +126,7 @@ export default function Calendar() {
   const activeEntries = getActiveEntries(calendarData, activeMonth);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 8 }}>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
         Planting Calendar
       </Typography>

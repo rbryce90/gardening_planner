@@ -2,10 +2,9 @@ import { userRepository } from "../repositories/userRepository.ts";
 import { comparePassword } from "../utils/hash.ts";
 import { SignJWT, jwtVerify } from "jose";
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-in-production";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) throw new Error("JWT_SECRET environment variable is required");
 const secret = new TextEncoder().encode(JWT_SECRET);
-
-const ADMIN_EMAILS = ["admin@demo.com"];
 
 export async function signToken(userId: number, email: string, isAdmin: boolean): Promise<string> {
   return await new SignJWT({ userId, email, isAdmin })
@@ -29,11 +28,7 @@ export async function register(
   lastName: string,
 ): Promise<{ userId: number; token: string }> {
   const userId = await userRepository.createUser(email, password, firstName, lastName);
-  const isAdmin = ADMIN_EMAILS.includes(email.toLowerCase());
-  if (isAdmin) {
-    await userRepository.setAdmin(userId, true);
-  }
-  const token = await signToken(userId, email, isAdmin);
+  const token = await signToken(userId, email, false);
   return { userId, token };
 }
 

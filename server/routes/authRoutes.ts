@@ -25,6 +25,10 @@ export class AuthController extends Controller {
       this.setStatus(400);
       return { message: "Email, password, first name, and last name are required", userId: 0 };
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.setStatus(400);
+      return { message: "Invalid email format", userId: 0 };
+    }
     if (password.length < 8) {
       this.setStatus(400);
       return { message: "Password must be at least 8 characters", userId: 0 };
@@ -33,8 +37,8 @@ export class AuthController extends Controller {
       const result = await register(email, password, firstName, lastName);
       req.res!.cookie("token", result.token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
       this.setStatus(201);
@@ -62,11 +66,15 @@ export class AuthController extends Controller {
       this.setStatus(400);
       return { message: "Email and password are required" };
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      this.setStatus(400);
+      return { message: "Invalid email format" };
+    }
     const result = await login(email, password);
     req.res!.cookie("token", result.token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return { message: "Login successful" };

@@ -5,7 +5,7 @@ export default function Notification({ message, severity = "success", open, onCl
   return (
     <Snackbar
       open={open}
-      autoHideDuration={3000}
+      autoHideDuration={6000}
       onClose={onClose}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
     >

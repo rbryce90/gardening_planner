@@ -26,7 +26,7 @@ export interface PlantDetailResponse {
 }
 
 export interface PlantTypeResponse {
-  id?: string;
+  id?: number;
   name: string;
   description?: string;
   plantingNotes?: string;

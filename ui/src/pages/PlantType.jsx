@@ -43,7 +43,7 @@ export default function PlantType() {
 
   useEffect(() => {
     getMe()
-      .then((res) => setIsAdmin(res.data.role === "admin"))
+      .then((res) => setIsAdmin(res.data.isAdmin))
       .catch(() => setIsAdmin(false));
   }, []);
 

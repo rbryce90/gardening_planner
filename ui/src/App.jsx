@@ -1,7 +1,9 @@
 import "./index.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Link } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Header from "./components/Header";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Plants from "./pages/Plants";
@@ -12,11 +14,24 @@ import Dashboard from "./pages/Dashboard";
 import Garden from "./pages/Garden";
 import Calendar from "./pages/Calendar";
 
+function NotFound() {
+  return (
+    <Box sx={{ p: 4, textAlign: "center" }}>
+      <Typography variant="h4" gutterBottom>
+        Page not found
+      </Typography>
+      <Link to="/plants" style={{ color: "inherit" }}>
+        Go to Plants
+      </Link>
+    </Box>
+  );
+}
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: { main: "#2E7D32" },
-    secondary: { main: "#8D6E63" },
+    secondary: { main: "#7D5F55" },
     error: { main: "#D32F2F" },
     success: { main: "#43A047" },
     warning: { main: "#F9A825" },
@@ -26,7 +41,7 @@ const darkTheme = createTheme({
     },
     text: {
       primary: "#E8E0D8",
-      secondary: "#A89F95",
+      secondary: "#B8B0A8",
     },
     divider: "rgba(255,255,255,0.08)",
   },
@@ -83,18 +98,24 @@ function App() {
     <>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
         <Header />
         <ErrorBoundary>
-          <Routes>
-            <Route path="/" element={<Navigate to="/plants" />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/garden" element={<Garden />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/plants/:plantName/types" element={<PlantType />} />
-            <Route path="/plants" element={<Plants />} />
-          </Routes>
+          <main id="main-content">
+            <Routes>
+              <Route path="/" element={<Navigate to="/plants" />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/garden" element={<Garden />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/plants/:plantName/types" element={<PlantType />} />
+              <Route path="/plants" element={<Plants />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
         </ErrorBoundary>
       </ThemeProvider>
     </>

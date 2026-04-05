@@ -1,12 +1,9 @@
 import winston from "winston";
 
 const logger = winston.createLogger({
-    level: process.env.DEBUG === "true" ? "debug" : "info",
-    format: winston.format.combine(
-        winston.format.timestamp(),
-        winston.format.simple()
-    ),
-    transports: [new winston.transports.Console()],
+  level: process.env.DEBUG === "true" ? "debug" : "info",
+  format: winston.format.combine(winston.format.timestamp(), winston.format.simple()),
+  transports: [new winston.transports.Console()],
 });
 
 export default logger;

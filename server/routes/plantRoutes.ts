@@ -5,7 +5,7 @@ import {
   createPlant,
   deletePlant,
   updatePlant,
-  getPlantTypesByPlantIdWithCompanionsAndAtagonists,
+  getPlantTypesByPlantIdWithCompanionsAndAntagonists,
   getPlantByName,
   addCompanion,
   createAntagonist,
@@ -44,7 +44,7 @@ export class PlantController extends Controller {
 
   @Get("/{id}")
   public async getPlantById(@Path() id: number): Promise<PlantResponse> {
-    const plant = await getPlantById(String(id));
+    const plant = await getPlantById(id);
     if (!plant) {
       this.setStatus(404);
       return { name: "", category: "", growthForm: "" };
@@ -59,9 +59,7 @@ export class PlantController extends Controller {
       this.setStatus(404);
       return { name: "", category: "", growthForm: "", types: [], companions: [], antagonists: [] };
     }
-    const typesAndCompanions = await getPlantTypesByPlantIdWithCompanionsAndAtagonists(
-      String(plant.id),
-    );
+    const typesAndCompanions = await getPlantTypesByPlantIdWithCompanionsAndAntagonists(plant.id);
     return {
       ...plant,
       ...typesAndCompanions,
@@ -90,14 +88,14 @@ export class PlantController extends Controller {
       this.setStatus(400);
       return { name: "", category: "", growthForm: "" };
     }
-    await updatePlant(String(id), body as any);
+    await updatePlant(id, body as any);
     return { id, ...body };
   }
 
   @Security("admin")
   @Delete("/{id}")
   public async deletePlant(@Path() id: number): Promise<void> {
-    const deleted = await deletePlant(String(id));
+    const deleted = await deletePlant(id);
     if (deleted) {
       this.setStatus(204);
     } else {
@@ -115,7 +113,7 @@ export class PlantController extends Controller {
       this.setStatus(400);
       return { name: "" };
     }
-    const result = await createPlantType(String(id), body);
+    const result = await createPlantType(id, body);
     this.setStatus(201);
     return result;
   }
@@ -126,9 +124,7 @@ export class PlantController extends Controller {
     @Path() id: number,
     @Path() companionId: number,
   ): Promise<MessageResponse> {
-    const firstPlant = Math.min(id, companionId).toString();
-    const secondPlant = Math.max(id, companionId).toString();
-    await addCompanion(firstPlant, secondPlant);
+    await addCompanion(id, companionId);
     this.setStatus(201);
     return { message: "Companion added successfully." };
   }
@@ -139,9 +135,7 @@ export class PlantController extends Controller {
     @Path() id: number,
     @Path() antagonistId: number,
   ): Promise<MessageResponse> {
-    const firstPlant = Math.min(id, antagonistId).toString();
-    const secondPlant = Math.max(id, antagonistId).toString();
-    await createAntagonist(firstPlant, secondPlant);
+    await createAntagonist(id, antagonistId);
     this.setStatus(201);
     return { message: "Antagonist added successfully." };
   }

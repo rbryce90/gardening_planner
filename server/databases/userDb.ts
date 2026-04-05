@@ -1,16 +1,9 @@
 import { DatabaseSync } from "node:sqlite";
+import { getDb } from "./db.ts";
 import logger from "../utils/logger.ts";
 
-let dbInstance: DatabaseSync | null = null;
-
 const initializeDatabase = (): DatabaseSync => {
-  if (dbInstance) {
-    return dbInstance;
-  }
-
-  const db = new DatabaseSync("plants.db");
-
-  db.exec("PRAGMA foreign_keys = ON;");
+  const db = getDb();
 
   db.exec(`
         CREATE TABLE IF NOT EXISTS users (
@@ -36,15 +29,11 @@ const initializeDatabase = (): DatabaseSync => {
   }
 
   logger.info("User database initialized.");
-  dbInstance = db;
   return db;
 };
 
 export function getDatabase(): DatabaseSync {
-  if (!dbInstance) {
-    initializeDatabase();
-  }
-  return dbInstance!;
+  return getDb();
 }
 
 export default initializeDatabase;

@@ -72,87 +72,104 @@ db.exec(`
 
 // Insert zones
 const insertZone = db.prepare(
-    "INSERT OR IGNORE INTO zones (name, min_temperature, max_temperature) VALUES (?, ?, ?)"
+  "INSERT OR IGNORE INTO zones (name, min_temperature, max_temperature) VALUES (?, ?, ?)",
 );
 let zoneCount = 0;
 for (const zone of seedData.zones) {
-    const result = insertZone.run(zone.name, zone.min_temperature, zone.max_temperature);
-    if (result.changes > 0) zoneCount++;
+  const result = insertZone.run(zone.name, zone.min_temperature, zone.max_temperature);
+  if (result.changes > 0) zoneCount++;
 }
 console.log(`Inserted ${zoneCount} zones`);
 
 // Insert plants
 const insertPlant = db.prepare(
-    "INSERT OR IGNORE INTO plants (name, category, growth_form, edible_part, family) VALUES (?, ?, ?, ?, ?)"
+  "INSERT OR IGNORE INTO plants (name, category, growth_form, edible_part, family) VALUES (?, ?, ?, ?, ?)",
 );
 let plantCount = 0;
 for (const plant of seedData.plants) {
-    const result = insertPlant.run(plant.name, plant.category, plant.growth_form, plant.edible_part, plant.family);
-    if (result.changes > 0) plantCount++;
+  const result = insertPlant.run(
+    plant.name,
+    plant.category,
+    plant.growth_form,
+    plant.edible_part,
+    plant.family,
+  );
+  if (result.changes > 0) plantCount++;
 }
 console.log(`Inserted ${plantCount} plants`);
 
 // Insert plant_types
 const getPlantByName = db.prepare("SELECT id FROM plants WHERE name = ?");
 const insertPlantType = db.prepare(
-    "INSERT INTO plant_types (plant_id, name, scientific_name, description, planting_notes) SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM plant_types WHERE plant_id = ? AND name = ?)"
+  "INSERT INTO plant_types (plant_id, name, scientific_name, description, planting_notes) SELECT ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM plant_types WHERE plant_id = ? AND name = ?)",
 );
 let typeCount = 0;
 for (const type of seedData.plant_types) {
-    const plant = getPlantByName.get(type.plant_name) as { id: number } | undefined;
-    if (!plant) {
-        console.warn(`Warning: plant not found for type "${type.name}" (plant_name: "${type.plant_name}")`);
-        continue;
-    }
-    const result = insertPlantType.run(
-        plant.id, type.name, type.scientific_name, type.description, type.planting_notes,
-        plant.id, type.name
+  const plant = getPlantByName.get(type.plant_name) as { id: number } | undefined;
+  if (!plant) {
+    console.warn(
+      `Warning: plant not found for type "${type.name}" (plant_name: "${type.plant_name}")`,
     );
-    if (result.changes > 0) typeCount++;
+    continue;
+  }
+  const result = insertPlantType.run(
+    plant.id,
+    type.name,
+    type.scientific_name,
+    type.description,
+    type.planting_notes,
+    plant.id,
+    type.name,
+  );
+  if (result.changes > 0) typeCount++;
 }
 console.log(`Inserted ${typeCount} plant types`);
 
 // Insert companions
 const getPlantId = (name: string): number | undefined => {
-    const row = getPlantByName.get(name) as { id: number } | undefined;
-    return row?.id;
+  const row = getPlantByName.get(name) as { id: number } | undefined;
+  return row?.id;
 };
 const insertCompanion = db.prepare(
-    "INSERT INTO companions (plant_id, companion_id) SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM companions WHERE plant_id = ? AND companion_id = ?)"
+  "INSERT INTO companions (plant_id, companion_id) SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM companions WHERE plant_id = ? AND companion_id = ?)",
 );
 let companionCount = 0;
 for (const companion of seedData.companions) {
-    const idA = getPlantId(companion.plant_name);
-    const idB = getPlantId(companion.companion_name);
-    if (!idA || !idB) {
-        console.warn(`Warning: could not resolve companion pair "${companion.plant_name}" + "${companion.companion_name}"`);
-        continue;
-    }
-    // Enforce lower ID first
-    const plantId = Math.min(idA, idB);
-    const companionId = Math.max(idA, idB);
-    const result = insertCompanion.run(plantId, companionId, plantId, companionId);
-    if (result.changes > 0) companionCount++;
+  const idA = getPlantId(companion.plant_name);
+  const idB = getPlantId(companion.companion_name);
+  if (!idA || !idB) {
+    console.warn(
+      `Warning: could not resolve companion pair "${companion.plant_name}" + "${companion.companion_name}"`,
+    );
+    continue;
+  }
+  // Enforce lower ID first
+  const plantId = Math.min(idA, idB);
+  const companionId = Math.max(idA, idB);
+  const result = insertCompanion.run(plantId, companionId, plantId, companionId);
+  if (result.changes > 0) companionCount++;
 }
 console.log(`Inserted ${companionCount} companions`);
 
 // Insert antagonists
 const insertAntagonist = db.prepare(
-    "INSERT INTO antagonists (plant_id, antagonist_id) SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM antagonists WHERE plant_id = ? AND antagonist_id = ?)"
+  "INSERT INTO antagonists (plant_id, antagonist_id) SELECT ?, ? WHERE NOT EXISTS (SELECT 1 FROM antagonists WHERE plant_id = ? AND antagonist_id = ?)",
 );
 let antagonistCount = 0;
 for (const antagonist of seedData.antagonists) {
-    const idA = getPlantId(antagonist.plant_name);
-    const idB = getPlantId(antagonist.antagonist_name);
-    if (!idA || !idB) {
-        console.warn(`Warning: could not resolve antagonist pair "${antagonist.plant_name}" + "${antagonist.antagonist_name}"`);
-        continue;
-    }
-    // Enforce lower ID first
-    const plantId = Math.min(idA, idB);
-    const antagonistId = Math.max(idA, idB);
-    const result = insertAntagonist.run(plantId, antagonistId, plantId, antagonistId);
-    if (result.changes > 0) antagonistCount++;
+  const idA = getPlantId(antagonist.plant_name);
+  const idB = getPlantId(antagonist.antagonist_name);
+  if (!idA || !idB) {
+    console.warn(
+      `Warning: could not resolve antagonist pair "${antagonist.plant_name}" + "${antagonist.antagonist_name}"`,
+    );
+    continue;
+  }
+  // Enforce lower ID first
+  const plantId = Math.min(idA, idB);
+  const antagonistId = Math.max(idA, idB);
+  const result = insertAntagonist.run(plantId, antagonistId, plantId, antagonistId);
+  if (result.changes > 0) antagonistCount++;
 }
 console.log(`Inserted ${antagonistCount} antagonists`);
 
@@ -160,25 +177,33 @@ console.log(`Inserted ${antagonistCount} antagonists`);
 const getPlantTypeByName = db.prepare("SELECT id FROM plant_types WHERE name = ?");
 const getZoneByName = db.prepare("SELECT id FROM zones WHERE name = ?");
 const insertSeason = db.prepare(
-    "INSERT INTO planting_seasons (plant_type_id, zone_id, start_month, end_month, method, notes) SELECT ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM planting_seasons WHERE plant_type_id = ? AND zone_id = ?)"
+  "INSERT INTO planting_seasons (plant_type_id, zone_id, start_month, end_month, method, notes) SELECT ?, ?, ?, ?, ?, ? WHERE NOT EXISTS (SELECT 1 FROM planting_seasons WHERE plant_type_id = ? AND zone_id = ?)",
 );
 let seasonCount = 0;
 for (const season of seedData.planting_seasons) {
-    const plantType = getPlantTypeByName.get(season.plant_type_name) as { id: number } | undefined;
-    const zone = getZoneByName.get(season.zone_name) as { id: number } | undefined;
-    if (!plantType) {
-        console.warn(`Warning: plant type not found for season (plant_type_name: "${season.plant_type_name}")`);
-        continue;
-    }
-    if (!zone) {
-        console.warn(`Warning: zone not found for season (zone_name: "${season.zone_name}")`);
-        continue;
-    }
-    const result = insertSeason.run(
-        plantType.id, zone.id, season.start_month, season.end_month, season.method, season.notes,
-        plantType.id, zone.id
+  const plantType = getPlantTypeByName.get(season.plant_type_name) as { id: number } | undefined;
+  const zone = getZoneByName.get(season.zone_name) as { id: number } | undefined;
+  if (!plantType) {
+    console.warn(
+      `Warning: plant type not found for season (plant_type_name: "${season.plant_type_name}")`,
     );
-    if (result.changes > 0) seasonCount++;
+    continue;
+  }
+  if (!zone) {
+    console.warn(`Warning: zone not found for season (zone_name: "${season.zone_name}")`);
+    continue;
+  }
+  const result = insertSeason.run(
+    plantType.id,
+    zone.id,
+    season.start_month,
+    season.end_month,
+    season.method,
+    season.notes,
+    plantType.id,
+    zone.id,
+  );
+  if (result.changes > 0) seasonCount++;
 }
 console.log(`Inserted ${seasonCount} planting seasons`);
 

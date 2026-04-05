@@ -5,11 +5,12 @@ import logger from "../utils/logger.ts";
 
 export class GraphRepository {
   async getPlantGraph(plantId: number, hops: number): Promise<GraphData> {
+    const safeHops = Math.max(1, Math.min(5, Math.floor(hops)));
     const driver = getDriver();
     const session = driver.session();
     try {
       const result = await session.run(
-        `MATCH path = (start:Plant {id: $plantId})-[:COMPANION_OF|ANTAGONIST_OF*1..${hops}]-(connected:Plant)
+        `MATCH path = (start:Plant {id: $plantId})-[:COMPANION_OF|ANTAGONIST_OF*1..${safeHops}]-(connected:Plant)
                  WITH start, collect(distinct connected) AS connectedPlants, collect(distinct path) AS paths
                  WITH [start] + connectedPlants AS allPlants, paths
                  UNWIND allPlants AS plant

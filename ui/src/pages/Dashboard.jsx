@@ -19,7 +19,7 @@ import { getZones, updateUserZone } from "../services/zoneService";
 import Notification from "../components/Notification";
 
 export default function Dashboard() {
-  const [user, setUser] = useState(null);
+  const [_User, setUser] = useState(null);
   const [zones, setZones] = useState([]);
   const [selectedZone, setSelectedZone] = useState("");
   const [loading, setLoading] = useState(true);
@@ -99,18 +99,13 @@ export default function Dashboard() {
     );
   }
 
-  if (error) {
-    return (
-      <Container maxWidth="md" sx={{ mt: 8 }}>
-        <Alert severity="error" onClose={() => setError("")}>
-          {error}
-        </Alert>
-      </Container>
-    );
-  }
-
   return (
     <Container maxWidth="md" sx={{ mt: 8 }}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError("")}>
+          {error}
+        </Alert>
+      )}
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
         Settings
       </Typography>

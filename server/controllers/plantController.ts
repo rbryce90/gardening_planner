@@ -8,7 +8,7 @@ export const getPlants = async (): Promise<Plant[]> => {
   return await plantRepository.getPlants();
 };
 
-export const getPlantById = async (id: string): Promise<Plant | null> => {
+export const getPlantById = async (id: number): Promise<Plant | null> => {
   return await plantRepository.getPlantById(id);
 };
 
@@ -24,64 +24,40 @@ export const createPlant = async (plant: Plant): Promise<number | undefined> => 
   return id;
 };
 
-export const updatePlant = async (id: string, plant: Plant): Promise<Plant | undefined> => {
+export const updatePlant = async (id: number, plant: Plant): Promise<Plant | undefined> => {
   const result = await plantRepository.updatePlant(id, plant);
-  await graphRepository.upsertPlant(Number(id), plant.name, plant.category, plant.growthForm);
+  await graphRepository.upsertPlant(id, plant.name, plant.category, plant.growthForm);
   return result;
 };
 
-export const deletePlant = async (id: string): Promise<boolean> => {
+export const deletePlant = async (id: number): Promise<boolean> => {
   const result = await plantRepository.deletePlant(id);
-  await graphRepository.deletePlant(Number(id));
+  await graphRepository.deletePlant(id);
   return result;
 };
 
-export const getPlantTypesByPlantIdWithCompanionsAndAtagonists = async (
-  plantId: string,
+export const getPlantTypesByPlantIdWithCompanionsAndAntagonists = async (
+  plantId: number,
 ): Promise<any> => {
   const types = await plantRepository.getPlantTypesByPlantId(plantId);
+  const companions = await plantRepository.getCompanionPlantsById(plantId);
+  const antagonists = await plantRepository.getAntagonistPlantsById(plantId);
 
-  const companions = await plantRepository.getCompanionsById(plantId);
-  const companionsEnhanced = [];
-  for (const companion of companions) {
-    const otherPlantId =
-      String(companion.plantId) === String(plantId) ? companion.companionId : companion.plantId;
-    const plant = await getPlantById(String(otherPlantId));
-    if (!plant) continue;
-    companionsEnhanced.push({
-      id: companion.id,
-      ...plant,
-    });
-  }
-
-  const antagonists = await plantRepository.getAntagonistsById(plantId);
-  const antagonistsEnhanced = [];
-  for (const antagonist of antagonists) {
-    const otherPlantId =
-      String(antagonist.plantId) === String(plantId) ? antagonist.antagonistId : antagonist.plantId;
-    const plant = await getPlantById(String(otherPlantId));
-    if (!plant) continue;
-    antagonistsEnhanced.push({
-      id: antagonist.id,
-      ...plant,
-    });
-  }
-
-  return { types, companions: companionsEnhanced, antagonists: antagonistsEnhanced };
+  return { types, companions, antagonists };
 };
 
-export const createPlantType = async (plantId: string, plantType: any): Promise<any> => {
+export const createPlantType = async (plantId: number, plantType: any): Promise<any> => {
   return await plantRepository.createPlantType(plantId, plantType);
 };
 
-export const addCompanion = async (plant_id: string, companion_id: string): Promise<void> => {
-  await plantRepository.addCompanion(plant_id, companion_id);
-  await graphRepository.addCompanion(Number(plant_id), Number(companion_id));
+export const addCompanion = async (plantId: number, companionId: number): Promise<void> => {
+  await plantRepository.addCompanion(plantId, companionId);
+  await graphRepository.addCompanion(plantId, companionId);
 };
 
-export const createAntagonist = async (plant_id: string, antagonist_id: string): Promise<void> => {
-  await plantRepository.createAntagonist(plant_id, antagonist_id);
-  await graphRepository.addAntagonist(Number(plant_id), Number(antagonist_id));
+export const createAntagonist = async (plantId: number, antagonistId: number): Promise<void> => {
+  await plantRepository.createAntagonist(plantId, antagonistId);
+  await graphRepository.addAntagonist(plantId, antagonistId);
 };
 
 export const getAllCompanions = async (): Promise<
@@ -96,6 +72,6 @@ export const getAllAntagonists = async (): Promise<
   return await plantRepository.getAllAntagonists();
 };
 
-export const getPlantingSeasonsByPlantTypeId = async (plantTypeId: string): Promise<any[]> => {
+export const getPlantingSeasonsByPlantTypeId = async (plantTypeId: number): Promise<any[]> => {
   return await plantRepository.getPlantingSeasonsByPlantTypeId(plantTypeId);
 };
