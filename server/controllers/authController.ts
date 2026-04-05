@@ -1,5 +1,6 @@
 import { userRepository } from "../repositories/userRepository.ts";
 import { comparePassword } from "../utils/hash.ts";
+import { HttpError } from "../utils/HttpError.ts";
 import { SignJWT, jwtVerify } from "jose";
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -36,13 +37,13 @@ export async function login(
   email: string,
   password: string,
 ): Promise<{ userId: number; token: string }> {
-  const user = await userRepository.findByEmail(email);
+  const user = userRepository.findByEmail(email);
   if (!user) {
-    throw Object.assign(new Error("Invalid credentials"), { status: 401 });
+    throw new HttpError(401, "Invalid credentials");
   }
   const valid = await comparePassword(password, user.password);
   if (!valid) {
-    throw Object.assign(new Error("Invalid credentials"), { status: 401 });
+    throw new HttpError(401, "Invalid credentials");
   }
   const token = await signToken(user.id, email, user.isAdmin);
   return { userId: user.id, token };

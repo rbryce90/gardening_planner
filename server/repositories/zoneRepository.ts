@@ -1,8 +1,8 @@
 import { getDatabase } from "../databases/plantDb.ts";
 import type { Zone, PlantingSeason } from "../types/zone.d.ts";
 
-export class ZoneRepository {
-  async getZones(): Promise<Zone[]> {
+class ZoneRepository {
+  getZones(): Zone[] {
     const db = getDatabase();
     const rows = db
       .prepare("SELECT id, name, min_temperature, max_temperature FROM zones ORDER BY id")
@@ -15,7 +15,7 @@ export class ZoneRepository {
     }));
   }
 
-  async getPlantingCalendar(zoneId: number): Promise<PlantingSeason[]> {
+  getPlantingCalendar(zoneId: number): PlantingSeason[] {
     const db = getDatabase();
     const rows = db
       .prepare(

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../services/api";
 import { getMe } from "../services/authService";
-import { Box, Typography, Alert, Button, Grid, Skeleton } from "@mui/material";
+import { Container, Typography, Alert, Button, Grid, Skeleton } from "@mui/material";
 import PlantGrid from "../components/PlantGrid";
 import AddPlantCard from "../components/AddPlantCard";
 import Notification from "../components/Notification";
@@ -49,7 +49,7 @@ export default function Plants() {
 
   if (loading) {
     return (
-      <Box sx={{ p: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Skeleton variant="text" width={200} height={48} sx={{ mb: 2 }} />
         <Skeleton variant="rectangular" width={120} height={36} sx={{ mb: 3, borderRadius: 1 }} />
         <Grid container spacing={3}>
@@ -59,12 +59,12 @@ export default function Plants() {
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </Container>
     );
   }
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
       {error && (
         <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
           {error}
@@ -92,6 +92,6 @@ export default function Plants() {
         isAdmin={isAdmin}
       />
       <Notification message={successMsg} open={!!successMsg} onClose={() => setSuccessMsg("")} />
-    </Box>
+    </Container>
   );
 }

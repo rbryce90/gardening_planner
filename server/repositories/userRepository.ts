@@ -2,7 +2,8 @@ import { getDatabase } from "../databases/userDb.ts";
 import type { User } from "../types/user.d.ts";
 import { hashPassword } from "../utils/hash.ts";
 
-export class UserRepository {
+class UserRepository {
+  // Stays async because hashPassword uses bcrypt
   async createUser(
     email: string,
     password: string,
@@ -19,9 +20,7 @@ export class UserRepository {
     return result.id;
   }
 
-  async findByEmail(
-    email: string,
-  ): Promise<(Omit<User, "createdAt"> & { isAdmin: boolean }) | null> {
+  findByEmail(email: string): (Omit<User, "createdAt"> & { isAdmin: boolean }) | null {
     const db = getDatabase();
     const result = db
       .prepare(
@@ -32,9 +31,7 @@ export class UserRepository {
     return { ...result, isAdmin: result.isAdmin === 1 };
   }
 
-  async findById(
-    id: number,
-  ): Promise<(Omit<User, "password" | "createdAt"> & { isAdmin: boolean }) | null> {
+  findById(id: number): (Omit<User, "password" | "createdAt"> & { isAdmin: boolean }) | null {
     const db = getDatabase();
     const result = db
       .prepare(
@@ -45,17 +42,12 @@ export class UserRepository {
     return { ...result, isAdmin: result.isAdmin === 1 };
   }
 
-  async updateZone(userId: number, zoneId: number): Promise<void> {
+  updateZone(userId: number, zoneId: number): void {
     const db = getDatabase();
     db.prepare("UPDATE users SET zone_id = ? WHERE id = ?").run(zoneId, userId);
   }
 
-  async updateProfile(
-    userId: number,
-    email: string,
-    firstName: string,
-    lastName: string,
-  ): Promise<void> {
+  updateProfile(userId: number, email: string, firstName: string, lastName: string): void {
     const db = getDatabase();
     db.prepare("UPDATE users SET email = ?, first_name = ?, last_name = ? WHERE id = ?").run(
       email,
@@ -65,7 +57,7 @@ export class UserRepository {
     );
   }
 
-  async setAdmin(userId: number, isAdmin: boolean): Promise<void> {
+  setAdmin(userId: number, isAdmin: boolean): void {
     const db = getDatabase();
     db.prepare("UPDATE users SET is_admin = ? WHERE id = ?").run(isAdmin ? 1 : 0, userId);
   }

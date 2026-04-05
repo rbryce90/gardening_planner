@@ -46,8 +46,8 @@ interface PlantingSeason {
   notes: string | null;
 }
 
-export class PlantRepository {
-  async getPlants(): Promise<Plant[]> {
+class PlantRepository {
+  getPlants(): Plant[] {
     const db = getDatabase();
     const rows = db
       .prepare("SELECT id, name, category, growth_form FROM plants")
@@ -60,7 +60,7 @@ export class PlantRepository {
     }));
   }
 
-  async getPlantById(id: number): Promise<Plant | null> {
+  getPlantById(id: number): Plant | null {
     const db = getDatabase();
     const row = db
       .prepare("SELECT id, name, category, growth_form FROM plants WHERE id = ?")
@@ -70,7 +70,7 @@ export class PlantRepository {
       : null;
   }
 
-  async getPlantByName(name: string): Promise<Plant | null> {
+  getPlantByName(name: string): Plant | null {
     const db = getDatabase();
     const row = db
       .prepare("SELECT id, name, category, growth_form FROM plants WHERE name = ?")
@@ -80,7 +80,7 @@ export class PlantRepository {
       : null;
   }
 
-  async createPlant(plant: Plant): Promise<number | undefined> {
+  createPlant(plant: Plant): number | undefined {
     const db = getDatabase();
     const result = db
       .prepare("INSERT INTO plants (name, category, growth_form, edible_part) VALUES (?, ?, ?, ?)")
@@ -88,7 +88,7 @@ export class PlantRepository {
     return Number(result.lastInsertRowid);
   }
 
-  async updatePlant(id: number, plant: Plant): Promise<undefined> {
+  updatePlant(id: number, plant: Plant): void {
     const db = getDatabase();
     db.prepare("UPDATE plants SET name = ?, category = ?, growth_form = ? WHERE id = ?").run(
       plant.name,
@@ -96,16 +96,15 @@ export class PlantRepository {
       plant.growthForm,
       id,
     );
-    return;
   }
 
-  async deletePlant(id: number): Promise<boolean> {
+  deletePlant(id: number): boolean {
     const db = getDatabase();
     db.prepare("DELETE FROM plants WHERE id = ?").run(id);
     return true;
   }
 
-  async getPlantTypesByPlantId(plantId: number): Promise<Omit<PlantType, "plantId">[]> {
+  getPlantTypesByPlantId(plantId: number): Omit<PlantType, "plantId">[] {
     const db = getDatabase();
     const rows = db
       .prepare("SELECT id, name, description, planting_notes FROM plant_types WHERE plant_id = ?")
@@ -118,7 +117,7 @@ export class PlantRepository {
     }));
   }
 
-  async createPlantType(plantId: number, plantType: PlantType): Promise<PlantType> {
+  createPlantType(plantId: number, plantType: PlantType): PlantType {
     const db = getDatabase();
     const result = db
       .prepare(
@@ -128,23 +127,7 @@ export class PlantRepository {
     return { id: Number(result.lastInsertRowid), ...plantType };
   }
 
-  async getCompanionsById(
-    plantId: number,
-  ): Promise<Array<{ id: number; plantId: number; companionId: number }>> {
-    const db = getDatabase();
-    const companions = db
-      .prepare(
-        "SELECT id, plant_id, companion_id FROM companions WHERE plant_id = ? OR companion_id = ?",
-      )
-      .all(plantId, plantId) as unknown as CompanionRow[];
-    return companions.map((companion) => ({
-      id: companion.id,
-      plantId: companion.plant_id,
-      companionId: companion.companion_id,
-    }));
-  }
-
-  async getCompanionPlantsById(plantId: number): Promise<Plant[]> {
+  getCompanionPlantsById(plantId: number): Plant[] {
     const db = getDatabase();
     const rows = db
       .prepare(
@@ -160,7 +143,7 @@ export class PlantRepository {
     }));
   }
 
-  async getAntagonistPlantsById(plantId: number): Promise<Plant[]> {
+  getAntagonistPlantsById(plantId: number): Plant[] {
     const db = getDatabase();
     const rows = db
       .prepare(
@@ -176,13 +159,13 @@ export class PlantRepository {
     }));
   }
 
-  async addCompanion(plantId: number, companionId: number): Promise<void> {
+  addCompanion(plantId: number, companionId: number): void {
     const db = getDatabase();
     const [lowId, highId] = plantId < companionId ? [plantId, companionId] : [companionId, plantId];
     db.prepare("INSERT INTO companions (plant_id, companion_id) VALUES (?, ?)").run(lowId, highId);
   }
 
-  async createAntagonist(plantId: number, antagonistId: number): Promise<void> {
+  createAntagonist(plantId: number, antagonistId: number): void {
     const db = getDatabase();
     const [lowId, highId] =
       plantId < antagonistId ? [plantId, antagonistId] : [antagonistId, plantId];
@@ -192,23 +175,7 @@ export class PlantRepository {
     );
   }
 
-  async getAntagonistsById(
-    plantId: number,
-  ): Promise<Array<{ id: number; plantId: number; antagonistId: number }>> {
-    const db = getDatabase();
-    const rows = db
-      .prepare(
-        "SELECT id, plant_id, antagonist_id FROM antagonists WHERE plant_id = ? OR antagonist_id = ?",
-      )
-      .all(plantId, plantId) as unknown as AntagonistRow[];
-    return rows.map((row) => ({
-      id: row.id,
-      plantId: row.plant_id,
-      antagonistId: row.antagonist_id,
-    }));
-  }
-
-  async getAllCompanions(): Promise<Array<{ plantId: number; companionId: number }>> {
+  getAllCompanions(): Array<{ plantId: number; companionId: number }> {
     const db = getDatabase();
     const rows = db
       .prepare("SELECT plant_id, companion_id FROM companions")
@@ -216,7 +183,7 @@ export class PlantRepository {
     return rows.map((row) => ({ plantId: row.plant_id, companionId: row.companion_id }));
   }
 
-  async getAllAntagonists(): Promise<Array<{ plantId: number; antagonistId: number }>> {
+  getAllAntagonists(): Array<{ plantId: number; antagonistId: number }> {
     const db = getDatabase();
     const rows = db
       .prepare("SELECT plant_id, antagonist_id FROM antagonists")
@@ -224,7 +191,7 @@ export class PlantRepository {
     return rows.map((row) => ({ plantId: row.plant_id, antagonistId: row.antagonist_id }));
   }
 
-  async getPlantingSeasonsByPlantTypeId(plantTypeId: number): Promise<PlantingSeason[]> {
+  getPlantingSeasonsByPlantTypeId(plantTypeId: number): PlantingSeason[] {
     const db = getDatabase();
     const rows = db
       .prepare(
@@ -239,26 +206,6 @@ export class PlantRepository {
       method: row.method,
       notes: row.notes,
     }));
-  }
-
-  async createPlantingSeason(
-    plantTypeId: number,
-    plantingSeason: PlantingSeason,
-  ): Promise<PlantingSeason> {
-    const db = getDatabase();
-    const result = db
-      .prepare(
-        "INSERT INTO planting_seasons (plant_type_id, zone_id, start_month, end_month, method, notes) VALUES (?, ?, ?, ?, ?, ?)",
-      )
-      .run(
-        plantTypeId,
-        plantingSeason.zone_id,
-        plantingSeason.start_month,
-        plantingSeason.end_month,
-        plantingSeason.method,
-        plantingSeason.notes,
-      );
-    return { ...plantingSeason, id: Number(result.lastInsertRowid) };
   }
 }
 

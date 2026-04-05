@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Grid, Alert } from "@mui/material";
 import api from "../services/api";
 import PlantCard from "./PlantCard";

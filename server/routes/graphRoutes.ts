@@ -1,5 +1,5 @@
 import { Controller, Route, Tags, Get, Path, Query } from "tsoa";
-import { getPlantGraph, getPlantRecommendations } from "../controllers/graphController.ts";
+import { graphRepository } from "../repositories/graphRepository.ts";
 import type { GraphDataResponse, PlantRecommendationResponse } from "../types/models.ts";
 
 @Route("v1/api/graph")
@@ -14,7 +14,7 @@ export class GraphController extends Controller {
       this.setStatus(400);
       return { nodes: [], edges: [] };
     }
-    return (await getPlantGraph(id, hops)) as GraphDataResponse;
+    return (await graphRepository.getPlantGraph(id, hops)) as GraphDataResponse;
   }
 
   @Get("/recommendations")
@@ -30,6 +30,6 @@ export class GraphController extends Controller {
       this.setStatus(400);
       return [];
     }
-    return (await getPlantRecommendations(ids)) as PlantRecommendationResponse[];
+    return (await graphRepository.getPlantRecommendations(ids)) as PlantRecommendationResponse[];
   }
 }

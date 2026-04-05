@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import api from "../services/api";
 import { getMe } from "../services/authService";
 import {
-  Box,
+  Container,
   Typography,
   Alert,
   Skeleton,
@@ -133,7 +133,7 @@ export default function PlantType() {
 
   if (loading) {
     return (
-      <Box sx={{ p: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Skeleton variant="text" width={300} height={48} sx={{ mb: 1 }} />
         <Skeleton variant="text" width={200} height={24} sx={{ mb: 4 }} />
         <Skeleton variant="text" width={180} height={32} sx={{ mb: 2 }} />
@@ -144,20 +144,20 @@ export default function PlantType() {
             </Grid>
           ))}
         </Grid>
-      </Box>
+      </Container>
     );
   }
 
   if (error) {
     return (
-      <Box sx={{ padding: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
         <Alert severity="error">{error}</Alert>
-      </Box>
+      </Container>
     );
   }
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
       {/* Plant General Information */}
       <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
         {plantData.name} ({plantData.category})
@@ -320,6 +320,6 @@ export default function PlantType() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </Container>
   );
 }
