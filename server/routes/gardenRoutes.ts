@@ -12,6 +12,7 @@ import {
   Security,
 } from "tsoa";
 import * as express from "express";
+import { HttpError } from "../utils/HttpError.ts";
 import {
   getGardens,
   createGarden,
@@ -45,16 +46,13 @@ export class GardenController extends Controller {
   ): Promise<GardenResponse> {
     const { name, rows, cols } = body;
     if (!name || typeof name !== "string" || name.trim() === "") {
-      this.setStatus(400);
-      return { id: 0, userId: 0, name: "", rows: 0, cols: 0 };
+      throw new HttpError(400, "Garden name is required");
     }
     if (typeof rows !== "number" || rows < 1 || rows > 20) {
-      this.setStatus(400);
-      return { id: 0, userId: 0, name: "", rows: 0, cols: 0 };
+      throw new HttpError(400, "Rows must be a number between 1 and 20");
     }
     if (typeof cols !== "number" || cols < 1 || cols > 20) {
-      this.setStatus(400);
-      return { id: 0, userId: 0, name: "", rows: 0, cols: 0 };
+      throw new HttpError(400, "Cols must be a number between 1 and 20");
     }
     const garden = await createGarden(req.user!.userId, name.trim(), rows, cols);
     this.setStatus(201);
@@ -68,8 +66,7 @@ export class GardenController extends Controller {
   ): Promise<GardenDetailResponse> {
     const garden = await getGardenById(id, req.user!.userId);
     if (!garden) {
-      this.setStatus(404);
-      return { id: 0, userId: 0, name: "", rows: 0, cols: 0, cells: [] };
+      throw new HttpError(404, "Garden not found");
     }
     const cells = await getGardenCells(id);
     return { ...garden, cells } as GardenDetailResponse;
@@ -85,12 +82,10 @@ export class GardenController extends Controller {
   ): Promise<MessageResponse> {
     const garden = await getGardenById(id, req.user!.userId);
     if (!garden) {
-      this.setStatus(404);
-      return { message: "Garden not found" };
+      throw new HttpError(404, "Garden not found");
     }
     if (row < 0 || row >= garden.rows || col < 0 || col >= garden.cols) {
-      this.setStatus(400);
-      return { message: "Cell coordinates out of bounds" };
+      throw new HttpError(400, "Cell coordinates out of bounds");
     }
     await upsertCell(id, row, col, body.plantId);
     return { message: "Cell updated" };
@@ -105,16 +100,13 @@ export class GardenController extends Controller {
   ): Promise<MessageResponse> {
     const garden = await getGardenById(id, req.user!.userId);
     if (!garden) {
-      this.setStatus(404);
-      return { message: "Garden not found" };
+      throw new HttpError(404, "Garden not found");
     }
     const deleted = await clearCell(id, row, col);
-    if (deleted) {
-      return { message: "Cell cleared" };
-    } else {
-      this.setStatus(404);
-      return { message: "Cell was empty" };
+    if (!deleted) {
+      throw new HttpError(404, "Cell was empty");
     }
+    return { message: "Cell cleared" };
   }
 
   @Delete("/{id}")

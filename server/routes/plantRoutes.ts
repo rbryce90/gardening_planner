@@ -1,4 +1,6 @@
 import { Controller, Route, Tags, Get, Post, Put, Delete, Body, Path, Security } from "tsoa";
+import { HttpError } from "../utils/HttpError.ts";
+import type { Plant } from "../types/plant.d.ts";
 import {
   getPlants,
   getPlantById,
@@ -46,8 +48,7 @@ export class PlantController extends Controller {
   public async getPlantById(@Path() id: number): Promise<PlantResponse> {
     const plant = await getPlantById(id);
     if (!plant) {
-      this.setStatus(404);
-      return { name: "", category: "", growthForm: "" };
+      throw new HttpError(404, "Plant not found");
     }
     return plant as PlantResponse;
   }
@@ -56,8 +57,7 @@ export class PlantController extends Controller {
   public async getPlantTypes(@Path() name: string): Promise<PlantDetailResponse> {
     const plant = await getPlantByName(name);
     if (!plant || !plant.id) {
-      this.setStatus(404);
-      return { name: "", category: "", growthForm: "", types: [], companions: [], antagonists: [] };
+      throw new HttpError(404, "Plant not found");
     }
     const typesAndCompanions = await getPlantTypesByPlantIdWithCompanionsAndAntagonists(plant.id);
     return {
@@ -70,10 +70,9 @@ export class PlantController extends Controller {
   @Post("/")
   public async createPlant(@Body() body: PlantCreateRequest): Promise<PlantResponse> {
     if (!body.name || !body.category || !body.growthForm) {
-      this.setStatus(400);
-      return { name: "", category: "", growthForm: "" };
+      throw new HttpError(400, "Name, category, and growth form are required");
     }
-    const id = await createPlant(body as any);
+    const id = await createPlant(body as Plant);
     this.setStatus(201);
     return { id, ...body };
   }
@@ -85,10 +84,9 @@ export class PlantController extends Controller {
     @Body() body: PlantCreateRequest,
   ): Promise<PlantResponse> {
     if (!body.name || !body.category || !body.growthForm) {
-      this.setStatus(400);
-      return { name: "", category: "", growthForm: "" };
+      throw new HttpError(400, "Name, category, and growth form are required");
     }
-    await updatePlant(id, body as any);
+    await updatePlant(id, body as Plant);
     return { id, ...body };
   }
 
@@ -110,10 +108,14 @@ export class PlantController extends Controller {
     @Body() body: PlantTypeCreateRequest,
   ): Promise<PlantTypeResponse> {
     if (!body.name) {
-      this.setStatus(400);
-      return { name: "" };
+      throw new HttpError(400, "Plant type name is required");
     }
-    const result = await createPlantType(id, body);
+    const result = await createPlantType(id, {
+      plantId: id,
+      name: body.name,
+      description: body.description,
+      plantingNotes: body.planting_notes,
+    });
     this.setStatus(201);
     return result;
   }

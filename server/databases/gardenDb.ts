@@ -13,7 +13,9 @@ const initializeDatabase = (): DatabaseSync => {
           rows INTEGER NOT NULL,
           cols INTEGER NOT NULL,
           created_at TEXT DEFAULT (datetime('now')),
-          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+          CHECK(rows > 0 AND rows <= 50),
+          CHECK(cols > 0 AND cols <= 50)
         );
       `);
 
@@ -23,9 +25,9 @@ const initializeDatabase = (): DatabaseSync => {
           garden_id INTEGER NOT NULL,
           row INTEGER NOT NULL,
           col INTEGER NOT NULL,
-          plant_id INTEGER NOT NULL,
+          plant_id INTEGER,
           FOREIGN KEY (garden_id) REFERENCES gardens(id) ON DELETE CASCADE,
-          FOREIGN KEY (plant_id) REFERENCES plants(id),
+          FOREIGN KEY (plant_id) REFERENCES plants(id) ON DELETE SET NULL,
           UNIQUE (garden_id, row, col)
         );
       `);

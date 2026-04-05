@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   Box,
   Button,
   Card,
@@ -24,6 +25,7 @@ export default function AddPlantCard({ onClose, getPlants }) {
     growthForm: "",
     ediblePart: "",
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (field, value) => {
     setUserInput((prev) => ({ ...prev, [field]: value }));
@@ -39,8 +41,8 @@ export default function AddPlantCard({ onClose, getPlants }) {
       await api.post("/api/plants", userInput);
       getPlants();
       onClose();
-    } catch (error) {
-      console.error("Error adding plant:", error);
+    } catch (err) {
+      setError(`Failed to add plant: ${err.response?.data?.message || err.message}`);
     }
   };
 
@@ -58,6 +60,11 @@ export default function AddPlantCard({ onClose, getPlants }) {
         <Typography variant="h6" gutterBottom>
           Add New Plant
         </Typography>
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+            {error}
+          </Alert>
+        )}
         <Box
           component="form"
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}

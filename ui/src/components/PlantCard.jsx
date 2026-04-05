@@ -1,57 +1,37 @@
 import React from "react";
-import { Card, CardContent, Typography, Button } from "@mui/material";
+import { Card, CardContent, CardActionArea, Typography, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import { capitalize } from "../utils/utils";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from React Router
 
 export default function PlantCard({ plant, onEdit, onDelete }) {
-  const navigate = useNavigate(); // Initialize the navigate function
-
-  const handleCardClick = () => {
-    navigate(`/plants/${plant.name}/types`); // Redirect to the desired route
-  };
-
   return (
     <Card
-      tabIndex={0}
-      role="link"
-      aria-label={plant.name}
       sx={{
         position: "relative",
         width: "100%",
-        cursor: "pointer",
         transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
         "&:hover": {
           transform: "translateY(-4px)",
           boxShadow: 6,
         },
-        "&:focus": {
-          outline: "2px solid",
-          outlineColor: "primary.main",
-          outlineOffset: 2,
-        },
-      }}
-      onClick={handleCardClick}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          handleCardClick();
-        }
       }}
     >
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
-          {plant.name}
-        </Typography>
-        <Typography variant="body2" gutterBottom>
-          <b>Category: </b> {capitalize(plant.category)}
-        </Typography>
-        <Typography variant="body2">
-          <b>Growth Form:</b> {capitalize(plant.growthForm)}
-        </Typography>
-        <Typography variant="body2">
-          <b>Edible Part: </b> {capitalize(plant.ediblePart) || "Not added yet"}
-        </Typography>
-      </CardContent>
+      <CardActionArea component={Link} to={`/plants/${plant.name}/types`} aria-label={plant.name}>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            {plant.name}
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            <b>Category: </b> {capitalize(plant.category)}
+          </Typography>
+          <Typography variant="body2">
+            <b>Growth Form:</b> {capitalize(plant.growthForm)}
+          </Typography>
+          <Typography variant="body2">
+            <b>Edible Part: </b> {capitalize(plant.ediblePart) || "Not added yet"}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
       {(onEdit || onDelete) && (
         <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
           {onEdit && (

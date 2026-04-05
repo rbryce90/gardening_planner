@@ -11,31 +11,8 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-
-const CATEGORIES = [
-  "vegetable",
-  "fruit",
-  "herb",
-  "grain",
-  "legume",
-  "flower",
-  "tree",
-  "root",
-  "nut",
-];
-const GROWTH_FORMS = ["annual", "perennial", "biennial"];
-const EDIBLE_PARTS = [
-  "fruit",
-  "leaf",
-  "root",
-  "seed",
-  "stem",
-  "flower",
-  "bulb",
-  "tuber",
-  "whole",
-  "none",
-];
+import { categoryTypesArray, growthTypesArray, ediblePartsArray } from "../models/models";
+import { capitalize } from "../utils/utils";
 
 export default function EditPlantDialog({ open, plant, onClose, onSave }) {
   const [localPlant, setLocalPlant] = React.useState(plant);
@@ -71,9 +48,9 @@ export default function EditPlantDialog({ open, plant, onClose, onSave }) {
             value={localPlant.category || ""}
             onChange={(e) => handleInputChange("category", e.target.value)}
           >
-            {CATEGORIES.map((c) => (
+            {categoryTypesArray.map((c) => (
               <MenuItem key={c} value={c}>
-                {c}
+                {capitalize(c)}
               </MenuItem>
             ))}
           </Select>
@@ -85,9 +62,9 @@ export default function EditPlantDialog({ open, plant, onClose, onSave }) {
             value={localPlant.growthForm || ""}
             onChange={(e) => handleInputChange("growthForm", e.target.value)}
           >
-            {GROWTH_FORMS.map((g) => (
+            {growthTypesArray.map((g) => (
               <MenuItem key={g} value={g}>
-                {g}
+                {capitalize(g)}
               </MenuItem>
             ))}
           </Select>
@@ -99,9 +76,9 @@ export default function EditPlantDialog({ open, plant, onClose, onSave }) {
             value={localPlant.ediblePart || ""}
             onChange={(e) => handleInputChange("ediblePart", e.target.value)}
           >
-            {EDIBLE_PARTS.map((p) => (
+            {ediblePartsArray.map((p) => (
               <MenuItem key={p} value={p}>
-                {p}
+                {capitalize(p)}
               </MenuItem>
             ))}
           </Select>

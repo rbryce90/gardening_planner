@@ -1,6 +1,6 @@
 import { PlantRepository } from "../repositories/plantRepository.ts";
 import { graphRepository } from "../repositories/graphRepository.ts";
-import type { Plant } from "../types/plant.d.ts";
+import type { Plant, PlantType } from "../types/plant.d.ts";
 
 const plantRepository = new PlantRepository();
 
@@ -38,7 +38,7 @@ export const deletePlant = async (id: number): Promise<boolean> => {
 
 export const getPlantTypesByPlantIdWithCompanionsAndAntagonists = async (
   plantId: number,
-): Promise<any> => {
+): Promise<{ types: Omit<PlantType, "plantId">[]; companions: Plant[]; antagonists: Plant[] }> => {
   const types = await plantRepository.getPlantTypesByPlantId(plantId);
   const companions = await plantRepository.getCompanionPlantsById(plantId);
   const antagonists = await plantRepository.getAntagonistPlantsById(plantId);
@@ -46,7 +46,10 @@ export const getPlantTypesByPlantIdWithCompanionsAndAntagonists = async (
   return { types, companions, antagonists };
 };
 
-export const createPlantType = async (plantId: number, plantType: any): Promise<any> => {
+export const createPlantType = async (
+  plantId: number,
+  plantType: PlantType,
+): Promise<PlantType> => {
   return await plantRepository.createPlantType(plantId, plantType);
 };
 
@@ -72,6 +75,6 @@ export const getAllAntagonists = async (): Promise<
   return await plantRepository.getAllAntagonists();
 };
 
-export const getPlantingSeasonsByPlantTypeId = async (plantTypeId: number): Promise<any[]> => {
+export const getPlantingSeasonsByPlantTypeId = async (plantTypeId: number) => {
   return await plantRepository.getPlantingSeasonsByPlantTypeId(plantTypeId);
 };

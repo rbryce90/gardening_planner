@@ -67,7 +67,10 @@ const initializeDatabase = (): DatabaseSync => {
           method TEXT,
           notes TEXT,
           FOREIGN KEY (plant_type_id) REFERENCES plant_types(id) ON DELETE CASCADE,
-          FOREIGN KEY (zone_id) REFERENCES zones(id) ON DELETE CASCADE
+          FOREIGN KEY (zone_id) REFERENCES zones(id) ON DELETE CASCADE,
+          UNIQUE(plant_type_id, zone_id),
+          CHECK(start_month IN ('January','February','March','April','May','June','July','August','September','October','November','December')),
+          CHECK(end_month IN ('January','February','March','April','May','June','July','August','September','October','November','December'))
         );
       `);
 

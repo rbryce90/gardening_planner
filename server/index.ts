@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -15,7 +16,8 @@ const app = express();
 const PORT = 8000;
 
 app.use(helmet());
-app.use(express.json());
+app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:5173", credentials: true }));
+app.use(express.json({ limit: "100kb" }));
 app.use(cookieParser());
 app.use(requestIdMiddleware);
 app.use(requestLogger);
@@ -24,12 +26,14 @@ app.use(requestLogger);
 app.use("/v1/api/auth", rateLimit({ windowMs: 15 * 60 * 1000, max: 20 }));
 
 // Swagger docs
-try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const swaggerDocument = require("./generated/swagger.json");
-  app.use("/v1/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-} catch {
-  logger.warn("Swagger spec not found — run 'npm run generate' to create it");
+if (process.env.NODE_ENV !== "production") {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const swaggerDocument = require("./generated/swagger.json");
+    app.use("/v1/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  } catch {
+    logger.warn("Swagger spec not found — run 'npm run generate' to create it");
+  }
 }
 
 // TSOA generated routes

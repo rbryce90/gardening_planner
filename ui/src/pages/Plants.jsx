@@ -43,7 +43,7 @@ export default function Plants() {
         setSuccessMsg("Plant deleted");
       })
       .catch((err) => {
-        console.error(`Error deleting plant with ID ${plantId}:`, err);
+        setError(`Failed to delete plant: ${err.response?.data?.message || err.message}`);
       });
   };
 

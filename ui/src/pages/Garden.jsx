@@ -124,6 +124,7 @@ export default function Garden() {
   const [successMsg, setSuccessMsg] = useState("");
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [plantSearch, setPlantSearch] = useState("");
+  const [liveAnnouncement, setLiveAnnouncement] = useState("");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -222,6 +223,7 @@ export default function Garden() {
         };
       });
       setSelectedPlant({ id: paintPlant.id, name: paintPlant.name });
+      setLiveAnnouncement(`${paintPlant.name} placed at row ${row + 1}, column ${col + 1}`);
       upsertCell(selectedGarden.id, row, col, paintPlant.id).catch((err) =>
         setError(`Failed to paint cell: ${err.response?.data?.message || err.message}`),
       );
@@ -244,7 +246,10 @@ export default function Garden() {
         cells: (prev.cells || []).filter((c) => !(c.row === row && c.col === col)),
       };
     });
-    clearCell(selectedGarden.id, row, col).catch(() => {});
+    setLiveAnnouncement(`Cell cleared at row ${row + 1}, column ${col + 1}`);
+    clearCell(selectedGarden.id, row, col).catch((err) =>
+      setError(`Failed to clear cell: ${err.response?.data?.message || err.message}`),
+    );
   };
 
   const handlePlantSelect = (plant) => {
@@ -376,6 +381,7 @@ export default function Garden() {
           )}
           <TextField
             size="small"
+            label="Search plants"
             placeholder="Search plants..."
             fullWidth
             value={plantSearch}
@@ -433,6 +439,15 @@ export default function Garden() {
           {gardens.map((g) => (
             <Card
               key={g.id}
+              tabIndex={0}
+              role="button"
+              aria-label={g.name}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleSelectGarden(g.id);
+                }
+              }}
               sx={{
                 height: 160,
                 cursor: "pointer",
@@ -444,6 +459,11 @@ export default function Garden() {
                 borderLeftColor: "success.main",
                 transition: "transform 0.2s, box-shadow 0.2s",
                 "&:hover": { transform: "translateY(-4px)", boxShadow: 6 },
+                "&:focus": {
+                  outline: "2px solid",
+                  outlineColor: "primary.main",
+                  outlineOffset: 2,
+                },
               }}
               onClick={() => handleSelectGarden(g.id)}
             >
@@ -459,6 +479,15 @@ export default function Garden() {
             </Card>
           ))}
           <Card
+            tabIndex={0}
+            role="button"
+            aria-label="New Garden"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setShowCreateDialog(true);
+              }
+            }}
             sx={{
               height: 160,
               cursor: "pointer",
@@ -467,6 +496,11 @@ export default function Garden() {
               bgcolor: "transparent",
               transition: "border-color 0.2s, transform 0.2s",
               "&:hover": { borderColor: "success.main", transform: "translateY(-4px)" },
+              "&:focus": {
+                outline: "2px solid",
+                outlineColor: "primary.main",
+                outlineOffset: 2,
+              },
             }}
             onClick={() => setShowCreateDialog(true)}
           >
@@ -486,6 +520,22 @@ export default function Garden() {
         />
 
         <Notification message={successMsg} open={!!successMsg} onClose={() => setSuccessMsg("")} />
+
+        <Box
+          aria-live="polite"
+          aria-atomic="true"
+          sx={{
+            position: "absolute",
+            width: 1,
+            height: 1,
+            overflow: "hidden",
+            clip: "rect(0 0 0 0)",
+            clipPath: "inset(50%)",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {liveAnnouncement}
+        </Box>
       </Box>
     );
   }
@@ -498,6 +548,7 @@ export default function Garden() {
         <Fab
           size="small"
           color="primary"
+          aria-label="Open garden sidebar"
           onClick={() => setSidebarOpen(true)}
           sx={{ position: "fixed", bottom: 24, left: 24, zIndex: 1200 }}
         >
@@ -507,7 +558,11 @@ export default function Garden() {
 
       {/* Sidebar: drawer on mobile, fixed on desktop */}
       {isMobile ? (
-        <Drawer open={sidebarOpen} onClose={() => setSidebarOpen(false)}>
+        <Drawer
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          aria-label="Garden sidebar"
+        >
           <Box sx={{ width: 280 }}>{sidebarContent}</Box>
         </Drawer>
       ) : (
@@ -599,6 +654,22 @@ export default function Garden() {
       />
 
       <Notification message={successMsg} open={!!successMsg} onClose={() => setSuccessMsg("")} />
+
+      <Box
+        aria-live="polite"
+        aria-atomic="true"
+        sx={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          overflow: "hidden",
+          clip: "rect(0 0 0 0)",
+          clipPath: "inset(50%)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {liveAnnouncement}
+      </Box>
     </Box>
   );
 }
