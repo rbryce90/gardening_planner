@@ -4,7 +4,7 @@ A full-stack garden design tool for planning bed layouts, placing plants on a vi
 
 ## What It Does
 
-Users create grid-based garden bed layouts and place plants into individual cells. The grid provides real-time visual feedback: cells highlight green when neighboring plants are companions and red when they are antagonists. Each plant's detail page includes an interactive force-directed graph showing 1 hop of relationship data from Neo4j. The app also includes a zone-based seasonal planting calendar so users can see what to plant and when based on their USDA hardiness zone.
+Users create grid-based garden bed layouts and place plants into individual cells. The grid provides real-time visual feedback: cells highlight green when neighboring plants are companions and red when they are antagonists. Each plant's detail page includes an interactive force-directed graph showing direct (1-hop) relationship data from Neo4j. The app also includes a zone-based seasonal planting calendar so users can see what to plant and when based on their USDA hardiness zone.
 
 ## Screenshots
 
@@ -89,14 +89,24 @@ For an all-in-one container workflow, see [Getting Started](#getting-started) be
 - Create and manage multiple named garden bed layouts
 - Visual grid designer with click-to-place plant placement
 - Companion plant highlighting (green) and antagonist warnings (red) on neighboring cells
-- Interactive force-directed graph visualization of plant relationships (2-hop depth)
-- Smart plant recommendations via Neo4j graph queries
+- Interactive force-directed graph visualization of plant relationships (direct 1-hop connections; the graph API supports up to 5 hops via the `hops` query parameter)
+- Smart plant recommendations via Neo4j graph queries (compatible-with-all + no-antagonist scoring)
 - USDA hardiness zone selection with zone-based seasonal planting calendar
 - Dual-write architecture: plant mutations sync to both SQLite and Neo4j
 - ETL script to migrate existing SQLite plant data into Neo4j
 - Auto-generated OpenAPI 3 spec and Swagger UI at `/v1/api/docs`
 - Centralized error handling middleware with structured error responses
 - Request ID tracing and Winston-based request logging
+
+## Status
+
+**Working today:**
+
+- All Features above are implemented and exercised end-to-end (UI -> API -> SQLite + Neo4j).
+- Demo accounts, dual-write plant mutations, graph traversal, recommendations, planting calendar, container workflow, and Swagger UI are live.
+- Jest covers `graphRepository` (Cypher query shapes); broader test coverage is still light.
+
+**Planned / not yet built:** see [Roadmap](#roadmap) below — the headline item is an MCP server for LLM-driven plant data entry.
 
 ## Architecture
 
@@ -191,7 +201,7 @@ npm run etl:neo4j
 
 ### Admin access
 
-Plant data (create, edit, delete) is restricted to admin users. The `admin@demo.com` account has admin privileges out of the box. To grant admin to a new account, add the email to the `ADMIN_EMAILS` array in `server/controllers/authController.ts` and register with that email.
+Plant data (create, edit, delete) is restricted to admin users. The `admin@demo.com` account has admin privileges out of the box. Admin status is stored as the `is_admin` flag on the `users` table and embedded in the JWT at login. To promote an existing user, set `is_admin = 1` in SQLite (or call `userRepository.setAdmin(userId, true)`); the new role takes effect on their next login.
 
 ## API Endpoints
 
@@ -199,12 +209,14 @@ All endpoints are prefixed with `/v1`. Full OpenAPI spec available at `/v1/api/d
 
 ### Auth (`/v1/api/auth`)
 
-| Method | Path                 | Description                   | Auth |
-| ------ | -------------------- | ----------------------------- | ---- |
-| POST   | `/v1/api/auth`       | Register a new user           | No   |
-| POST   | `/v1/api/auth/login` | Log in and receive JWT cookie | No   |
-| GET    | `/v1/api/auth/me`    | Get current user profile      | JWT  |
-| PUT    | `/v1/api/auth/zone`  | Update user hardiness zone    | JWT  |
+| Method | Path                   | Description                   | Auth |
+| ------ | ---------------------- | ----------------------------- | ---- |
+| POST   | `/v1/api/auth`         | Register a new user           | No   |
+| POST   | `/v1/api/auth/login`   | Log in and receive JWT cookie | No   |
+| POST   | `/v1/api/auth/logout`  | Clear the JWT cookie          | No   |
+| GET    | `/v1/api/auth/me`      | Get current user profile      | JWT  |
+| PUT    | `/v1/api/auth/zone`    | Update user hardiness zone    | JWT  |
+| PUT    | `/v1/api/auth/profile` | Update email, first/last name | JWT  |
 
 ### Gardens (`/v1/api/gardens`)
 
@@ -229,6 +241,7 @@ All endpoints are prefixed with `/v1`. Full OpenAPI spec available at `/v1/api/d
 | POST   | `/v1/api/plants`                              | Create a plant                         | Admin |
 | PUT    | `/v1/api/plants/:id`                          | Update a plant                         | Admin |
 | DELETE | `/v1/api/plants/:id`                          | Delete a plant                         | Admin |
+| POST   | `/v1/api/plants/:id/types`                    | Create a plant type (variety)          | Admin |
 | POST   | `/v1/api/plants/:id/companion/:companionId`   | Add companion relationship             | Admin |
 | POST   | `/v1/api/plants/:id/antagonist/:antagonistId` | Add antagonist relationship            | Admin |
 
@@ -273,17 +286,22 @@ gardening_planner/
     index.ts                   # Express app entry point, Swagger UI mount
     tsoa.json                  # TSOA config (routes, spec, security schemes)
     authentication.ts          # TSOA auth handler (jwt + admin schemes)
+    Dockerfile                 # Server container image
+    start.sh                   # Container entrypoint (install, generate, seed, run)
+    jest.config.js             # Jest config
     routes/                    # TSOA controller classes (one per resource)
     controllers/               # Business logic (dual-write to SQLite + Neo4j)
     repositories/              # Data access (plantRepository → SQLite, graphRepository → Neo4j)
-    databases/                 # SQLite + Neo4j connection management
+    databases/                 # SQLite + Neo4j connection management, migrations
     middleware/                # errorHandler, requestId, requestLogger
     types/                     # TypeScript interfaces for TSOA + domain types
-    utils/                     # Winston logger, password hashing
+    utils/                     # Winston logger, bcrypt hashing, HttpError
     generated/                 # Auto-generated TSOA routes + swagger.json
+    test/                      # Jest unit tests (e.g. graphRepository.test.ts)
     scripts/
       seed.ts                  # SQLite seed script
       seedNeo4j.ts             # Neo4j seed from JSON
+      seedUsers.ts              # Demo user seed (admin/user)
       etlToNeo4j.ts            # ETL: SQLite → Neo4j sync
       seed-data.json           # Plant, zone, and relationship seed data
   ui/
