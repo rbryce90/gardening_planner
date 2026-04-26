@@ -296,6 +296,10 @@ gardening_planner/
       utils/                   # Helper functions
 ```
 
+## Roadmap
+
+- **MCP server for LLM-driven plant data entry** ([#7](https://github.com/rbryce90/gardening_planner/issues/7)) — expose the backend through the Model Context Protocol so Claude Desktop / Claude Code can populate plant data, companion / antagonist relationships, and zone information via natural-language conversations. Includes a discovery + preview-approve workflow: the LLM finds _all_ relevant data (companions, antagonists, attributes, zones) and proposes a comprehensive draft, the user reviews the preview and approves what to persist before any database writes happen.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
