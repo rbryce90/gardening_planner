@@ -40,6 +40,33 @@ Users create grid-based garden bed layouts and place plants into individual cell
 
 ![Swagger](screenshots/08-swagger.png)
 
+## Quick Start
+
+### Prerequisites
+
+- Node.js 22+
+- Podman (or Docker) for Neo4j
+
+### Setup
+
+1. Clone the repo
+2. Start Neo4j: `podman compose up -d neo4j` (or `docker compose up -d neo4j`)
+3. Server setup (run from `server/`):
+   - `npm install`
+   - `cp .env.example .env`
+   - Edit `.env` and set `JWT_SECRET` (generate one with `openssl rand -base64 32`)
+   - `npm run generate` — generates TSOA routes and OpenAPI spec
+   - `npx tsx --experimental-sqlite scripts/seed.ts` — seeds SQLite with plants and zones
+   - `npm run seed:neo4j` — seeds Neo4j with plant relationships
+   - `npm run seed:users` — creates demo accounts (`admin@demo.com` / `user@demo.com`, password `demo1234`)
+   - `npm run dev` — starts the API server on `http://localhost:8000`
+4. UI setup in another terminal (run from `ui/`):
+   - `npm install`
+   - `npm run dev` — starts Vite on `http://localhost:5173`
+5. Open `http://localhost:5173`, register an account (or use the demo creds below), and start building a garden.
+
+For an all-in-one container workflow, see [Getting Started](#getting-started) below.
+
 ## Tech Stack
 
 | Layer    | Technology                                                      |
@@ -271,4 +298,4 @@ gardening_planner/
 
 ## License
 
-ISC
+MIT — see [LICENSE](LICENSE).
